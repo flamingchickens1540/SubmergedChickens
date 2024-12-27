@@ -1,6 +1,5 @@
 {
     "trailingComma": "es5",
-    "tabWidth": 4,
     "semi": false,
     "singleQuote": false,
     "quoteProps": "consistent",
@@ -8,15 +7,16 @@
     "bracketSpacing": true,
     "bracketSameLine": false,
     "arrowParens": "avoid",
-    "endOfLine": "auto",
-    "plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+    "plugins": [
+        "prettier-plugin-svelte",
+        "prettier-plugin-tailwindcss"
+    ],
     "overrides": [
         {
-            "files": "*.json",
+            "files": "*.svelte",
             "options": {
-                "tabWidth": 2
+                "parser": "svelte"
             }
-        },
-        { "files": "*.svelte", "options": { "parser": "svelte" } }
+        }
     ]
 }
