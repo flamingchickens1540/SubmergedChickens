@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    name: Build Application
+    steps:
+      - uses: actions/checkout@v3
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '17'
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - name: Setup DB
+        run: bun run db:load
+      - name: Build
+        run: bun run build
