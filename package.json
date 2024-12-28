@@ -43,9 +43,8 @@
   "dependencies": {
     "@prisma/client": "6.1.0",
     "@tanstack/table-core": "^8.20.5",
-    "d3-array": "^3.2.4",
-    "d3-scale": "^4.0.2",
-    "layerchart": "^0.60.3",
+    "echarts": "^5.5.1",
+    "echarts-stat": "^1.2.0",
     "lucide-svelte": "^0.469.0"
   },
   "prisma": {
