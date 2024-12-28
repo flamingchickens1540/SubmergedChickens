@@ -15,10 +15,10 @@
         FlexRender,
     } from "$lib/components/ui/data-table/index.js"
     import * as Table from "$lib/components/ui/table/index.js"
-    import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+    import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
     import { Button } from "$lib/components/ui/button/index.js"
     import { Input } from "$lib/components/ui/input/index.js"
-    import Settings2 from "lucide-svelte/icons/settings-2";
+    import Settings2 from "lucide-svelte/icons/settings-2"
 
     type DataTableProps<TData, TValue> = {
         columns: ColumnDef<TData, TValue>[]

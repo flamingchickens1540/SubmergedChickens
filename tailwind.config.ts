@@ -5,9 +5,9 @@ import tailwindcssAnimate from "tailwindcss-animate"
 const config: Config = {
     darkMode: ["class"],
     content: [
-		"./src/**/*.{html,js,svelte,ts}",
-		"./node_modules/layerchart/**/*.{svelte,js}"
-	],
+        "./src/**/*.{html,js,svelte,ts}",
+        "./node_modules/layerchart/**/*.{svelte,js}",
+    ],
     safelist: ["dark"],
     theme: {
         container: {
