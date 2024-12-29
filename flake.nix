@@ -1,10 +1,7 @@
 {
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     devDB = {
       url = "github:hermann-p/nix-postgres-dev-db";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,12 +13,13 @@
     nixpkgs,
     utils,
     devDB,
+    systems,
   }:
-    utils.lib.eachDefaultSystem (system: let
+    utils.lib.eachSystem (import systems) (system: let
       pkgs = import nixpkgs {inherit system;};
       db = devDB.outputs.packages.${system};
     in {
-      devShell = with pkgs;
+      devShells.default = with pkgs;
         mkShell {
           env = {
             PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
