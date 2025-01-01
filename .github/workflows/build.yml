@@ -3,10 +3,6 @@ name: Build
 on:
   pull_request:
 
-concurrency:
-  group: format
-  cancel-in-progress: true
-
 jobs:
   build:
     name: Build Application
