@@ -18,6 +18,7 @@ nix develop
 start-database
 bun i
 bun db:load
+echo DATABASE_URL="postgresql://$(whoami):<passwd>@localhost:5432/database?schema=public" >> .env
 # once your done
 stop-database && exit
 ```
