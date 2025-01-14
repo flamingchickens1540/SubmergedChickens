@@ -4,11 +4,11 @@
     let name = "<insert name>"
 </script>
 
-<div class="p-2 w-full gap-2 flex flex-col">
-    <div class="flex w-full gap-2 justify-between items-center">
-        <button class="p-1 bg-zinc-300 rounded"><LogOut /></button>
+<div class="flex w-full flex-col gap-2 p-2">
+    <div class="flex w-full items-center justify-between gap-2">
+        <button class="rounded bg-zinc-300 p-1"><LogOut /></button>
         <span class="font-semibold">{name}</span>
-        <button class="p-1 bg-zinc-300 rounded"><Settings /></button>
+        <button class="rounded bg-zinc-300 p-1"><Settings /></button>
     </div>
     <div class="grid gap-2 text-xl font-semibold">
         <button class="rounded bg-zinc-300 p-2">Pit Display</button>
