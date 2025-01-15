@@ -20,15 +20,15 @@ const config: Config = {
         extend: {
             colors: {
                 // - brand colors -
-				white: '#ffffff',
-				eerie_black: '#1C1C1C',
-				yolk_yellow: '#FFC145',
-				flaming_red: '#ED2C2C',
-				steel_blue: '#358188',
-				gunmetal: '#20282C',
-				chicken_orange: '#F7901E',
-				eminence: '#6C3082',
-				jungle_green: '#49A078',
+                white: "#ffffff",
+                eerie_black: "#1C1C1C",
+                yolk_yellow: "#FFC145",
+                flaming_red: "#ED2C2C",
+                steel_blue: "#358188",
+                gunmetal: "#20282C",
+                chicken_orange: "#F7901E",
+                eminence: "#6C3082",
+                jungle_green: "#49A078",
 
                 border: "hsl(var(--border) / <alpha-value>)",
                 input: "hsl(var(--input) / <alpha-value>)",
