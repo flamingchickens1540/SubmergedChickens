@@ -41,11 +41,14 @@
     "vite": "^5.4.11"
   },
   "dependencies": {
-    "@prisma/client": "6.1.0",
+    "@prisma/adapter-pg": "^6.2.1",
+    "@prisma/client": "^6.2.1",
     "@tanstack/table-core": "^8.20.5",
+    "@types/node": "^22.10.7",
     "echarts": "^5.5.1",
     "echarts-stat": "^1.2.0",
-    "lucide-svelte": "^0.469.0"
+    "lucide-svelte": "^0.469.0",
+    "pg": "^8.13.1"
   },
   "prisma": {
     "seed": "bun ./prisma/seed.ts"
