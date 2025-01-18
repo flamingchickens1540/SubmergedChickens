@@ -15,19 +15,20 @@ export type Ranking = {
 
 export type PairwiseOutput = {
     rankings: Ranking[]
-    stability: number // TODO: add stablity, condition number, matrix rank, num comparisons, num teams stats to output
+    stability: number
+    agreement: number
 }
 
 export function analyze_comparisons(
     comparisons: Comparison[]
-): Ranking[] | void {
+): PairwiseOutput {
     // Extract unique teams
     const teams = new Set<number>()
     comparisons.forEach(comparison => {
         teams.add(comparison.teamA)
         teams.add(comparison.teamB)
     })
-    const uniqueTeams = Array.from(teams) //remove sorting later?
+    const uniqueTeams = Array.from(teams)
     const teamToIndex = new Map<number, number>()
     uniqueTeams.forEach((team, index) => {
         teamToIndex.set(team, index)
@@ -36,7 +37,7 @@ export function analyze_comparisons(
         Array(uniqueTeams.length).fill(0)
     )
 
-    // Fill the skew matrix based on the comparison data
+    // Fill the matrix based on the comparison data
     comparisons.forEach(comparison => {
         const indexA = teamToIndex.get(comparison.teamA)!
         const indexB = teamToIndex.get(comparison.teamB)!
@@ -48,24 +49,24 @@ export function analyze_comparisons(
     const { q: s, u, v } = SVD(matrix)
 
     // Calculate SVD and normalize rankings
-    const rankings = u.map(row => row[0])
-    const maxAbs = Math.max(...rankings.map(Math.abs))
-    let scaledRankings
+    const scores = u.map(row => row[0])
+    const maxAbs = Math.max(...scores.map(Math.abs))
+    let scaledScores
     if (maxAbs > 0) {
-        scaledRankings = rankings.map(rank =>
+        scaledScores = scores.map(rank =>
             parseFloat(((rank / maxAbs) * 100).toFixed(2))
         )
     } else {
-        scaledRankings = rankings.map(rank =>
+        scaledScores = scores.map(rank =>
             parseFloat((rank * 100).toFixed(2))
         )
     }
 
     // Map stats to each team and sort by ranking
-    return uniqueTeams
+    const rankings = uniqueTeams
         .map((team, index) => ({
             team: team,
-            score: scaledRankings[index],
+            score: scaledScores[index],
         }))
         .sort((a, b) => a.score - b.score)
         .map((ranking, index) => ({
@@ -73,6 +74,12 @@ export function analyze_comparisons(
             team: ranking.team,
             score: ranking.score,
         }))
+    
+    // Calculate stability and agreement of the rankings
+    const stability = s[0] / s[s.length - 1]
+    const agreement = s[s.length - 1] / s[0]
+    
+    return { rankings, stability, agreement }  
 }
 
 function test() {
