@@ -19,9 +19,7 @@ export type PairwiseOutput = {
     agreement: number
 }
 
-export function analyze_comparisons(
-    comparisons: Comparison[]
-): PairwiseOutput {
+export function analyze_comparisons(comparisons: Comparison[]): PairwiseOutput {
     // Extract unique teams
     const teams = new Set<number>()
     comparisons.forEach(comparison => {
@@ -57,9 +55,7 @@ export function analyze_comparisons(
             parseFloat(((rank / maxAbs) * 100).toFixed(2))
         )
     } else {
-        scaledScores = scores.map(rank =>
-            parseFloat((rank * 100).toFixed(2))
-        )
+        scaledScores = scores.map(rank => parseFloat((rank * 100).toFixed(2)))
     }
 
     // Map stats to each team and sort by ranking
@@ -74,12 +70,12 @@ export function analyze_comparisons(
             team: ranking.team,
             score: ranking.score,
         }))
-    
+
     // Calculate stability and agreement of the rankings
     const stability = s[0] / s[s.length - 1]
     const agreement = s[s.length - 1] / s[0]
-    
-    return { rankings, stability, agreement }  
+
+    return { rankings, stability, agreement }
 }
 
 function test() {
