@@ -30,6 +30,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "svd-js": "^1.1.1",
     "svelte": "^5.17.5",
     "svelte-check": "^4.1.4",
     "tailwind-merge": "^2.6.0",
