@@ -1,0 +1,8 @@
+model Team {
+  number      Int          @unique
+  name        String
+  team_event  TeamEvent[]
+  team_match  TeamMatch[]
+  ComparisonA Comparison[] @relation("TeamA")
+  ComparisonB Comparison[] @relation("TeamB")
+}
