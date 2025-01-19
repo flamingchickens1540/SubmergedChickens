@@ -1,0 +1,39 @@
+model TeamEvent {
+  id          Int        @id @default(autoincrement())
+  team        Team       @relation(fields: [team_number], references: [number])
+  team_number Int
+  event_key   String
+  event       Event      @relation(fields: [event_key], references: [event_key])
+  image       Image[]
+  summary     String
+  drivetrain  Drivetrain
+  L1          Boolean
+  L2          Boolean
+  L3          Boolean
+  L4          Boolean
+  clean       Boolean
+  processor   Boolean
+  net         Boolean
+  source      Boolean
+  ground      Boolean
+  reef        Boolean
+  shallow     Boolean
+  deep        Boolean
+  user_id     Int
+  user        User       @relation(fields: [user_id], references: [id])
+}
+
+model Image {
+  id            Int       @id @default(autoincrement())
+  data          String
+  team_event    TeamEvent @relation(fields: [team_event_id], references: [id])
+  team_event_id Int
+  user_id       Int
+  user          User      @relation(fields: [user_id], references: [id])
+}
+
+enum Drivetrain {
+  Swerve
+  Tank
+  Other
+}

@@ -1,0 +1,13 @@
+model Comparison {
+  id         Int    @id @default(autoincrement())
+  team_A_num Int
+  team_A     Team   @relation("TeamA", fields: [team_A_num], references: [number])
+  team_B_num Int
+  team_B     Team   @relation("TeamB", fields: [team_B_num], references: [number])
+  diff       Int
+  category   String
+  event_key  String
+  event      Event  @relation(fields: [event_key], references: [event_key])
+  user_id    Int
+  user       User   @relation(fields: [user_id], references: [id])
+}
