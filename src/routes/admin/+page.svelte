@@ -107,20 +107,22 @@
     }
 </script>
 
-<div class="ml-2 mr-2 mt-2 grid grid-flow-col grid-cols-4 grid-rows-2 gap-4">
+<div
+    class="ml-2 mr-2 mt-2 grid grid-flow-col grid-cols-4 grid-rows-2 gap-4 text-white"
+>
     <div
-        class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded p-2 outline"
+        class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded bg-black p-2"
     >
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
             <input
                 bind:value={next_match_key}
                 placeholder="Next Match"
-                class="rounded p-2 outline"
+                class="rounded bg-gunmetal p-2"
             />
-            <button class="rounded p-2 outline" onclick={auto_load_teams}
+            <button class="rounded bg-gunmetal p-2" onclick={auto_load_teams}
                 >Auto Load</button
             >
-            <button onclick={queue_match} class="rounded p-2 outline"
+            <button onclick={queue_match} class="rounded bg-gunmetal p-2"
                 >Queue Match</button
             >
         </div>
@@ -128,7 +130,7 @@
             {#each next_red_robots as _robot, i}
                 <input
                     bind:value={next_red_robots[i]}
-                    class="rounded bg-red-500 p-2 outline"
+                    class="rounded bg-red-500 p-2"
                 />
             {/each}
         </div>
@@ -136,20 +138,22 @@
             {#each next_blue_robots as _robot, i}
                 <input
                     bind:value={next_blue_robots[i]}
-                    class="rounded bg-blue-500 p-2 outline"
+                    class="rounded bg-blue-500 p-2"
                 />
             {/each}
         </div>
     </div>
     <div
-        class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded p-2 outline"
+        class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded bg-black p-2"
     >
-        <button class="rounded p-2 outline">Currently Scouting</button>
+        <div class="grid place-content-center rounded bg-gunmetal p-2">
+            Currently Scouting
+        </div>
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
             {#each curr_red_robots as _robot, i}
                 <input
                     bind:value={curr_red_robots[i]}
-                    class="rounded bg-red-500 p-2 outline"
+                    class="rounded bg-red-500 p-2"
                 />
             {/each}
         </div>
@@ -157,40 +161,42 @@
             {#each curr_blue_robots as _robot, i}
                 <input
                     bind:value={curr_blue_robots[i]}
-                    class="rounded bg-blue-500 p-2 outline"
+                    class="rounded bg-blue-500 p-2"
                 />
             {/each}
         </div>
     </div>
     <div
-        class="row-span-2 grid h-96 max-h-96 justify-items-center gap-2 overflow-y-scroll rounded p-2 text-center outline"
+        class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded bg-black p-2 text-center"
     >
         <div class="text-center">New Users</div>
-        {#each new_users as user}
-            <div class="grid h-10 grid-cols-2 gap-4">
-                <div class="grid place-items-center">{user}</div>
-                <button
-                    class="rounded p-2 outline"
-                    onclick={() => approve_new_user(user)}>Approve</button
-                >
-            </div>
-        {/each}
+        <div class="grid h-80 gap-2">
+            {#each new_users as user}
+                <div class="grid h-10 grid-cols-2 gap-4 bg-gunmetal">
+                    <div class="grid place-items-center">{user}</div>
+                    <button
+                        class="rounded bg-gunmetal p-2"
+                        onclick={() => approve_new_user(user)}>Approve</button
+                    >
+                </div>
+            {/each}
+        </div>
     </div>
     <div
-        class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded p-2 text-center outline"
+        class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded bg-black p-2 text-center"
     >
         <div>Queue</div>
-        <div class="grid gap-2">
+        <div class="grid h-80 gap-2">
             {#each scout_queue as scout}
                 <div
-                    class="grid h-10 grid-cols-6 place-items-start items-center rounded p-2 outline"
+                    class="grid h-10 grid-cols-6 place-items-baseline items-center rounded bg-gunmetal p-2"
                 >
                     <div class="col-span-5 grid place-items-center">
                         {scout}
                     </div>
                     <button
                         onclick={() => remove_scout(scout)}
-                        class="grid h-4 w-4 place-content-center rounded bg-red-500 p-3 outline"
+                        class="grid h-4 w-4 place-content-center rounded bg-red-500 p-3"
                         ><X /></button
                     >
                 </div>

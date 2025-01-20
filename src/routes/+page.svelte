@@ -33,8 +33,10 @@
     })
 </script>
 
-<h1 class="text-center text-5xl font-bold">Inflated Chickens :3</h1>
-<div class="mt-16 grid w-9/12 grid-flow-col grid-cols-1 grid-rows-2 gap-4">
+<h1 class="pt-6 text-center text-5xl font-bold text-white">
+    Inflated Chickens :3
+</h1>
+<div class="mt-16 grid w-full grid-flow-col grid-cols-1 grid-rows-2 gap-4">
     <div class="m-4 grid grid-cols-1 place-items-center gap-4">
         {#if !waiting}
             <input
@@ -44,7 +46,7 @@
                 bind:value={inputname}
             />
             <button
-                class="text-l bg-gunmetal rounded px-4 py-2 text-center
+                class="text-l rounded bg-gunmetal px-4 py-2 text-center text-white
             {inputname === '' ? 'pointer-events-none text-white/50' : ''}"
                 onclick={login}
             >
