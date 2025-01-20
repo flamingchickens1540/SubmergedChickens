@@ -45,7 +45,9 @@
     "@tanstack/table-core": "^8.20.5",
     "echarts": "^5.5.1",
     "echarts-stat": "^1.2.0",
-    "lucide-svelte": "^0.469.0"
+    "lucide-svelte": "^0.469.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "prisma": {
     "seed": "bun ./prisma/seed.ts"
