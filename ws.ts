@@ -19,9 +19,12 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            let [sid, _] = Object.entries(sid_to_username).find(
-                ([_key, value]) => value === username
-            ) ?? [undefined, undefined]
+            let [sid, _] = sid_to_username
+                .entries()
+                .find(([_key, value]) => value === username) ?? [
+                undefined,
+                undefined,
+            ]
             if (sid) {
                 sid_to_username.delete(sid)
             }
@@ -37,34 +40,36 @@ const webSocketServer = {
                 socket.join("admin_room")
             }
 
-            // TODO Figure out why entries is empty here
+            // TODO Figure out how to hadle dublicate usernames in approval process
             socket.on("new_user", (old_username: string, user: string) => {
                 // Sets the sid correctly so the new user can be found by their non-placeholder username
-                info(old_username)
-                const entries = Object.entries(sid_to_username)
-                entries.forEach(([sid, username]) =>
-                    console.log(`${sid}: ${username}`)
-                )
-                const [sid, _username] = entries.find(([_sid, username]) => {
-                    info(username)
-                    return old_username === username
-                }) ?? [undefined, undefined]
+                const [sid, _username] = sid_to_username
+                    .entries()
+                    .find(([_sid, username]) => old_username === username) ?? [
+                    undefined,
+                    undefined,
+                ]
+                if (!sid)
+                    console.error(
+                        `New User (${user}) Not Given Placeholder Name in Map`
+                    )
 
-                if (sid) {
-                    info("sid")
-                    sid_to_username.set(sid, user)
-                } else {
-                    info("no sid ig")
-                }
-
-                socket.to("/admin_room").emit("new_user_request")
+                socket.join("new_user_queue")
+                sid_to_username.set(sid!, user)
+                io.to("admin_room").emit("new_user_request", user)
             })
 
             socket.on("approve_new_user", (user: string) => {
-                const sid = Object.entries(sid_to_username).find(
-                    ([_sid, username], _i, _obj) => user == username
-                )![0]
-                socket.to(sid).emit("allowed_user")
+                const [sid, _username] = sid_to_username
+                    .entries()
+                    .find(([_sid, username]) => user == username) ?? [
+                    undefined,
+                    undefined,
+                ]
+                if (!sid) console.error(`New User (${user}) Not Set in Map`)
+
+                io.to(sid!).socketsLeave("new_user_queue")
+                io.to(sid!).emit("allowed_user")
             })
 
             socket.on("join_queue", () => {
@@ -173,6 +178,15 @@ const webSocketServer = {
                 callback({
                     scouts,
                 })
+            })
+
+            socket.on("get_new_user_queue", async callback => {
+                const users = (
+                    (await io.in("new_user_queue").fetchSockets()) ?? []
+                )
+                    .map(s => sid_to_username.get(s.id))
+                    .reverse()
+                callback({ users })
             })
 
             // NOTE For these next two, the team match has already been sent

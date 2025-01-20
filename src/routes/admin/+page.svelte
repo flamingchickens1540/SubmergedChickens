@@ -27,6 +27,10 @@
         scout_queue = response.scouts
     })
 
+    socket.emit("get_new_user_queue", (response: { users: string[] }) => {
+        new_users = response.users
+    })
+
     socket.on("scout_joined_queue", (scout: string) => {
         scout_queue.push(scout)
     })
@@ -95,6 +99,10 @@
 
     const auto_load_teams = () => {}
     const approve_new_user = (user: string) => {
+        const i = new_users.indexOf(user)
+        if (i === -1) return
+        new_users.splice(i, 1)
+
         socket.emit("approve_new_user", user)
     }
 </script>
