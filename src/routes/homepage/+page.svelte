@@ -1,20 +1,25 @@
 <script lang="ts">
-    import { goto } from "$app/navigation"
-    let username = $state("")
-
-    $effect(() => {
-        localStorage.setItem("username", username)
-    })
+    import { browser } from "$app/environment"
+    let username: string =
+        (browser && window.localStorage.getItem("username")) || ""
 </script>
 
-<div class="mt-2 grid place-items-center gap-4">
-    <input
-        bind:value={username}
-        placeholder="Username"
-        class="rounded p-2 outline"
-    />
-
-    <button onclick={() => goto("/queue")} class="rounded p-2 outline"
-        >Match Scout</button
-    >
+<div class="flex h-dvh flex-col items-center justify-evenly">
+    <h1 class="text-center text-5xl font-bold">
+        Welcome, <br /><span class="text-yellow-400">{username}</span>
+    </h1>
+    <div class="flex flex-col gap-4">
+        <a
+            class="bg-gunmetal w-full rounded p-4 text-center text-2xl"
+            href="/queue"
+        >
+            Scout
+        </a>
+        <a
+            class="bg-gunmetal w-full rounded p-4 text-center text-2xl"
+            href="/manual_scout"
+        >
+            Manual Scout
+        </a>
+    </div>
 </div>

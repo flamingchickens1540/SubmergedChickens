@@ -38,6 +38,10 @@
         scout_queue.splice(index, 1)
     })
 
+    socket.on("new_user_request", (user: string) => {
+        new_users.push(user)
+    })
+
     const queue_match = async () => {
         // NOTE robot == "" gets filted out on the backend so color is preserved through index
         let next_robots = [...next_red_robots, ...next_red_robots]
@@ -88,6 +92,11 @@
     //     displayed_team_match = team_match
     //     show_modal = true
     // }
+
+    const auto_load_teams = () => {}
+    const approve_new_user = (user: string) => {
+        socket.emit("approve_new_user", user)
+    }
 </script>
 
 <div class="ml-2 mr-2 mt-2 grid grid-flow-col grid-cols-4 grid-rows-2 gap-4">
@@ -100,8 +109,12 @@
                 placeholder="Next Match"
                 class="rounded p-2 outline"
             />
-            <button class="rounded p-2 outline">Auto Load</button>
-            <button class="rounded p-2 outline">Queue Match</button>
+            <button class="rounded p-2 outline" onclick={auto_load_teams}
+                >Auto Load</button
+            >
+            <button onclick={queue_match} class="rounded p-2 outline"
+                >Queue Match</button
+            >
         </div>
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
             {#each next_red_robots as _robot, i}
@@ -148,7 +161,10 @@
         {#each new_users as user}
             <div class="grid h-10 grid-cols-2 gap-4">
                 <div class="grid place-items-center">{user}</div>
-                <button class="rounded p-2 outline">Approve</button>
+                <button
+                    class="rounded p-2 outline"
+                    onclick={() => approve_new_user(user)}>Approve</button
+                >
             </div>
         {/each}
     </div>
@@ -165,6 +181,7 @@
                         {scout}
                     </div>
                     <button
+                        onclick={() => remove_scout(scout)}
                         class="grid h-4 w-4 place-content-center rounded bg-red-500 p-3 outline"
                         ><X /></button
                     >

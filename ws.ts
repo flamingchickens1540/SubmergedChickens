@@ -19,13 +19,11 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            let old_entries = Object.entries(sid_to_username).find(
+            let [sid, _] = Object.entries(sid_to_username).find(
                 ([_key, value]) => value === username
-            )
-            if (old_entries) {
-                old_entries
-                    .map(([key, _value]) => key)
-                    .forEach(key => sid_to_username.delete(key))
+            ) ?? [undefined, undefined]
+            if (sid) {
+                sid_to_username.delete(sid)
             }
 
             sid_to_username.set(socket.id, username)
@@ -39,8 +37,38 @@ const webSocketServer = {
                 socket.join("admin_room")
             }
 
+            // TODO Figure out why entries is empty here
+            socket.on("new_user", (old_username: string, user: string) => {
+                // Sets the sid correctly so the new user can be found by their non-placeholder username
+                info(old_username)
+                const entries = Object.entries(sid_to_username)
+                entries.forEach(([sid, username]) =>
+                    console.log(`${sid}: ${username}`)
+                )
+                const [sid, _username] = entries.find(([_sid, username]) => {
+                    info(username)
+                    return old_username === username
+                }) ?? [undefined, undefined]
+
+                if (sid) {
+                    info("sid")
+                    sid_to_username.set(sid, user)
+                } else {
+                    info("no sid ig")
+                }
+
+                socket.to("/admin_room").emit("new_user_request")
+            })
+
+            socket.on("approve_new_user", (user: string) => {
+                const sid = Object.entries(sid_to_username).find(
+                    ([_sid, username], _i, _obj) => user == username
+                )![0]
+                socket.to(sid).emit("allowed_user")
+            })
+
             socket.on("join_queue", () => {
-                const username = sid_to_username.get(socket.id)
+                const username = sid_to_username.get(socket.id) ?? ""
 
                 const team_data = robot_queue.pop()
                 if (!team_data) {
