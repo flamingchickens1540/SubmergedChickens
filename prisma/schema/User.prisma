@@ -4,7 +4,6 @@ model User {
   is_enabled Boolean      @default(true)
   is_admin   Boolean      @default(false)
   comparison Comparison[]
-  team_event TeamEvent[]
   image      Image[]
   team_match TeamMatch[]
 }
