@@ -5,6 +5,7 @@ model TeamMatch {
   event_key                    String
   event                        Event        @relation(fields: [event_key], references: [event_key])
   actions                      ActionData[]
+  auto_start_location          AutoStart
   auto_leave_start             Boolean
   auto_intake_ground_succeed   Int
   auto_intake_source_succeed   Int
@@ -57,17 +58,25 @@ model TeamMatch {
   skill                        Int
   tags                         Tag[]
   notes                        String
-  incap_time                   Int
+  incap_time                   Float[]
   userId                       Int
   user                         User         @relation(fields: [userId], references: [id])
 }
 
 model ActionData {
-  id        Int         @id @default(autoincrement())
-  action    Action
-  success   Boolean
-  time      Int
+  id         Int         @id @default(autoincrement())
+  action     Action
+  success    Boolean
   team_match TeamMatch[]
+}
+
+// Refers to distance from wall with processor on that side
+enum AutoStart {
+  Far
+  MidFar
+  Mid
+  MidClose
+  Close
 }
 
 enum Action {
