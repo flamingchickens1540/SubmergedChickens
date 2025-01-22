@@ -49,12 +49,6 @@ model TeamMatch {
   tele_score_net_fail          Int
   tele_clean_fail              Int
   endgame                      Endgame
-  power_fail                   Boolean
-  comms_fail                   Boolean
-  mech_fail                    Boolean
-  fell                         Boolean
-  estop                        Boolean
-  no_show                      Boolean
   skill                        Int
   tags                         Tag[]
   notes                        String
