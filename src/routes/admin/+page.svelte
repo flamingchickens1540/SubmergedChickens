@@ -15,7 +15,7 @@
 
     let new_users: string[] = $state([])
     let scout_queue: string[] = $state([])
-    // TODO change to actual type
+    // TODO change to actual typeadmin
     let submitted_team_matches: string[] = $state(["qm14:1540"])
 
     let socket: Socket = io({
@@ -51,7 +51,6 @@
     const queue_match = async () => {
         // NOTE robot == "" gets filted out on the backend so color is preserved through index
         let next_robots = [...next_red_robots, ...next_red_robots]
-        // TODO robot_queue = []
         // TODO next_robots.toReversed().forEach((team_key, i) =>
         //     team_matches.value.push({
         //         status: "pending",
@@ -75,7 +74,7 @@
         next_blue_robots = ["", "", ""]
 
         curr_red_robots = next_robots.slice(0, 2)
-        curr_blue_robots = next_robots.slice(3, 6)
+        curr_blue_robots = next_robots.slice(3, 7)
     }
 
     const remove_scout = (scout_id: string) => {
@@ -221,15 +220,15 @@
             </div>
         </div>
     </div>
-    <div class="grid grid-cols-5 grid-rows-2 gap-2 rounded">
-        <div class="cols-span-2 m-2 grid grid-rows-5 rounded bg-black p-2">
-            <div class="row-span-1">Team Matches Submitted</div>
-            <Progress
-                style=""
-                value={percent_team_matches_submitted}
-                max={100}
-                class="w-full bg-white"
-            />
-        </div>
-    </div>
+    <!-- <div class="grid grid-cols-5 grid-rows-2 gap-2 rounded"> -->
+    <!--     <div class="cols-span-2 m-2 grid grid-rows-5 rounded bg-black p-2"> -->
+    <!--         <div class="row-span-1">Team Matches Submitted</div> -->
+    <!--         <Progress -->
+    <!--             style="" -->
+    <!--             value={percent_team_matches_submitted} -->
+    <!--             max={100} -->
+    <!--             class="w-full bg-white" -->
+    <!--         /> -->
+    <!--     </div> -->
+    <!-- </div> -->
 </div>
