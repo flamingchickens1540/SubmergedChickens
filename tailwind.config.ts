@@ -19,7 +19,7 @@ const config: Config = {
         },
         extend: {
             colors: {
-                // - brand colors -
+                // Inflated chickens colors
                 white: "#ffffff",
                 eerie_black: "#1C1C1C",
                 yolk_yellow: "#FFC145",
@@ -87,7 +87,8 @@ const config: Config = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: [...fontFamily.sans],
+                sans: ["Poppins", ...fontFamily.sans],
+                heading: ["Teko", ...fontFamily.sans],
             },
             keyframes: {
                 "accordion-down": {

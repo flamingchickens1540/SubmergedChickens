@@ -36,11 +36,12 @@
 <div
     class="grid min-h-dvh grid-cols-1 grid-rows-2 place-items-center gap-4 align-middle"
 >
-    <h1 class="font-heading p-2 text-5xl font-bold text-yellow-400">
+    <h1 class="p-2 font-heading text-5xl font-bold text-yellow-400">
         In Queue
     </h1>
 
-    <button class="bg-gunmetal rounded p-4 text-center text-2xl" onclick={leave}
-        >Leave Queue</button
+    <button
+        class="rounded bg-gunmetal p-4 text-center text-2xl text-white"
+        onclick={leave}>Leave Queue</button
     >
 </div>
