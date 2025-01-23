@@ -54,6 +54,8 @@ model TeamMatch {
   notes                        String
   incap_time                   Float[]
   userId                       Int
+  ComparisonA                  Comparison[] @relation("TeamMatchA")
+  ComparisonB                  Comparison[] @relation("TeamMatchB")
   user                         User         @relation(fields: [userId], references: [id])
 }
 
