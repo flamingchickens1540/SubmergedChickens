@@ -16,17 +16,17 @@ const webSocketServer = {
         io.use((socket, next) => {
             const username = socket.handshake.auth.username
             if (!username) {
-                return next(new Error("No username provided"))
+                return next(new Error("invalid username"))
             }
 
-            let [sid, _] = sid_to_username
-                .entries()
-                .find(([_key, value]) => value === username) ?? [
-                undefined,
-                undefined,
-            ]
-            if (sid) {
-                sid_to_username.delete(sid)
+            // erroring in prod
+            let old_entries = Object.entries(sid_to_username).find(
+                ([_key, value]) => value === username
+            )
+            if (old_entries) {
+                old_entries
+                    .map(([key, _value]) => key)
+                    .forEach(key => sid_to_username.delete(key))
             }
 
             sid_to_username.set(socket.id, username)
@@ -40,40 +40,8 @@ const webSocketServer = {
                 socket.join("admin_room")
             }
 
-            // TODO Figure out how to hadle dublicate usernames in approval process
-            socket.on("new_user", (old_username: string, user: string) => {
-                // Sets the sid correctly so the new user can be found by their non-placeholder username
-                const [sid, _username] = sid_to_username
-                    .entries()
-                    .find(([_sid, username]) => old_username === username) ?? [
-                    undefined,
-                    undefined,
-                ]
-                if (!sid)
-                    console.error(
-                        `New User (${user}) Not Given Placeholder Name in Map`
-                    )
-
-                socket.join("new_user_queue")
-                sid_to_username.set(sid!, user)
-                io.to("admin_room").emit("new_user_request", user)
-            })
-
-            socket.on("approve_new_user", (user: string) => {
-                const [sid, _username] = sid_to_username
-                    .entries()
-                    .find(([_sid, username]) => user == username) ?? [
-                    undefined,
-                    undefined,
-                ]
-                if (!sid) console.error(`New User (${user}) Not Set in Map`)
-
-                io.to(sid!).socketsLeave("new_user_queue")
-                io.to(sid!).emit("allowed_user")
-            })
-
             socket.on("join_queue", () => {
-                const username = sid_to_username.get(socket.id) ?? ""
+                const username = sid_to_username.get(socket.id)
 
                 const team_data = robot_queue.pop()
                 if (!team_data) {
@@ -89,9 +57,10 @@ const webSocketServer = {
                 const scout_sid = Object.entries(sid_to_username)
                     .filter(([_sid, scout]) => scout === scout_id)
                     .map(([sid, _]) => sid)[0]
-                // NOTE This event handles the the case where the scout removed itself from the queue
+                // This event exist in the cast that the scout removed itself from the queue
                 io.emit("scout_left_queue", scout_id)
-                // NOTE This event handles the case where the admin removed the scout from the queue
+                // This event exists in the case that the admin removed the scout from the queue
+                // io.to(scout_sid).emit('you_left_queue');
                 io.sockets.sockets.get(scout_sid)?.leave("scout_queue")
             })
 
@@ -168,29 +137,16 @@ const webSocketServer = {
                 })
             })
 
-            // Problem
             socket.on("get_scout_queue", async callback => {
-                const scouts = (
-                    (await io.in("scout_queue").fetchSockets()) ?? []
-                )
-                    .map(n => sid_to_username.get(n.id))
-                    .reverse()
                 callback({
-                    scouts,
+                    scouts: (
+                        (await io.in("scout_queue").fetchSockets()) ?? []
+                    ).reverse(),
                 })
             })
 
-            socket.on("get_new_user_queue", async callback => {
-                const users = (
-                    (await io.in("new_user_queue").fetchSockets()) ?? []
-                )
-                    .map(s => sid_to_username.get(s.id))
-                    .reverse()
-                callback({ users })
-            })
+            // For these two, the team match has already been sent or removed by the client sending a request to the server
 
-            // NOTE For these next two, the team match has already been sent
-            // or removed by the client sending a request to the server
             socket.on("submit_team_match", (team_match: TeamMatch) => {
                 io.to("admin_room").emit("new_team_match", team_match)
             })
