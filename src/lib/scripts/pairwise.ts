@@ -1,33 +1,33 @@
 import { SVD } from "svd-js"
 
-export type Comparison = {
-    teamA: number
-    teamB: number
+export type Comparison<T> = {
+    teamA: T
+    teamB: T
     diff: number
 }
 
-export type Ranking = {
+export type Ranking<T> = {
     rank: number
-    team: number
+    team: T
     score: number
     // "consistency": number; TODO: implement consistency
 }
 
-export type PairwiseOutput = {
-    rankings: Ranking[]
+export type PairwiseOutput<T> = {
+    rankings: Ranking<T>[]
     stability: number
     agreement: number
 }
 
-export function analyze_comparisons(comparisons: Comparison[]): PairwiseOutput {
+export function analyze_comparisons<T>(comparisons: Comparison<T>[]): PairwiseOutput<T> {
     // Extract unique teams
-    const teams = new Set<number>()
+    const teams = new Set<T>()
     comparisons.forEach(comparison => {
         teams.add(comparison.teamA)
         teams.add(comparison.teamB)
     })
     const uniqueTeams = Array.from(teams)
-    const teamToIndex = new Map<number, number>()
+    const teamToIndex = new Map<T, number>()
     uniqueTeams.forEach((team, index) => {
         teamToIndex.set(team, index)
     })
@@ -46,7 +46,7 @@ export function analyze_comparisons(comparisons: Comparison[]): PairwiseOutput {
     // Compute SVD
     const { q: s, u, v } = SVD(matrix)
 
-    // Calculate SVD and normalize rankings
+    // Calculate and normalize rankings
     const scores = u.map(row => row[0])
     const maxAbs = Math.max(...scores.map(Math.abs))
     let scaledScores
@@ -79,7 +79,7 @@ export function analyze_comparisons(comparisons: Comparison[]): PairwiseOutput {
 }
 
 function test() {
-    const testDataSet: Comparison[] = [
+    const testDataSet: Comparison<number>[] = [
         { teamA: 1001, teamB: 1007, diff: 2 },
         { teamA: 1001, teamB: 1002, diff: 1 },
         { teamA: 1001, teamB: 1003, diff: 2 },
@@ -102,7 +102,7 @@ function test() {
         { teamA: 1004, teamB: 1005, diff: 1 },
     ]
 
-    const sixteenDataSet: Comparison[] = [
+    const sixteenDataSet: Comparison<number>[] = [
         { teamA: 1101, teamB: 1102, diff: 0 },
         { teamA: 1101, teamB: 1103, diff: 1 },
         { teamA: 1101, teamB: 1104, diff: 2 },
