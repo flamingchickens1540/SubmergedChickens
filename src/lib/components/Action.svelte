@@ -1,22 +1,22 @@
 <script lang="ts">
-    import type { AutoActionData } from '$lib/types';
-    import { X } from 'lucide-svelte';
+    import type { AutoActionData } from "$lib/types"
+    import { X } from "lucide-svelte"
 
     let {
         action_data = $bindable(),
         index,
-        remove
+        remove,
     }: {
-        action_data: AutoActionData;
-        index: number;
-        remove: (index: number) => void;
-    } = $props();
+        action_data: AutoActionData
+        index: number
+        remove: (index: number) => void
+    } = $props()
 
     let color = $derived(
         action_data.success
-            ? 'bg-jungle_green/50 shadow-jungle_green/10'
-            : 'bg-flaming_red/50 shadow-flaming_red/10'
-    );
+            ? "bg-jungle_green/50 shadow-jungle_green/10"
+            : "bg-flaming_red/50 shadow-flaming_red/10"
+    )
 </script>
 
 <div
@@ -29,4 +29,3 @@
         </button>
     </div>
 </div>
-
