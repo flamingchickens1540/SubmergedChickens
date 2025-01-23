@@ -1,0 +1,9 @@
+model User {
+  id         Int          @id @default(autoincrement())
+  username   String
+  is_enabled Boolean      @default(true)
+  is_admin   Boolean      @default(false)
+  comparison Comparison[]
+  image      Image[]
+  team_match TeamMatch[]
+}
