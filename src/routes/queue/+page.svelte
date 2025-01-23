@@ -40,8 +40,7 @@
         In Queue
     </h1>
 
-    <button
-        class="rounded bg-gunmetal p-4 text-center text-2xl text-white"
-        onclick={leave}>Leave Queue</button
+    <button class="bg-gunmetal rounded p-4 text-center text-2xl" onclick={leave}
+        >Leave Queue</button
     >
 </div>

@@ -17,7 +17,7 @@
         if (e.target === dialog) dialog!.close()
     }}
 >
-    <div class="h-full w-full rounded bg-eerie_black">
+    <div class="bg-eerie_black h-full w-full rounded">
         {@render header?.()}
         {@render children?.()}
     </div>

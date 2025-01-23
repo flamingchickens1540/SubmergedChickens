@@ -1,15 +1,93 @@
 <script lang="ts">
-    let next_match = $state("")
+    import { X } from "lucide-svelte"
+    import { io, Socket } from "socket.io-client"
+    // import { SubmittedMatch } from "$lib/types.ts"
+    import Modal from "./Modal.svelte"
 
-    let next_red_robots = $state(["1678", "254", "1341"])
-    let next_blue_robot = $state(["394", "1930", "1540"])
+    let next_match_key = $state("")
 
-    let curr_red_robots = $state(["1678", "256", "1341"])
-    let curr_blue_robot = $state(["394", "1930", "1540"])
+    let next_red_robots = $state(["", "", ""])
+    let next_blue_robots = $state(["", "", ""])
 
-    let new_users: string[] = $state(["Azalea", "Zach", "Autumn"])
+    let curr_red_robots = $state(["", "", ""])
+    let curr_blue_robots = $state(["", "", ""])
+
+    let new_users: string[] = $state([])
 
     let scout_queue: string[] = $state([])
+
+    let socket: Socket = io({
+        auth: {
+            token: "celary",
+            username: "admin",
+        },
+    })
+
+    socket.emit("get_scout_queue", (response: { scouts: string[] }) => {
+        scout_queue = response.scouts
+    })
+
+    socket.on("scout_joined_queue", (scout: string) => {
+        scout_queue.push(scout)
+    })
+
+    socket.on("scout_left_queue", (scout: string) => {
+        const index = scout_queue.indexOf(scout)
+        if (index === -1) return
+
+        scout_queue.splice(index, 1)
+    })
+
+    const queue_match = async () => {
+        // NOTE robot == "" gets filted out on the backend so color is preserved through index
+        let next_robots = [...next_red_robots, ...next_red_robots]
+        // TODO robot_queue = []
+        // TODO next_robots.toReversed().forEach((team_key, i) =>
+        //     team_matches.value.push({
+        //         status: "pending",
+        //         team_match_key: `${next_match_key} ${team_key}`,
+        //         color: team_color[i][1],
+        //         timeline: null,
+        //     })
+        // )
+        socket.emit("send_match", [next_match_key, next_robots])
+
+        await fetch("/api/newmatch", {
+            method: "POST",
+            body: JSON.stringify(next_match_key),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        next_match_key = ""
+        next_red_robots = ["", "", ""]
+        next_blue_robots = ["", "", ""]
+
+        curr_red_robots = next_robots.slice(0, 2)
+        curr_blue_robots = next_robots.slice(3, 6)
+    }
+
+    const remove_scout = (scout_id: string) => {
+        const index = scout_queue.indexOf(scout_id)
+        if (index === -1) return
+
+        scout_queue.splice(index, 1)
+
+        socket.emit("leave_scout_queue", scout_id)
+    }
+
+    const robotsEqual = (
+        robot1: [string, "red" | "blue"],
+        robot2: [string, "red" | "blue"]
+    ): boolean => {
+        return robot1[0] === robot2[0] && robot1[1] === robot2[1]
+    }
+
+    // const open_modal = (team_match: SubmittedMatch) => {
+    //     displayed_team_match = team_match
+    //     show_modal = true
+    // }
 </script>
 
 <div class="ml-2 mr-2 mt-2 grid grid-flow-col grid-cols-4 grid-rows-2 gap-4">
@@ -18,7 +96,7 @@
     >
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
             <input
-                bind:value={next_match}
+                bind:value={next_match_key}
                 placeholder="Next Match"
                 class="rounded p-2 outline"
             />
@@ -34,9 +112,9 @@
             {/each}
         </div>
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
-            {#each next_blue_robot as _robot, i}
+            {#each next_blue_robots as _robot, i}
                 <input
-                    bind:value={next_blue_robot[i]}
+                    bind:value={next_blue_robots[i]}
                     class="rounded bg-blue-500 p-2 outline"
                 />
             {/each}
@@ -55,28 +133,43 @@
             {/each}
         </div>
         <div class="grid grid-cols-3 grid-rows-1 gap-2">
-            {#each curr_blue_robot as _robot, i}
+            {#each curr_blue_robots as _robot, i}
                 <input
-                    bind:value={curr_blue_robot[i]}
+                    bind:value={curr_blue_robots[i]}
                     class="rounded bg-blue-500 p-2 outline"
                 />
             {/each}
         </div>
     </div>
     <div
-        class="text-align row-span-2 grid gap-2 overflow-y-scroll rounded p-2 outline"
+        class="row-span-2 grid h-96 max-h-96 justify-items-center gap-2 overflow-y-scroll rounded p-2 text-center outline"
     >
+        <div class="text-center">New Users</div>
         {#each new_users as user}
-            <div class="grid grid-cols-2 text-center">
-                {user}
-                <button class="rounded outline">Approve</button>
+            <div class="grid h-10 grid-cols-2 gap-4">
+                <div class="grid place-items-center">{user}</div>
+                <button class="rounded p-2 outline">Approve</button>
             </div>
         {/each}
     </div>
-    <div class="row-span-2 grid rounded p-2 outline">
+    <div
+        class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded p-2 text-center outline"
+    >
         <div>Queue</div>
-        {#each scout_queue as scout}
-            <div class="grid outline">{scout}</div>
-        {/each}
+        <div class="grid gap-2">
+            {#each scout_queue as scout}
+                <div
+                    class="grid h-10 grid-cols-6 place-items-start items-center rounded p-2 outline"
+                >
+                    <div class="col-span-5 grid place-items-center">
+                        {scout}
+                    </div>
+                    <button
+                        class="grid h-4 w-4 place-content-center rounded bg-red-500 p-3 outline"
+                        ><X /></button
+                    >
+                </div>
+            {/each}
+        </div>
     </div>
 </div>
