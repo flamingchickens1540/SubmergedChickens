@@ -1,4 +1,9 @@
 <script lang="ts">
+    import ScoreAlgae from "../ScoreAlgae.svelte"
+    import RemoveAlgae from "../RemoveAlgae.svelte"
+    import ScoreCoral from "../ScoreCoral.svelte"
+    import Intake from "../Intake.svelte"
+
     let state:
         | "ScoreAlgae"
         | "RemoveAlgae"
@@ -7,13 +12,12 @@
         | "Verify"
         | "None" = $state("None")
 
+    const cancel = () => (state = "None")
+
     const score_algae = () => (state = "ScoreAlgae")
     const remove_algae = () => (state = "RemoveAlgae")
     const score_coral = () => (state = "ScoreCoral")
     const intake = () => (state = "Intake")
-
-    const processor = () => {}
-    const net = () => {}
 </script>
 
 <div>
@@ -33,14 +37,12 @@
             >
         </div>
     {:else if state == "ScoreAlgae"}
-        <div class="m-2 grid grid-cols-1 grid-rows-2 place-items-center gap-2">
-            <button class="h-44 w-80 rounded bg-gunmetal" onclick={processor}>
-                Processor
-            </button>
-            <button class="h-44 w-80 rounded bg-gunmetal" onclick={net}>
-                Net
-            </button>
-        </div>
-        <button class="grid w-9/12 rounded bg-gunmetal">Cancel</button>
+        <ScoreAlgae bind:state />
+    {:else if state == "RemoveAlgae"}
+        <RemoveAlgae bind:state />
+    {:else if state == "ScoreCoral"}
+        <ScoreCoral bind:state />
+    {:else if state == "Intake"}
+        <Intake bind:state />
     {/if}
 </div>
