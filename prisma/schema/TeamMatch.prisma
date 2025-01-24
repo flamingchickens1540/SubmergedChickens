@@ -7,8 +7,8 @@ model TeamMatch {
   actions                          ActionData[]
   auto_start_location              AutoStart
   auto_leave_start                 Boolean
-  auto_intake_coral_ground_succeed Int
-  auto_intake_algae_ground_succeed Int
+  auto_intake_coral_preplaced_succeed Int
+  auto_intake_algae_preplaced_succeed Int
   auto_intake_station_succeed      Int
   auto_intake_reef_succeed         Int
   auto_score_l1_succeed            Int
@@ -18,8 +18,8 @@ model TeamMatch {
   auto_score_processor_succeed     Int
   auto_score_net_succeed           Int
   auto_clean_succeed               Int
-  auto_intake_coral_ground_fail    Int
-  auto_intake_algae_ground_fail    Int
+  auto_intake_coral_preplaced_fail    Int
+  auto_intake_algae_preplaced_fail    Int
   auto_intake_station_fail         Int
   auto_intake_reef_fail            Int
   auto_score_l1_fail               Int
@@ -72,8 +72,8 @@ enum AutoStart {
 
 enum Action {
   AutoLeaveStart
-  AutoIntakeCoralGround
-  AutoIntakeAlgaeGround
+  AutoIntakeCoralPreplaced
+  AutoIntakeAlgaePreplaced
   AutoIntakeStation
   AutoIntakeReef
   AutoScoreL1
