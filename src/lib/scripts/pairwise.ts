@@ -19,7 +19,9 @@ export type PairwiseOutput<T> = {
     agreement: number
 }
 
-export function analyze_comparisons<T>(comparisons: Comparison<T>[]): PairwiseOutput<T> {
+export function analyze_comparisons<T>(
+    comparisons: Comparison<T>[]
+): PairwiseOutput<T> {
     // Extract unique teams
     const teams = new Set<T>()
     comparisons.forEach(comparison => {
