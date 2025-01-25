@@ -1,8 +1,8 @@
 <script lang="ts">
     let {
-        state = $bindable(),
+        page_state = $bindable(),
     }: {
-        state:
+        page_state:
             | "ScoreAlgae"
             | "RemoveAlgae"
             | "ScoreCoral"
@@ -11,9 +11,9 @@
             | "None"
     } = $props()
 
-    const processor = () => (state = "Verify")
-    const net = () => (state = "Verify")
-    const cancel = () => (state = "None")
+    const processor = () => (page_state = "Verify")
+    const net = () => (page_state = "Verify")
+    const cancel = () => (page_state = "None")
 </script>
 
 <div class="m-2 grid grid-cols-1 grid-rows-3 place-items-center gap-2">

@@ -3,25 +3,33 @@
     import RemoveAlgae from "../RemoveAlgae.svelte"
     import ScoreCoral from "../ScoreCoral.svelte"
     import Intake from "../Intake.svelte"
+    import SucceedFail from "../SucceedFail.svelte"
 
-    let state:
+    type PageState = ActionState | "Verify"
+
+    type ActionState =
         | "ScoreAlgae"
         | "RemoveAlgae"
         | "ScoreCoral"
         | "Intake"
-        | "Verify"
-        | "None" = $state("None")
+        | "None"
+    let action_state: ActionState = $state("None")
+    $effect(() => {
+        if (page_state == "Verify") return
 
-    const cancel = () => (state = "None")
+        action_state = page_state as ActionState
+    })
 
-    const score_algae = () => (state = "ScoreAlgae")
-    const remove_algae = () => (state = "RemoveAlgae")
-    const score_coral = () => (state = "ScoreCoral")
-    const intake = () => (state = "Intake")
+    let page_state: PageState = $state("None") as PageState
+
+    const score_algae = () => (page_state = "ScoreAlgae")
+    const remove_algae = () => (page_state = "RemoveAlgae")
+    const score_coral = () => (page_state = "ScoreCoral")
+    const intake = () => (page_state = "Intake")
 </script>
 
 <div>
-    {#if state == "None"}
+    {#if page_state == "None"}
         <div class="m-2 grid grid-cols-2 grid-rows-2 place-items-center gap-2">
             <button class="h-44 w-44 rounded bg-gunmetal" onclick={score_algae}
                 >Score Algae</button
@@ -36,13 +44,15 @@
                 >Intake</button
             >
         </div>
-    {:else if state == "ScoreAlgae"}
-        <ScoreAlgae bind:state />
-    {:else if state == "RemoveAlgae"}
-        <RemoveAlgae bind:state />
-    {:else if state == "ScoreCoral"}
-        <ScoreCoral bind:state />
-    {:else if state == "Intake"}
-        <Intake bind:state />
+    {:else if page_state == "ScoreAlgae"}
+        <ScoreAlgae bind:page_state />
+    {:else if page_state == "RemoveAlgae"}
+        <RemoveAlgae bind:page_state />
+    {:else if page_state == "ScoreCoral"}
+        <ScoreCoral bind:page_state />
+    {:else if page_state == "Intake"}
+        <Intake bind:page_state />
+    {:else if page_state == "Verify"}
+        <SucceedFail bind:page_state action_state />
     {/if}
 </div>

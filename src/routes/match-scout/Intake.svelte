@@ -1,8 +1,8 @@
 <script lang="ts">
     let {
-        state = $bindable(),
+        page_state = $bindable(),
     }: {
-        state:
+        page_state:
             | "ScoreAlgae"
             | "RemoveAlgae"
             | "ScoreCoral"
@@ -11,11 +11,11 @@
             | "None"
     } = $props()
 
-    const coral_station = () => (state = "Verify")
-    const coral_preplaced = () => (state = "Verify")
-    const algae_preplaced = () => (state = "Verify")
-    const algae_reef = () => (state = "Verify")
-    const cancel = () => (state = "None")
+    const coral_station = () => (page_state = "Verify")
+    const coral_preplaced = () => (page_state = "Verify")
+    const algae_preplaced = () => (page_state = "Verify")
+    const algae_reef = () => (page_state = "Verify")
+    const cancel = () => (page_state = "None")
 </script>
 
 <div class="m-2 grid grid-cols-2 grid-rows-3 place-items-center gap-2">

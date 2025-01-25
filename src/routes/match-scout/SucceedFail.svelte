@@ -1,19 +1,30 @@
 <script lang="ts">
     let {
-        state = $bindable(),
+        page_state = $bindable(),
+        action_state,
     }: {
-        state:
+        page_state:
             | "ScoreAlgae"
             | "RemoveAlgae"
             | "ScoreCoral"
             | "Intake"
             | "Verify"
             | "None"
+        action_state:
+            | "ScoreAlgae"
+            | "RemoveAlgae"
+            | "ScoreCoral"
+            | "Intake"
+            | "None"
     } = $props()
 
-    const succeed = () => (state = "Verify")
-    const fail = () => (state = "Verify")
-    const cancel = () => (state = "None")
+    const succeed = () => {
+        page_state = "None"
+    }
+    const fail = () => {
+        page_state = "None"
+    }
+    const cancel = () => (page_state = "None")
 </script>
 
 <div class="m-2 grid grid-cols-2 grid-rows-12 place-items-center gap-2">
