@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { ActionState, PageState } from "$lib/types"
+    import type { AutoActionState, AutoPageState } from "$lib/types"
 
     let {
         page_state = $bindable(),
         action_state = $bindable(),
     }: {
-        page_state: PageState
-        action_state: ActionState
+        page_state: AutoPageState
+        action_state: AutoActionState
     } = $props()
 
     const l1 = () => {
@@ -32,10 +32,10 @@
 </script>
 
 <div class="m-2 grid grid-cols-1 grid-rows-5 place-items-center gap-2">
-    <button onclick={l1} class="h-36 w-80 rounded bg-gunmetal">L2</button>
+    <button onclick={l1} class="h-36 w-80 rounded bg-gunmetal">L1</button>
     <button onclick={l2} class="h-36 w-80 rounded bg-gunmetal">L2</button>
     <button onclick={l3} class="h-36 w-80 rounded bg-gunmetal">L3</button>
-    <button onclick={l4} class="h-36 w-80 rounded bg-gunmetal">L3</button>
+    <button onclick={l4} class="h-36 w-80 rounded bg-gunmetal">L4</button>
 
     <button
         class="grid h-16 w-9/12 place-content-center rounded bg-gunmetal"

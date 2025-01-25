@@ -5,10 +5,10 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type { PageState, ActionState } from "$lib/types"
+    import type { AutoPageState, AutoActionState } from "$lib/types"
 
-    let page_state: PageState = $state("None")
-    let action_state: ActionState = $state("None")
+    let page_state: AutoPageState = $state("None")
+    let action_state: AutoActionState = $state("None")
 
     let actions: string[] = $state([])
 
