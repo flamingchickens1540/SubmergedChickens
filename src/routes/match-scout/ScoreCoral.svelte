@@ -1,21 +1,34 @@
 <script lang="ts">
+    import type { ActionState, PageState } from "$lib/types"
+
     let {
         page_state = $bindable(),
+        action_state = $bindable(),
     }: {
-        page_state:
-            | "ScoreAlgae"
-            | "RemoveAlgae"
-            | "ScoreCoral"
-            | "Intake"
-            | "Verify"
-            | "None"
+        page_state: PageState
+        action_state: ActionState
     } = $props()
 
-    const l1 = () => (page_state = "Verify")
-    const l2 = () => (page_state = "Verify")
-    const l3 = () => (page_state = "Verify")
-    const l4 = () => (page_state = "Verify")
-    const cancel = () => (page_state = "None")
+    const l1 = () => {
+        action_state == "ScoreCoralL1"
+        page_state = "Verify"
+    }
+    const l2 = () => {
+        action_state == "ScoreCoralL2"
+        page_state = "Verify"
+    }
+    const l3 = () => {
+        action_state == "ScoreCoralL3"
+        page_state = "Verify"
+    }
+    const l4 = () => {
+        action_state == "ScoreCoralL4"
+        page_state = "Verify"
+    }
+    const cancel = () => {
+        action_state = "None"
+        page_state = "None"
+    }
 </script>
 
 <div class="m-2 grid grid-cols-1 grid-rows-5 place-items-center gap-2">

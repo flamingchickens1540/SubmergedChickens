@@ -5,22 +5,10 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    type PageState = ActionState | "Verify"
-    type ActionState =
-        | "ScoreAlgae"
-        | "RemoveAlgae"
-        | "ScoreCoral"
-        | "Intake"
-        | "None"
+    import type { PageState, ActionState } from "$lib/types"
 
-    let action_state: ActionState = $state("None") as ActionState
-    let page_state: PageState = $state("None") as PageState
-
-    $effect(() => {
-        if (page_state == "Verify") return
-
-        action_state = page_state as ActionState
-    })
+    let page_state: PageState = $state("None")
+    let action_state: ActionState = $state("None")
 
     let actions: string[] = $state([])
 
@@ -47,14 +35,14 @@
             >
         </div>
     {:else if page_state == "ScoreAlgae"}
-        <ScoreAlgae bind:page_state />
+        <ScoreAlgae bind:page_state bind:action_state />
     {:else if page_state == "RemoveAlgae"}
-        <RemoveAlgae bind:page_state />
+        <RemoveAlgae bind:page_state bind:action_state />
     {:else if page_state == "ScoreCoral"}
-        <ScoreCoral bind:page_state />
+        <ScoreCoral bind:page_state bind:action_state />
     {:else if page_state == "Intake"}
-        <Intake bind:page_state />
+        <Intake bind:page_state bind:action_state />
     {:else if page_state == "Verify"}
-        <SucceedFail bind:page_state {action_state} bind:actions />
+        <SucceedFail bind:page_state bind:action_state bind:actions />
     {/if}
 </div>
