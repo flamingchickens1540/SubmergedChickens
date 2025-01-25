@@ -6,21 +6,23 @@
     import SucceedFail from "../SucceedFail.svelte"
 
     type PageState = ActionState | "Verify"
-
     type ActionState =
         | "ScoreAlgae"
         | "RemoveAlgae"
         | "ScoreCoral"
         | "Intake"
         | "None"
+
     let action_state: ActionState = $state("None")
+    let page_state: PageState = $state("None") as PageState
+
     $effect(() => {
         if (page_state == "Verify") return
 
         action_state = page_state as ActionState
     })
 
-    let page_state: PageState = $state("None") as PageState
+    let actions: string[] = $state([])
 
     const score_algae = () => (page_state = "ScoreAlgae")
     const remove_algae = () => (page_state = "RemoveAlgae")
@@ -53,6 +55,6 @@
     {:else if page_state == "Intake"}
         <Intake bind:page_state />
     {:else if page_state == "Verify"}
-        <SucceedFail bind:page_state action_state />
+        <SucceedFail bind:page_state action_state bind:actions />
     {/if}
 </div>
