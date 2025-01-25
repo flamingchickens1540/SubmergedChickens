@@ -22,14 +22,14 @@
 
     const succeed = () => {
         const action = action_state + "Success"
+        console.log(action)
         actions.push(action)
-        console.log(actions)
         page_state = "None"
     }
     const fail = () => {
         const action = action_state + "Failure"
+        console.log(action)
         actions.push(action)
-        console.log(actions)
         page_state = "None"
     }
     const cancel = () => (page_state = "None")

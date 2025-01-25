@@ -13,7 +13,7 @@
         | "Intake"
         | "None"
 
-    let action_state: ActionState = $state("None")
+    let action_state: ActionState = $state("None") as ActionState
     let page_state: PageState = $state("None") as PageState
 
     $effect(() => {
@@ -55,6 +55,6 @@
     {:else if page_state == "Intake"}
         <Intake bind:page_state />
     {:else if page_state == "Verify"}
-        <SucceedFail bind:page_state action_state bind:actions />
+        <SucceedFail bind:page_state {action_state} bind:actions />
     {/if}
 </div>
