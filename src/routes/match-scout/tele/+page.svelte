@@ -4,7 +4,11 @@
     import ScoreCoral from "../ScoreCoral.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type { TelePageState, TeleActionState } from "$lib/types"
+    import type {
+        TelePageState,
+        TeleActionState,
+        TeleActionData,
+    } from "$lib/types"
     import Incap from "../Incap.svelte"
     import Timeline from "../Timeline.svelte"
 
@@ -14,10 +18,10 @@
     let page_state: TelePageState = $state("None")
     let action_state: TeleActionState = $state("None")
 
-    let actions: string[] = $state([])
+    let actions: TeleActionData[] = $state([])
 
     const incap = () => {
-        actions.push("Incap")
+        actions.push({ action: "Incap", success: true })
         page_state = "Incap"
     }
     const score_algae = () => (page_state = "ScoreAlgae")

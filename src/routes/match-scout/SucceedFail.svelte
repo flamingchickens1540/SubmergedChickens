@@ -1,5 +1,9 @@
 <script lang="ts">
-    import type { AutoActionState, AutoPageState } from "$lib/types"
+    import type {
+        AutoActionData,
+        AutoActionState,
+        AutoPageState,
+    } from "$lib/types"
 
     let {
         page_state = $bindable(),
@@ -8,17 +12,23 @@
     }: {
         page_state: AutoPageState
         action_state: AutoActionState
-        actions: string[] // TODO Change to Action[]
+        actions: AutoActionData[] // TODO Change to Action[]
     } = $props()
 
     const succeed = () => {
-        const action = action_state + "Success"
+        const action = {
+            action: action_state,
+            success: true,
+        }
         actions.push(action)
         action_state = "None"
         page_state = "None"
     }
     const fail = () => {
-        const action = action_state + "Failure"
+        const action = {
+            action: action_state,
+            success: false,
+        }
         actions.push(action)
         action_state = "None"
         page_state = "None"

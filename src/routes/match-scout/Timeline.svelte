@@ -7,7 +7,7 @@
         displaying = $bindable(),
         furthest_auto_index = $bindable(),
     }: {
-        actions: string[] // TODO Action[]
+        actions: AutoActionData[] // TODO Action[]
         furthest_auto_index: number
         displaying: boolean
     } = $props()

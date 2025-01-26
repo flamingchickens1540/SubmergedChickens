@@ -8,29 +8,25 @@
         shift,
         remove,
     }: {
-        action_data: string
+        action_data: AutoActionData
         index: number
         shift: (index: number, change: -1 | 1) => void
         remove: (index: number) => void
     } = $props()
+
     let color = $derived(
-        action_data == "Incap"
+        action_data.action == "Incap"
             ? "bg-chicken_orange/50 shadow-chicken_orange/50"
-            : action_data.slice(action_data.length - 7) == "Success"
+            : action_data.success
               ? "bg-jungle_green/50 shadow-jungle_green/10"
               : "bg-flaming_red/50 shadow-flaming_red/10"
-    )
-    let action = $derived(
-        action_data == "Incap"
-            ? "Incap"
-            : action_data.slice(0, action_data.length - 7)
     )
 </script>
 
 <div
     class="group flex flex-row content-center justify-between {color} w-full rounded p-2 text-white shadow-lg"
 >
-    <span class="w-auto shrink text-clip">{action}</span>
+    <span class="w-auto shrink text-clip">{action_data.action}</span>
     <div class="flex shrink-0 flex-row content-center justify-end gap-4">
         <button
             class="group-first:pointer-events-none group-first:opacity-30"

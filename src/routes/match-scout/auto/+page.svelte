@@ -5,7 +5,11 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type { AutoPageState, AutoActionState } from "$lib/types"
+    import type {
+        AutoPageState,
+        AutoActionState,
+        AutoActionData,
+    } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
     let displaying_timeline = $state(false)
@@ -14,7 +18,7 @@
     let page_state: AutoPageState = $state("None")
     let action_state: AutoActionState = $state("None")
 
-    let actions: string[] = $state([])
+    let actions: AutoActionData[] = $state([])
 
     const score_algae = () => (page_state = "ScoreAlgae")
     const remove_algae = () => (page_state = "RemoveAlgae")
