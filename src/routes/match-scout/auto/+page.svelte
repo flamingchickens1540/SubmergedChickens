@@ -6,6 +6,10 @@
     import SucceedFail from "../SucceedFail.svelte"
 
     import type { AutoPageState, AutoActionState } from "$lib/types"
+    import Timeline from "../Timeline.svelte"
+
+    let displaying_timeline = $state(false)
+    let furthest_auto_index = $state(0)
 
     let page_state: AutoPageState = $state("None")
     let action_state: AutoActionState = $state("None")
@@ -45,4 +49,17 @@
     {:else if page_state == "Verify"}
         <SucceedFail bind:page_state bind:action_state bind:actions />
     {/if}
+
+    <button
+        class="font-heading w-full border-t-2 border-white/10 pt-2 text-center font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bind:actions
+        bind:displaying={displaying_timeline}
+        bind:furthest_auto_index
+    />
 </div>

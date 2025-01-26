@@ -6,6 +6,10 @@
 
     import type { TelePageState, TeleActionState } from "$lib/types"
     import Incap from "../Incap.svelte"
+    import Timeline from "../Timeline.svelte"
+
+    let displaying_timeline = $state(false)
+    let furthest_auto_index = $state(0)
 
     let page_state: TelePageState = $state("None")
     let action_state: TeleActionState = $state("None")
@@ -13,7 +17,7 @@
     let actions: string[] = $state([])
 
     const incap = () => {
-        actions.push("IncapStart")
+        actions.push("Incap")
         page_state = "Incap"
     }
     const score_algae = () => (page_state = "ScoreAlgae")
@@ -46,6 +50,18 @@
     {:else if page_state == "Verify"}
         <SucceedFail bind:page_state bind:action_state bind:actions />
     {:else if page_state == "Incap"}
-        <Incap bind:page_state bind:action_state bind:actions />
+        <Incap bind:page_state bind:action_state />
     {/if}
+    <button
+        class="font-heading w-full border-t-2 border-white/10 pt-2 text-center font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bind:actions
+        bind:displaying={displaying_timeline}
+        bind:furthest_auto_index
+    />
 </div>

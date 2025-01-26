@@ -3,16 +3,13 @@
 
     let {
         page_state = $bindable(),
-        actions = $bindable(),
         action_state = $bindable(),
     }: {
         page_state: AutoPageState
         action_state: AutoActionState
-        actions: string[] // TODO Change to Action[]
     } = $props()
 
     const recap = () => {
-        actions.push("IncapEnd")
         action_state = "None"
         page_state = "None"
     }

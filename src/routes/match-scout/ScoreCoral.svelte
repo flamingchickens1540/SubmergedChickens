@@ -10,19 +10,19 @@
     } = $props()
 
     const l1 = () => {
-        action_state == "ScoreCoralL1"
+        action_state = "ScoreCoralL1"
         page_state = "Verify"
     }
     const l2 = () => {
-        action_state == "ScoreCoralL2"
+        action_state = "ScoreCoralL2"
         page_state = "Verify"
     }
     const l3 = () => {
-        action_state == "ScoreCoralL3"
+        action_state = "ScoreCoralL3"
         page_state = "Verify"
     }
     const l4 = () => {
-        action_state == "ScoreCoralL4"
+        action_state = "ScoreCoralL4"
         page_state = "Verify"
     }
     const cancel = () => {
