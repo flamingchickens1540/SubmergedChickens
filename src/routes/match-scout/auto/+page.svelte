@@ -56,7 +56,6 @@
                 bind:page_state
                 bind:action_state
                 bind:actions
-                {bg_color}
             />
         {/if}
     </div>

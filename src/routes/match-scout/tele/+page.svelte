@@ -61,7 +61,6 @@
                 bind:page_state
                 bind:action_state
                 bind:actions
-                {bg_color}
             />
         {:else if page_state == "Incap"}
             <Incap bind:page_state bind:action_state {bg_color} />
