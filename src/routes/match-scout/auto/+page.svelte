@@ -52,11 +52,7 @@
         {:else if page_state == "Intake"}
             <Intake bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail
-                bind:page_state
-                bind:action_state
-                bind:actions
-            />
+            <SucceedFail bind:page_state bind:action_state bind:actions />
         {/if}
     </div>
 
