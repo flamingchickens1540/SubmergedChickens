@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { AutoActionState, AutoPageState } from "$lib/types"
+    import type { AutoAction, AutoPageState } from "$lib/types"
 
     let {
         page_state = $bindable(),
         action_state = $bindable(),
     }: {
         page_state: AutoPageState
-        action_state: AutoActionState
+        action_state: AutoAction
     } = $props()
 
     const processor = () => {

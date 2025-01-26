@@ -5,18 +5,14 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type {
-        AutoPageState,
-        AutoActionState,
-        AutoActionData,
-    } from "$lib/types"
+    import type { AutoPageState, AutoAction, AutoActionData } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
     let displaying_timeline = $state(false)
     let furthest_auto_index = $state(0)
 
     let page_state: AutoPageState = $state("None")
-    let action_state: AutoActionState = $state("None")
+    let action_state: AutoAction = $state("None")
 
     let actions: AutoActionData[] = $state([])
 

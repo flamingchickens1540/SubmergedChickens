@@ -1,9 +1,5 @@
 <script lang="ts">
-    import type {
-        AutoActionData,
-        AutoActionState,
-        AutoPageState,
-    } from "$lib/types"
+    import type { AutoActionData, AutoAction, AutoPageState } from "$lib/types"
 
     let {
         page_state = $bindable(),
@@ -11,7 +7,7 @@
         action_state = $bindable(),
     }: {
         page_state: AutoPageState
-        action_state: AutoActionState
+        action_state: AutoAction
         actions: AutoActionData[] // TODO Change to Action[]
     } = $props()
 

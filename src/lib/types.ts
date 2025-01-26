@@ -14,13 +14,13 @@ export type TeleActionState =
     | `ScoreCoral${"L1" | "L2" | "L3" | "L4"}`
     | "Incap"
     | "None"
-export type AutoActionState =
+export type AutoAction =
     | TeleActionState
     | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
     | "Leave"
 
 export type AutoActionData = {
-    action: AutoActionState
+    action: AutoAction
     success: boolean
 }
 export type TeleActionData = {
