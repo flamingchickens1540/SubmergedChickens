@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Header from "../Header.svelte"
     import ScoreAlgae from "../ScoreAlgae.svelte"
     import RemoveAlgae from "../RemoveAlgae.svelte"
     import ScoreCoral from "../ScoreCoral.svelte"
@@ -29,35 +30,40 @@
     const score_coral = () => (page_state = "ScoreCoral")
 </script>
 
-<div>
-    {#if page_state == "None"}
-        <div class="m-2 grid grid-cols-1 grid-rows-2 place-items-center gap-2">
-            <button class="h-44 w-72 rounded bg-gunmetal" onclick={incap}
-                >Incap</button
-            >
-            <button class="h-44 w-72 rounded bg-gunmetal" onclick={score_algae}
-                >Score Algae</button
-            >
-            <button class="h-44 w-72 rounded bg-gunmetal" onclick={remove_algae}
-                >Remove Algae</button
-            >
-            <button class="h-44 w-72 rounded bg-gunmetal" onclick={score_coral}
-                >Score Coral</button
-            >
-        </div>
-    {:else if page_state == "ScoreAlgae"}
-        <ScoreAlgae bind:page_state bind:action_state />
-    {:else if page_state == "RemoveAlgae"}
-        <RemoveAlgae bind:page_state bind:action_state />
-    {:else if page_state == "ScoreCoral"}
-        <ScoreCoral bind:page_state bind:action_state />
-    {:else if page_state == "Verify"}
-        <SucceedFail bind:page_state bind:action_state bind:actions />
-    {:else if page_state == "Incap"}
-        <Incap bind:page_state bind:action_state />
-    {/if}
+<div class="flex flex-col min-h-dvh">
+    <Header game_stage={"Tele"} team_name={1540} bind:page_state />
+
+    <div class="m-2 flex flex-col flex-grow gap-2 font-semibold text-lg">
+        {#if page_state == "None"}
+            <div class="grid flex-grow gap-2">
+                <button class="rounded bg-gunmetal" onclick={incap}
+                    >Incap</button
+                >
+                <button class="rounded bg-gunmetal" onclick={score_algae}
+                    >Score Algae</button
+                >
+                <button class="rounded bg-gunmetal" onclick={remove_algae}
+                    >Remove Algae</button
+                >
+                <button class="rounded bg-gunmetal" onclick={score_coral}
+                    >Score Coral</button
+                >
+            </div>
+        {:else if page_state == "ScoreAlgae"}
+            <ScoreAlgae bind:page_state bind:action_state />
+        {:else if page_state == "RemoveAlgae"}
+            <RemoveAlgae bind:page_state bind:action_state />
+        {:else if page_state == "ScoreCoral"}
+            <ScoreCoral bind:page_state bind:action_state />
+        {:else if page_state == "Verify"}
+            <SucceedFail bind:page_state bind:action_state bind:actions />
+        {:else if page_state == "Incap"}
+            <Incap bind:page_state bind:action_state />
+        {/if}
+    </div>
+
     <button
-        class="font-heading w-full border-t-2 border-white/10 pt-2 text-center font-semibold"
+        class="font-heading w-full border-t-2 border-white/10 py-2 text-center font-semibold"
         onclick={(e: Event) => {
             e.stopPropagation()
             displaying_timeline = true

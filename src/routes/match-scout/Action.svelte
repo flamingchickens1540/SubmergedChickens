@@ -16,15 +16,15 @@
 
     let color = $derived(
         action_data.action == "Incap"
-            ? "bg-chicken_orange/50 shadow-chicken_orange/50"
+            ? "bg-chicken_orange/50"
             : action_data.success
-              ? "bg-jungle_green/50 shadow-jungle_green/10"
-              : "bg-flaming_red/50 shadow-flaming_red/10"
+              ? "bg-jungle_green/50"
+              : "bg-flaming_red/50"
     )
 </script>
 
 <div
-    class="group flex flex-row content-center justify-between {color} w-full rounded p-2 text-white shadow-lg"
+    class="group flex flex-row content-center justify-between {color} w-full rounded p-2 text-white"
 >
     <span class="w-auto shrink text-clip">{action_data.action}</span>
     <div class="flex shrink-0 flex-row content-center justify-end gap-4">

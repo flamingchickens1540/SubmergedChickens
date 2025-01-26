@@ -31,22 +31,22 @@
     }
 </script>
 
-<div class="m-2 grid grid-cols-2 grid-rows-3 place-items-center gap-2">
-    <button onclick={coral_station} class="h-36 w-44 rounded bg-gunmetal"
+<div class="grid grid-cols-2 grid-rows-2 flex-grow gap-2">
+    <button onclick={coral_station} class="rounded bg-gunmetal"
         >Coral Station</button
     >
-    <button onclick={coral_preplaced} class="h-36 w-44 rounded bg-gunmetal"
+    <button onclick={coral_preplaced} class="rounded bg-gunmetal"
         >Coral Preplaced</button
     >
-    <button onclick={algae_preplaced} class="h-36 w-44 rounded bg-gunmetal"
+    <button onclick={algae_preplaced} class="rounded bg-gunmetal"
         >Algae Preplaced</button
     >
-    <button onclick={algae_reef} class="h-36 w-44 rounded bg-gunmetal"
+    <button onclick={algae_reef} class="rounded bg-gunmetal"
         >Algae Reef</button
     >
-
-    <button
-        class="col-span-2 grid h-16 w-9/12 place-content-center rounded bg-gunmetal"
-        onclick={cancel}>Cancel</button
-    >
 </div>
+
+<button
+    class="py-4 rounded bg-gunmetal"
+    onclick={cancel}>Cancel</button
+>
