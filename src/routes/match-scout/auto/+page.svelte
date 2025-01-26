@@ -21,36 +21,38 @@
     const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
     const intake = () => (page_state = "Intake")
+
+    const bg_color = "bg-steel_blue";
 </script>
 
-<div class="flex min-h-dvh flex-col">
+<div class="flex min-h-dvh flex-col bg-steel_blue/5">
     <Header game_stage={"Auto"} team_name={1540} bind:page_state />
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
-                <button class="rounded bg-gunmetal" onclick={score_algae}
+                <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
-                <button class="rounded bg-gunmetal" onclick={remove_algae}
+                <button class="rounded {bg_color}" onclick={remove_algae}
                     >Remove Algae</button
                 >
-                <button class="rounded bg-gunmetal" onclick={score_coral}
+                <button class="rounded {bg_color}" onclick={score_coral}
                     >Score Coral</button
                 >
-                <button class="rounded bg-gunmetal" onclick={intake}
+                <button class="rounded {bg_color}" onclick={intake}
                     >Intake</button
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
-            <ScoreAlgae bind:page_state bind:action_state />
+            <ScoreAlgae bind:page_state bind:action_state bg_color={bg_color} />
         {:else if page_state == "RemoveAlgae"}
-            <RemoveAlgae bind:page_state bind:action_state />
+            <RemoveAlgae bind:page_state bind:action_state bg_color={bg_color} />
         {:else if page_state == "ScoreCoral"}
-            <ScoreCoral bind:page_state bind:action_state />
+            <ScoreCoral bind:page_state bind:action_state bg_color={bg_color} />
         {:else if page_state == "Intake"}
-            <Intake bind:page_state bind:action_state />
+            <Intake bind:page_state bind:action_state bg_color={bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions />
+            <SucceedFail bind:page_state bind:action_state bind:actions bg_color={bg_color} />
         {/if}
     </div>
 
