@@ -15,7 +15,6 @@
     }
 </script>
 
-<button
-    class="rounded bg-gunmetal flex-grow"
-    onclick={recap}>Re-Capacitate</button
+<button class="flex-grow rounded bg-gunmetal" onclick={recap}
+    >Re-Capacitate</button
 >

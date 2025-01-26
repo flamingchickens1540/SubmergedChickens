@@ -31,13 +31,10 @@
     }
 </script>
 
-    <div class="grid gap-2 flex-grow">
-        <button onclick={l1} class="rounded bg-gunmetal">L1</button>
-        <button onclick={l2} class="rounded bg-gunmetal">L2</button>
-        <button onclick={l3} class="rounded bg-gunmetal">L3</button>
-        <button onclick={l4} class="rounded bg-gunmetal">L4</button>
-    </div>
-    <button
-        class="py-4 rounded bg-gunmetal"
-        onclick={cancel}>Cancel</button
-    >
+<div class="grid flex-grow gap-2">
+    <button onclick={l1} class="rounded bg-gunmetal">L1</button>
+    <button onclick={l2} class="rounded bg-gunmetal">L2</button>
+    <button onclick={l3} class="rounded bg-gunmetal">L3</button>
+    <button onclick={l4} class="rounded bg-gunmetal">L4</button>
+</div>
+<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>

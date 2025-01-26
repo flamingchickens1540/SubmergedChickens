@@ -30,10 +30,10 @@
     const score_coral = () => (page_state = "ScoreCoral")
 </script>
 
-<div class="flex flex-col min-h-dvh">
+<div class="flex min-h-dvh flex-col">
     <Header game_stage={"Tele"} team_name={1540} bind:page_state />
 
-    <div class="m-2 flex flex-col flex-grow gap-2 font-semibold text-lg">
+    <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow gap-2">
                 <button class="rounded bg-gunmetal" onclick={incap}

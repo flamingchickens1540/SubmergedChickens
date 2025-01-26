@@ -31,7 +31,7 @@
     }
 </script>
 
-<div class="grid grid-cols-2 grid-rows-2 flex-grow gap-2">
+<div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
     <button onclick={coral_station} class="rounded bg-gunmetal"
         >Coral Station</button
     >
@@ -41,12 +41,7 @@
     <button onclick={algae_preplaced} class="rounded bg-gunmetal"
         >Algae Preplaced</button
     >
-    <button onclick={algae_reef} class="rounded bg-gunmetal"
-        >Algae Reef</button
-    >
+    <button onclick={algae_reef} class="rounded bg-gunmetal">Algae Reef</button>
 </div>
 
-<button
-    class="py-4 rounded bg-gunmetal"
-    onclick={cancel}>Cancel</button
->
+<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>

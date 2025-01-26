@@ -21,14 +21,13 @@
     const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
     const intake = () => (page_state = "Intake")
-
 </script>
 
-<div class="flex flex-col min-h-dvh">
+<div class="flex min-h-dvh flex-col">
     <Header game_stage={"Auto"} team_name={1540} bind:page_state />
-    <div class="m-2 flex flex-col flex-grow gap-2 font-semibold text-lg">
+    <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}
-            <div class="grid grid-cols-2 grid-rows-2 flex-grow gap-2">
+            <div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
                 <button class="rounded bg-gunmetal" onclick={score_algae}
                     >Score Algae</button
                 >

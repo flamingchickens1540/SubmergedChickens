@@ -28,7 +28,4 @@
     <button onclick={l3} class="rounded bg-gunmetal">L3</button>
 </div>
 
-<button
-    class="py-4 rounded bg-gunmetal"
-    onclick={cancel}>Cancel</button
->
+<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>

@@ -9,12 +9,14 @@
         team_name: String
         game_stage: String
         page_state: AutoPageState
-    } = $props();
+    } = $props()
 
     $effect(() => console.log(page_state))
 </script>
 
-<header class="flex flex-row justify-between font-heading border-b-2 border-white/10 p-2 font-semibold">
+<header
+    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 font-semibold"
+>
     <span class="">
         {team_name}
     </span>

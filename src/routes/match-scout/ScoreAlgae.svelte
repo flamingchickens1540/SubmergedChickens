@@ -23,13 +23,8 @@
     }
 </script>
 
-<div class="grid gap-2 flex-grow">
-    <button class="rounded bg-gunmetal" onclick={processor}>
-        Processor
-    </button>
+<div class="grid flex-grow gap-2">
+    <button class="rounded bg-gunmetal" onclick={processor}> Processor </button>
     <button class="rounded bg-gunmetal" onclick={net}> Net </button>
 </div>
-<button
-    class="py-4 rounded bg-gunmetal"
-    onclick={cancel}>Cancel</button
->
+<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>
