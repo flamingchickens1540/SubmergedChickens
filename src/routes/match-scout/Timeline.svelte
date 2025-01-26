@@ -37,7 +37,7 @@
     }}
 >
     <div
-        class="no-scrollbar absolute inset-x-0 bottom-0 flex h-[50dvh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
+        class="no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[50svh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
         id="timeline"
     >
         {#each actions as _, i}
