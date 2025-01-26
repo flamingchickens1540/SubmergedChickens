@@ -22,7 +22,7 @@
     const score_coral = () => (page_state = "ScoreCoral")
     const intake = () => (page_state = "Intake")
 
-    const bg_color = "bg-steel_blue";
+    const bg_color = "bg-steel_blue"
 </script>
 
 <div class="flex min-h-dvh flex-col bg-steel_blue/5">
@@ -44,15 +44,20 @@
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
-            <ScoreAlgae bind:page_state bind:action_state bg_color={bg_color} />
+            <ScoreAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "RemoveAlgae"}
-            <RemoveAlgae bind:page_state bind:action_state bg_color={bg_color} />
+            <RemoveAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "ScoreCoral"}
-            <ScoreCoral bind:page_state bind:action_state bg_color={bg_color} />
+            <ScoreCoral bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Intake"}
-            <Intake bind:page_state bind:action_state bg_color={bg_color} />
+            <Intake bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions bg_color={bg_color} />
+            <SucceedFail
+                bind:page_state
+                bind:action_state
+                bind:actions
+                {bg_color}
+            />
         {/if}
     </div>
 

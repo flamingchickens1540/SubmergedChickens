@@ -29,7 +29,7 @@
     const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
 
-    const bg_color = "bg-eminence";
+    const bg_color = "bg-eminence"
 </script>
 
 <div class="flex min-h-dvh flex-col bg-eminence/10">
@@ -38,8 +38,7 @@
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow gap-2">
-                <button class="rounded {bg_color}" onclick={incap}
-                    >Incap</button
+                <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
@@ -52,15 +51,20 @@
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
-            <ScoreAlgae bind:page_state bind:action_state bg_color={bg_color} />
+            <ScoreAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "RemoveAlgae"}
-            <RemoveAlgae bind:page_state bind:action_state bg_color={bg_color} />
+            <RemoveAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "ScoreCoral"}
-            <ScoreCoral bind:page_state bind:action_state bg_color={bg_color} />
+            <ScoreCoral bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions bg_color={bg_color} />
+            <SucceedFail
+                bind:page_state
+                bind:action_state
+                bind:actions
+                {bg_color}
+            />
         {:else if page_state == "Incap"}
-            <Incap bind:page_state bind:action_state bg_color={bg_color} />
+            <Incap bind:page_state bind:action_state {bg_color} />
         {/if}
     </div>
 

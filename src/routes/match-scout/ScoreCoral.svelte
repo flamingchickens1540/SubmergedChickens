@@ -4,7 +4,7 @@
     let {
         page_state = $bindable(),
         action_state = $bindable(),
-        bg_color
+        bg_color,
     }: {
         page_state: AutoPageState
         action_state: AutoAction
