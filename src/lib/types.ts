@@ -1,3 +1,33 @@
+// Match Scout Page State Enums
+export type TelePageState =
+    | "Verify"
+    | "ScoreAlgae"
+    | "RemoveAlgae"
+    | "ScoreCoral"
+    | "Incap"
+    | "None"
+export type AutoPageState = TelePageState | "Intake"
+
+export type TeleActionState =
+    | `ScoreAlgae${"Processor" | "Net"}`
+    | `RemoveAlgae${"L2" | "L3"}`
+    | `ScoreCoral${"L1" | "L2" | "L3" | "L4"}`
+    | "Incap"
+    | "None"
+export type AutoAction =
+    | TeleActionState
+    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
+    | "Leave"
+
+export type AutoActionData = {
+    action: AutoAction
+    success: boolean
+}
+export type TeleActionData = {
+    action: TeleActionState
+    success: boolean
+}
+
 // The TeamMatch sent to the database
 export type TeamMatchData = {
     scout_id: string
@@ -11,30 +41,9 @@ export type TeamMatchData = {
 }
 
 export type Timeline = {
-    auto: AutoAction[]
-    tele: TeleAction[]
+    auto: AutoActionData[]
+    tele: TeleActionData[]
 }
-
-export type AutoAction =
-    | TeleAction
-    | "Leave"
-    | "IntakeCoralFeed"
-    | "IntakeCoralGround"
-    | "IntakeCoralPreplaced"
-    | "IntakeAlgaePreplaced"
-    | "IntakeAlgaeReef"
-
-export type TeleAction =
-    | "RemoveAlgaeL2"
-    | "RemoveAlgaeL3"
-    | "ScoreCoralL1"
-    | "ScoreCoralL2"
-    | "ScoreCoralL3"
-    | "ScoreCoralL4"
-    | "ScoreProcessor"
-    | "ScoreNet"
-    | "IncapStart"
-    | "IncapStart"
 
 export type EndAction = "DeepClimb" | "ShallowClimb" | "Failed" | "None"
 
