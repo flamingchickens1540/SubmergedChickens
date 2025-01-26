@@ -3,7 +3,7 @@ name: Build
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 jobs:
   build:
@@ -34,4 +34,4 @@ jobs:
       - name: Build
         run: bun run build
         # env:
-          # DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
+        # DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
