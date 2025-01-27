@@ -39,7 +39,7 @@
     <button onclick={succeed} class="row-span-4 rounded bg-jungle_green"
         >Succeed</button
     >
-    <button onclick={fail} class="row-span-4 rounded bg-flaming_red"
+    <button onclick={fail} class="row-span-4 rounded bg-imperial_red"
         >Fail</button
     >
 
