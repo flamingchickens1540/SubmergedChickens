@@ -4,9 +4,11 @@
     let {
         page_state = $bindable(),
         action_state = $bindable(),
+        bg_color,
     }: {
         page_state: AutoPageState
         action_state: AutoAction
+        bg_color: String
     } = $props()
 
     const recap = () => {
@@ -15,6 +17,6 @@
     }
 </script>
 
-<button class="flex-grow rounded bg-gunmetal" onclick={recap}
+<button class="flex-grow rounded {bg_color}" onclick={recap}
     >Re-Capacitate</button
 >

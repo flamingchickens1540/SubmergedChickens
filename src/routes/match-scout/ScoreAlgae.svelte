@@ -4,9 +4,11 @@
     let {
         page_state = $bindable(),
         action_state = $bindable(),
+        bg_color,
     }: {
         page_state: AutoPageState
         action_state: AutoAction
+        bg_color: String
     } = $props()
 
     const processor = () => {
@@ -24,7 +26,7 @@
 </script>
 
 <div class="grid flex-grow gap-2">
-    <button class="rounded bg-gunmetal" onclick={processor}> Processor </button>
-    <button class="rounded bg-gunmetal" onclick={net}> Net </button>
+    <button class="rounded {bg_color}" onclick={processor}> Processor </button>
+    <button class="rounded {bg_color}" onclick={net}> Net </button>
 </div>
 <button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>

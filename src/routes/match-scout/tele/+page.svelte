@@ -28,37 +28,38 @@
     const score_algae = () => (page_state = "ScoreAlgae")
     const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
+
+    const bg_color = "bg-eminence"
 </script>
 
-<div class="flex min-h-dvh flex-col">
+<div class="flex min-h-dvh flex-col bg-eminence/10">
     <Header game_stage={"Tele"} team_name={1540} bind:page_state />
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow gap-2">
-                <button class="rounded bg-gunmetal" onclick={incap}
-                    >Incap</button
+                <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
-                <button class="rounded bg-gunmetal" onclick={score_algae}
+                <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
-                <button class="rounded bg-gunmetal" onclick={remove_algae}
+                <button class="rounded {bg_color}" onclick={remove_algae}
                     >Remove Algae</button
                 >
-                <button class="rounded bg-gunmetal" onclick={score_coral}
+                <button class="rounded {bg_color}" onclick={score_coral}
                     >Score Coral</button
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
-            <ScoreAlgae bind:page_state bind:action_state />
+            <ScoreAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "RemoveAlgae"}
-            <RemoveAlgae bind:page_state bind:action_state />
+            <RemoveAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "ScoreCoral"}
-            <ScoreCoral bind:page_state bind:action_state />
+            <ScoreCoral bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
             <SucceedFail bind:page_state bind:action_state bind:actions />
         {:else if page_state == "Incap"}
-            <Incap bind:page_state bind:action_state />
+            <Incap bind:page_state bind:action_state {bg_color} />
         {/if}
     </div>
 

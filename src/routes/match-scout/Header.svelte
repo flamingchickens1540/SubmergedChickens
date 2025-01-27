@@ -10,8 +10,6 @@
         game_stage: String
         page_state: AutoPageState
     } = $props()
-
-    $effect(() => console.log(page_state))
 </script>
 
 <header
