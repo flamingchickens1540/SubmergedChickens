@@ -112,7 +112,7 @@
 </script>
 
 <div
-    class="m-auto grid min-h-0 min-w-0 max-w-6xl grid-cols-2 grid-rows-6 gap-2 p-2 text-white sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid max-w-6xl grid-cols-2 grid-rows-6 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
 >
     <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
@@ -177,7 +177,7 @@
         <div class="flex flex-col gap-2 overflow-auto">
             {#each scout_queue as scout}
                 <div
-                    class="black flex items-center justify-between rounded bg-eerie_black p-1"
+                    class="flex items-center justify-between rounded bg-eerie_black p-1"
                 >
                     {scout}
                     <button
@@ -195,7 +195,7 @@
         <div class="flex flex-col gap-2 overflow-auto">
             {#each submitted_team_matches as team_match}
                 <button
-                    class="black flex items-center justify-between rounded bg-eerie_black px-1 py-2"
+                    class="flex items-center justify-between rounded bg-eerie_black px-1 py-2"
                 >
                     {team_match}
                 </button>
