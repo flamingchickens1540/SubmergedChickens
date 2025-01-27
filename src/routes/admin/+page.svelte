@@ -13,8 +13,8 @@
     let curr_red_robots = $state(["", "", ""])
     let curr_blue_robots = $state(["", "", ""])
 
-    let new_users: string[] = $state(["xxxxxxxx", "xxx", "xxxxxxxx"])
-    let scout_queue: string[] = $state(["yyyy", "yyyyyyyy"])
+    let new_users: string[] = $state([])
+    let scout_queue: string[] = $state([])
     // TODO change to actual type
     let submitted_team_matches: string[] = $state(["qm14:1540"])
 
@@ -112,7 +112,7 @@
 </script>
 
 <div
-    class="m-auto grid max-w-5xl grid-cols-2 grid-rows-4 gap-2 p-2 text-white sm:grid-cols-5 sm:gap-4"
+    class="m-auto grid min-h-0 min-w-0 max-w-6xl grid-cols-2 grid-rows-6 gap-2 p-2 text-white sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
 >
     <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
@@ -152,43 +152,55 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
+    <div
+        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
+    >
         <span class="text-center">New Users</span>
-        {#each new_users as user}
-            <div
-                class="flex items-center justify-between rounded bg-eerie_black p-1"
-            >
-                {user}
-                <button
-                    class="rounded bg-gunmetal p-1"
-                    onclick={() => approve_new_user(user)}><Check /></button
+        <div class="flex flex-col gap-2 overflow-auto">
+            {#each new_users as user}
+                <div
+                    class="flex items-center justify-between rounded bg-eerie_black p-1"
                 >
-            </div>
-        {/each}
+                    {user}
+                    <button
+                        class="rounded bg-gunmetal p-1"
+                        onclick={() => approve_new_user(user)}><Check /></button
+                    >
+                </div>
+            {/each}
+        </div>
     </div>
-    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
+    <div
+        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
+    >
         <span class="text-center">Queue</span>
-        {#each scout_queue as scout}
-            <div
-                class="black flex items-center justify-between rounded bg-eerie_black p-1"
-            >
-                {scout}
-                <button
-                    onclick={() => remove_scout(scout)}
-                    class="rounded bg-gunmetal p-1"><X /></button
+        <div class="flex flex-col gap-2 overflow-auto">
+            {#each scout_queue as scout}
+                <div
+                    class="black flex items-center justify-between rounded bg-eerie_black p-1"
                 >
-            </div>
-        {/each}
+                    {scout}
+                    <button
+                        onclick={() => remove_scout(scout)}
+                        class="rounded bg-gunmetal p-1"><X /></button
+                    >
+                </div>
+            {/each}
+        </div>
     </div>
-    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
+    <div
+        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
+    >
         <span class="text-center">Submitted Team Matches</span>
-        {#each submitted_team_matches as team_match}
-            <button
-                class="black flex items-center justify-between rounded bg-eerie_black px-1 py-2"
-            >
-                {team_match}
-            </button>
-        {/each}
+        <div class="flex flex-col gap-2 overflow-auto">
+            {#each submitted_team_matches as team_match}
+                <button
+                    class="black flex items-center justify-between rounded bg-eerie_black px-1 py-2"
+                >
+                    {team_match}
+                </button>
+            {/each}
+        </div>
     </div>
     <div class="flex flex-col gap-2 rounded bg-gunmetal p-2">
         <span class="text-center">Team Matches Submitted</span>
