@@ -180,7 +180,7 @@
             </div>
         {/each}
     </div>
-    <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
+    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
         <span class="text-center">Submitted Team Matches</span>
         {#each submitted_team_matches as team_match}
             <button
