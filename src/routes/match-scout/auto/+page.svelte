@@ -11,6 +11,17 @@
     import type { AutoPageState, AutoAction, AutoActionData } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
+    import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+
+    const swipeHandler = (event: SwipeCustomEvent) => {
+        switch (event.detail.direction) {
+            case "left":
+                goto("/match-scout/tele")
+            case "right":
+                goto("/match-scout/prematch")
+        }
+    }
+
     let displaying_timeline = $state(false)
     let furthest_auto_index = $state(0)
 
@@ -46,7 +57,11 @@
     />
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
-            <div class="grid flex-grow gap-2">
+            <div
+                use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
+                onswipe={swipeHandler}
+                class="grid flex-grow gap-2"
+            >
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
