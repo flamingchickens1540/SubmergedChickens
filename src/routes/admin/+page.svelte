@@ -192,11 +192,11 @@
     </div>
     <div class="flex flex-col gap-2 rounded bg-gunmetal p-2">
         <span class="text-center">Team Matches Submitted</span>
-        <Progress
-            style=""
-            value={percent_team_matches_submitted}
-            max={100}
-            class="w-full"
-        />
+        <div class="h-4 w-full rounded-full bg-eerie_black">
+            <div
+                class="h-4 rounded-full bg-xanthous"
+                style="width: {percent_team_matches_submitted}%"
+            ></div>
+        </div>
     </div>
 </div>
