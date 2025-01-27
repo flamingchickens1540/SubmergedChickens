@@ -16,10 +16,10 @@
 
     let color = $derived(
         action_data.action == "Incap"
-            ? "bg-chicken_orange/50"
+            ? "bg-crayola_orange/50"
             : action_data.success
               ? "bg-jungle_green/50"
-              : "bg-flaming_red/50"
+              : "bg-imperial_red/50"
     )
 </script>
 

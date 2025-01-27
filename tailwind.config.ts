@@ -18,11 +18,13 @@ const config: Config = {
                 // Inflated Chickens Colors
                 white: "#ffffff",
                 eerie_black: "#1C1C1C",
-                yolk_yellow: "#FFC145",
-                flaming_red: "#ED2C2C",
-                steel_blue: "#358188",
+                xanthous: "#F6B14B",
+                imperial_red: "#FF4848",
+                crayola_orange: "#FF8547",
+                steel_blue: "#3581B8",
+                bittersweet: "#FF6663",
                 gunmetal: "#20282C",
-                chicken_orange: "#F7901E",
+                indigo_dye: "#294F6A",
                 eminence: "#6C3082",
                 jungle_green: "#49A078",
 
