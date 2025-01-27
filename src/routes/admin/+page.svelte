@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { X } from "lucide-svelte"
+    import { X, Check } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
     import { Progress } from "$lib/components/ui/progress/index.js"
     // import { SubmittedMatch } from "$lib/types.ts"
@@ -13,8 +13,8 @@
     let curr_red_robots = $state(["", "", ""])
     let curr_blue_robots = $state(["", "", ""])
 
-    let new_users: string[] = $state([])
-    let scout_queue: string[] = $state([])
+    let new_users: string[] = $state(["xxxxxxxx", "xxx", "xxxxxxxx"])
+    let scout_queue: string[] = $state(["yyyy", "yyyyyyyy"])
     // TODO change to actual type
     let submitted_team_matches: string[] = $state(["qm14:1540"])
 
@@ -112,124 +112,91 @@
 </script>
 
 <div
-    class="ml-2 mr-2 mt-2 grid grid-flow-col grid-cols-1 grid-rows-2 gap-4 text-white"
+    class="m-auto grid max-w-5xl grid-cols-2 grid-rows-4 gap-2 p-2 text-white sm:grid-cols-5 sm:gap-4"
 >
-    <div class="grid grid-flow-col grid-cols-5 grid-rows-2 gap-4">
-        <div
-            class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded bg-black p-2"
-        >
-            <div class="grid grid-cols-3 grid-rows-1 gap-2">
+    <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
+        <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
+            <input
+                bind:value={next_match_key}
+                placeholder="Next Match"
+                class="rounded bg-eerie_black p-2"
+            />
+            <button class="rounded bg-eerie_black p-2" onclick={auto_load_teams}
+                >Auto Load</button
+            >
+            <button onclick={queue_match} class="rounded bg-eerie_black p-2"
+                >Queue Match</button
+            >
+            {#each next_red_robots as _robot, i}
                 <input
-                    bind:value={next_match_key}
-                    placeholder="Next Match"
-                    class="rounded bg-gunmetal p-2"
+                    bind:value={next_red_robots[i]}
+                    class="rounded bg-bittersweet p-2"
                 />
-                <button
-                    class="rounded bg-gunmetal p-2"
-                    onclick={auto_load_teams}>Auto Load</button
-                >
-                <button onclick={queue_match} class="rounded bg-gunmetal p-2"
-                    >Queue Match</button
-                >
-            </div>
-            <div class="grid grid-cols-3 grid-rows-1 gap-2 text-black">
-                {#each next_red_robots as _robot, i}
-                    <input
-                        bind:value={next_red_robots[i]}
-                        class="rounded bg-red-500 p-2"
-                    />
-                {/each}
-            </div>
-            <div class="grid grid-cols-3 grid-rows-1 gap-2 text-black">
-                {#each next_blue_robots as _robot, i}
-                    <input
-                        bind:value={next_blue_robots[i]}
-                        class="rounded bg-blue-500 p-2"
-                    />
-                {/each}
-            </div>
+            {/each}
+            {#each next_blue_robots as _robot, i}
+                <input
+                    bind:value={next_blue_robots[i]}
+                    class="rounded bg-steel_blue p-2"
+                />
+            {/each}
         </div>
-        <div
-            class="col-span-2 grid grid-cols-1 grid-rows-3 gap-2 rounded bg-black p-2"
-        >
-            <div class="grid place-content-center rounded bg-gunmetal p-2">
-                Currently Scouting
-            </div>
-            <div class="grid grid-cols-3 grid-rows-1 gap-2 text-black">
+        <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
+            <span class="col-span-3 text-center">Currently Scouting</span>
+            <div class="grid flex-grow grid-cols-3 grid-rows-2 gap-2">
                 {#each curr_red_robots as robot}
-                    <div class="rounded bg-red-500 p-2">{robot}</div>
+                    <div class="rounded bg-bittersweet p-2">{robot}</div>
                 {/each}
-            </div>
-            <div class="grid grid-cols-3 grid-rows-1 gap-2 text-black">
                 {#each curr_blue_robots as robot}
-                    <div class="rounded bg-blue-500 p-2">{robot}</div>
-                {/each}
-            </div>
-        </div>
-        <div
-            class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded bg-black p-2 text-center"
-        >
-            <div class="text-center">New Users</div>
-            <div class="grid h-80 gap-2">
-                {#each new_users as user}
-                    <div class="grid h-10 grid-cols-2 gap-4 bg-gunmetal">
-                        <div class="grid place-items-center">{user}</div>
-                        <button
-                            class="rounded bg-gunmetal p-2"
-                            onclick={() => approve_new_user(user)}
-                            >Approve</button
-                        >
-                    </div>
-                {/each}
-            </div>
-        </div>
-        <div
-            class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded bg-black p-2 text-center"
-        >
-            <div>Queue</div>
-            <div class="grid h-80 gap-2">
-                {#each scout_queue as scout}
-                    <div
-                        class="grid h-10 grid-cols-6 place-items-baseline items-center rounded bg-gunmetal p-2"
-                    >
-                        <div class="col-span-5 grid place-items-center">
-                            {scout}
-                        </div>
-                        <button
-                            onclick={() => remove_scout(scout)}
-                            class="grid h-4 w-4 place-content-center rounded bg-red-500 p-3"
-                            ><X /></button
-                        >
-                    </div>
-                {/each}
-            </div>
-        </div>
-        <div
-            class="row-span-2 grid h-96 max-h-96 gap-2 overflow-y-scroll rounded bg-black p-2 text-center"
-        >
-            <div>Submitted Team Matches</div>
-            <div class="grid h-80 gap-2">
-                {#each submitted_team_matches as team_match}
-                    <div
-                        class="grid h-10 grid-cols-6 place-items-baseline items-center rounded bg-gunmetal p-2"
-                    >
-                        <button class="col-span-5 grid place-items-center">
-                            {team_match}
-                        </button>
-                    </div>
+                    <div class="rounded bg-steel_blue p-2">{robot}</div>
                 {/each}
             </div>
         </div>
     </div>
-    <div class="grid grid-cols-5 grid-rows-2 gap-2 rounded">
-        <div class="cols-span-2 m-2 grid grid-rows-5 rounded bg-black p-2">
-            <div class="row-span-1">Team Matches Submitted</div>
-            <Progress
-                style=""
-                value={percent_team_matches_submitted}
-                max={100}
-                class="w-full bg-white"
-            />
-        </div>
+    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
+        <span class="text-center">New Users</span>
+        {#each new_users as user}
+            <div
+                class="flex items-center justify-between rounded bg-eerie_black p-1"
+            >
+                {user}
+                <button
+                    class="rounded bg-gunmetal p-1"
+                    onclick={() => approve_new_user(user)}><Check /></button
+                >
+            </div>
+        {/each}
+    </div>
+    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2 sm:row-span-2">
+        <span class="text-center">Queue</span>
+        {#each scout_queue as scout}
+            <div
+                class="black flex items-center justify-between rounded bg-eerie_black p-1"
+            >
+                {scout}
+                <button
+                    onclick={() => remove_scout(scout)}
+                    class="rounded bg-gunmetal p-1"><X /></button
+                >
+            </div>
+        {/each}
+    </div>
+    <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
+        <span class="text-center">Submitted Team Matches</span>
+        {#each submitted_team_matches as team_match}
+            <button
+                class="black flex items-center justify-between rounded bg-eerie_black px-1 py-2"
+            >
+                {team_match}
+            </button>
+        {/each}
+    </div>
+    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2">
+        <span class="text-center">Team Matches Submitted</span>
+        <Progress
+            style=""
+            value={percent_team_matches_submitted}
+            max={100}
+            class="w-full"
+        />
     </div>
 </div>
