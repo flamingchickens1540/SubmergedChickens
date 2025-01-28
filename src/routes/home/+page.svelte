@@ -44,9 +44,12 @@
                 goto("analysis")
             }}>Analysis</button
         >
-        <button class="rounded bg-gunmetal p-2" on:click={() => {
-            bugreportVisible = !bugreportVisible
-        }}>Bug Report</button>
+        <button
+            class="rounded bg-gunmetal p-2"
+            on:click={() => {
+                bugreportVisible = !bugreportVisible
+            }}>Bug Report</button
+        >
     </div>
     <footer
         class=" {bugreportVisible
