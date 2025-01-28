@@ -54,7 +54,7 @@
     <footer
         class=" {bugReportVisible
             ? ''
-            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex min-h-[30svh] max-h-[80svh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
+            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[30svh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
     >
         <textarea
             class="min-h-36 w-full rounded bg-eerie_black p-1"
