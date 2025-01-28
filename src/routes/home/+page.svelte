@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Drawer from "$lib/components/Drawer.svelte"
     import { FlaskRound, LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
 
@@ -51,17 +52,13 @@
             }}>Bug Report</button
         >
     </div>
-    <footer
-        class=" {bugReportVisible
-            ? ''
-            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[30svh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
-    >
+    <Drawer bind:displaying={bugReportVisible}>
         <textarea
-            class="min-h-36 w-full rounded bg-eerie_black p-1"
+            class="w-full flex-grow rounded bg-eerie_black p-1"
             placeholder="bug description"
         ></textarea>
-        <button class="mt-auto w-full rounded bg-gunmetal p-2 font-bold"
+        <button class="w-full rounded bg-eerie_black p-2 font-bold"
             >Submit</button
         >
-    </footer>
+    </Drawer>
 </div>
