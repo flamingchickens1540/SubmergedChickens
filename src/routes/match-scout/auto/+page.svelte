@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { goto } from "$app/navigation"
+
     import Header from "../Header.svelte"
     import ScoreAlgae from "../ScoreAlgae.svelte"
     import RemoveAlgae from "../RemoveAlgae.svelte"
@@ -23,11 +25,24 @@
     const intake = () => (page_state = "Intake")
 
     const bg_color = "bg-steel_blue"
+
+    const prev_page = $derived(
+        page_state == "None" ? () => goto("/match-scout/prematch") : null
+    )
+    const next_page = $derived(
+        page_state == "None" ? () => goto("/match-scout/tele") : null
+    )
 </script>
 
 <div class="flex min-h-dvh flex-col bg-steel_blue/5 accent-steel_blue">
-    <Header game_stage={"Auto"} team_name={1540} bind:page_state />
-    <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
+    <Header
+        game_stage={"Auto"}
+        team_name={1540}
+        {page_state}
+        {prev_page}
+        {next_page}
+    />
+    <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
                 <button class="rounded {bg_color}" onclick={score_algae}
@@ -57,7 +72,7 @@
     </div>
 
     <button
-        class="font-heading w-full border-t-2 border-white/10 py-2 text-center font-semibold"
+        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
         onclick={(e: Event) => {
             e.stopPropagation()
             displaying_timeline = true

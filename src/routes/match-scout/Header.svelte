@@ -1,23 +1,46 @@
 <script lang="ts">
     import type { TelePageState, AutoPageState, AutoAction } from "$lib/types"
+    import { ArrowRight, ArrowLeft } from "lucide-svelte"
 
     let {
         team_name,
         game_stage,
         page_state = $bindable(),
+        next_page,
+        prev_page,
     }: {
         team_name: String
         game_stage: String
         page_state: AutoPageState
+        prev_page: null | (() => void)
+        next_page: null | (() => void)
     } = $props()
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 font-semibold"
+    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span class="">
         {team_name}
     </span>
     <!-- TODO: Undo button -->
-    <span>{page_state == "None" ? game_stage : page_state}</span>
+    <div class="align-item-center flex gap-2">
+        <button
+            onclick={prev_page}
+            class={prev_page == null ? "pointer-events-none opacity-30" : ""}
+        >
+            <ArrowLeft />
+        </button>
+        <span
+            >{page_state == "None" || page_state == null
+                ? game_stage
+                : page_state}</span
+        >
+        <button
+            onclick={next_page}
+            class={next_page == null ? "pointer-events-none opacity-30" : ""}
+        >
+            <ArrowRight />
+        </button>
+    </div>
 </header>
