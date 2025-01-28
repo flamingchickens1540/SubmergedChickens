@@ -29,7 +29,7 @@
         <button
             class="rounded bg-gunmetal p-2"
             on:click={() => {
-                goto("" /* TODO: link to match scout */)
+                goto("match-scout/prematch")
             }}>Match Scout</button
         >
         <button
