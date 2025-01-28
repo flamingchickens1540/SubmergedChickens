@@ -46,7 +46,7 @@
     />
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
-            <div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
+            <div class="grid flex-grow gap-2">
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
