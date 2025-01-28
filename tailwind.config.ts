@@ -1,10 +1,12 @@
 import { fontFamily } from "tailwindcss/defaultTheme"
 import type { Config } from "tailwindcss"
+const colorMix = require("tailwindcss-color-mix")
 
 const config: Config = {
     darkMode: ["class"],
     content: ["./src/**/*.{html,js,svelte,ts}"],
     safelist: ["dark"],
+    plugins: [colorMix()],
     theme: {
         container: {
             center: true,
