@@ -25,7 +25,7 @@
     const bg_color = "bg-steel_blue"
 </script>
 
-<div class="flex min-h-dvh flex-col bg-steel_blue/5">
+<div class="flex min-h-dvh flex-col bg-steel_blue/5 accent-steel_blue">
     <Header game_stage={"Auto"} team_name={1540} bind:page_state />
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}

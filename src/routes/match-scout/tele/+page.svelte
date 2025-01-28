@@ -32,7 +32,7 @@
     const bg_color = "bg-eminence"
 </script>
 
-<div class="flex min-h-dvh flex-col bg-eminence/10">
+<div class="flex min-h-dvh flex-col bg-eminence/10 accent-eminence">
     <Header game_stage={"Tele"} team_name={1540} bind:page_state />
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
