@@ -41,7 +41,9 @@
     )
 </script>
 
-<div class="flex min-h-dvh flex-col bg-eminence/10 accent-eminence">
+<div
+    class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
+>
     <Header
         game_stage={"Tele"}
         team_name={1540}
@@ -86,6 +88,7 @@
         }}>Show Timeline</button
     >
     <Timeline
+        bg={"bg-eerie_black bg-mix-amount-10 bg-mix-amount-10"}
         bind:actions
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index

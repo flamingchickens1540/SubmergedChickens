@@ -7,10 +7,12 @@
         actions = $bindable(),
         displaying = $bindable(),
         furthest_auto_index = $bindable(),
+        bg = "bg-eerie_black",
     }: {
         actions: AutoActionData[] // TODO Action[]
         furthest_auto_index: number
         displaying: boolean
+        bg: String
     } = $props()
 
     /// Determine if currying is the right solution or if we should use a binding
@@ -27,7 +29,7 @@
     }
 </script>
 
-<Drawer bind:displaying>
+<Drawer bind:displaying {bg}>
     {#each actions as _, i}
         <Action
             action_data={actions[actions.length - i - 1]}

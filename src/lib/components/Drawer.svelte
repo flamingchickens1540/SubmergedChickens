@@ -2,8 +2,10 @@
     let {
         children,
         displaying = $bindable(),
+        bg = "bg-eerie_black",
     }: {
         displaying: boolean
+        bg: String
     } = $props()
 </script>
 
@@ -18,7 +20,7 @@
     }}
 >
     <div
-        class="no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[40svh] w-dvw flex-col items-center gap-2 overflow-y-scroll rounded-t-lg bg-gunmetal p-2 text-white"
+        class="no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[40svh] w-dvw flex-col items-center gap-2 overflow-y-scroll rounded-t-lg {bg} p-2 text-white"
     >
         {#if children}
             {@render children()}
