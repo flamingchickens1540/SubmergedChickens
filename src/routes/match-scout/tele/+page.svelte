@@ -50,7 +50,7 @@
         {next_page}
     />
 
-    <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
+    <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
             <div class="grid flex-grow gap-2">
                 <button class="rounded {bg_color}" onclick={incap}>Incap</button
@@ -79,7 +79,7 @@
     </div>
 
     <button
-        class="font-heading w-full border-t-2 border-white/10 py-2 text-center font-semibold"
+        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
         onclick={(e: Event) => {
             e.stopPropagation()
             displaying_timeline = true
