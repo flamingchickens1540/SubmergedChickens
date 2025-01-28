@@ -1,0 +1,16 @@
+model EventState {
+  id              Int    @id @default(autoincrement())
+  event_key       String
+  event           Event  @relation(fields: [event_key], references: [event_key])
+  stream_url      String
+  next_match_key  Int
+  next_match_time Int
+}
+
+model Event {
+  event_key   String       @id
+  team_events TeamEvent[]
+  comparison  Comparison[]
+  team_match  TeamMatch[]
+  event_state EventState[]
+}

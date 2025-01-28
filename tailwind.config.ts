@@ -1,13 +1,9 @@
 import { fontFamily } from "tailwindcss/defaultTheme"
 import type { Config } from "tailwindcss"
-import tailwindcssAnimate from "tailwindcss-animate"
 
 const config: Config = {
     darkMode: ["class"],
-    content: [
-        "./src/**/*.{html,js,svelte,ts}",
-        "./node_modules/layerchart/**/*.{svelte,js}",
-    ],
+    content: ["./src/**/*.{html,js,svelte,ts}"],
     safelist: ["dark"],
     theme: {
         container: {
@@ -19,6 +15,19 @@ const config: Config = {
         },
         extend: {
             colors: {
+                // Inflated Chickens Colors
+                white: "#ffffff",
+                eerie_black: "#1C1C1C",
+                xanthous: "#F6B14B",
+                imperial_red: "#FF4848",
+                crayola_orange: "#FF8547",
+                steel_blue: "#3581B8",
+                bittersweet: "#FF6663",
+                gunmetal: "#20282C",
+                indigo_dye: "#294F6A",
+                eminence: "#6C3082",
+                jungle_green: "#49A078",
+
                 border: "hsl(var(--border) / <alpha-value>)",
                 input: "hsl(var(--input) / <alpha-value>)",
                 ring: "hsl(var(--ring) / <alpha-value>)",
@@ -56,21 +65,8 @@ const config: Config = {
                     DEFAULT: "hsl(var(--card) / <alpha-value>)",
                     foreground: "hsl(var(--card-foreground) / <alpha-value>)",
                 },
-                sidebar: {
-                    "DEFAULT": "hsl(var(--sidebar-background))",
-                    "foreground": "hsl(var(--sidebar-foreground))",
-                    "primary": "hsl(var(--sidebar-primary))",
-                    "primary-foreground":
-                        "hsl(var(--sidebar-primary-foreground))",
-                    "accent": "hsl(var(--sidebar-accent))",
-                    "accent-foreground":
-                        "hsl(var(--sidebar-accent-foreground))",
-                    "border": "hsl(var(--sidebar-border))",
-                    "ring": "hsl(var(--sidebar-ring))",
-                },
             },
             borderRadius: {
-                xl: "calc(var(--radius) + 4px)",
                 lg: "var(--radius)",
                 md: "calc(var(--radius) - 2px)",
                 sm: "calc(var(--radius) - 4px)",
@@ -78,28 +74,8 @@ const config: Config = {
             fontFamily: {
                 sans: [...fontFamily.sans],
             },
-            keyframes: {
-                "accordion-down": {
-                    from: { height: "0" },
-                    to: { height: "var(--bits-accordion-content-height)" },
-                },
-                "accordion-up": {
-                    from: { height: "var(--bits-accordion-content-height)" },
-                    to: { height: "0" },
-                },
-                "caret-blink": {
-                    "0%,70%,100%": { opacity: "1" },
-                    "20%,50%": { opacity: "0" },
-                },
-            },
-            animation: {
-                "accordion-down": "accordion-down 0.2s ease-out",
-                "accordion-up": "accordion-up 0.2s ease-out",
-                "caret-blink": "caret-blink 1.25s ease-out infinite",
-            },
         },
     },
-    plugins: [tailwindcssAnimate],
 }
 
 export default config
