@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { goto } from "$app/navigation"
+
     import Header from "../Header.svelte"
     import ScoreAlgae from "../ScoreAlgae.svelte"
     import RemoveAlgae from "../RemoveAlgae.svelte"
@@ -30,10 +32,23 @@
     const score_coral = () => (page_state = "ScoreCoral")
 
     const bg_color = "bg-eminence"
+
+    const prev_page = $derived(
+        page_state == "None" ? () => goto("/match-scout/auto") : null
+    )
+    const next_page = $derived(
+        page_state == "None" ? () => goto("/match-scout/postmatch") : null
+    )
 </script>
 
 <div class="flex min-h-dvh flex-col bg-eminence/10 accent-eminence">
-    <Header game_stage={"Tele"} team_name={1540} bind:page_state />
+    <Header
+        game_stage={"Tele"}
+        team_name={1540}
+        {page_state}
+        {prev_page}
+        {next_page}
+    />
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-lg font-semibold">
         {#if page_state == "None"}

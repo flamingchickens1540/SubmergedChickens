@@ -5,8 +5,8 @@
 
 <div>
     <Header
-        game_stage={"Postmatch"}
+        game_stage={"Prematch"}
         team_name={1540}
-        prev_page={() => goto("/match-scout/tele")}
+        next_page={() => goto("/match-scout/auto")}
     />
 </div>
