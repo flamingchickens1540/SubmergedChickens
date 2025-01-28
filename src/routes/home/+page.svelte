@@ -4,7 +4,7 @@
 
     let name = "<insert name>"
 
-    let bugreportVisible = false;
+    let bugreportVisible = false
 </script>
 
 <div class="flex w-full flex-col gap-2 p-2">
@@ -46,8 +46,17 @@
         >
         <button class="rounded bg-gunmetal p-2">Bug Report</button>
     </div>
-    <footer class=" {bugreportVisible ? '' : 'hidden' /* TODO: this is borked must fix */} no-scrollbar absolute inset-x-0 bottom-0 flex h-[50dvh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white">
-        <textarea class="min-h-36 w-full rounded bg-eerie_black p-1" placeholder="bug description"></textarea>
-        <button class="mt-auto w-full rounded bg-gunmetal p-2 font-bold" >Submit</button>
+    <footer
+        class=" {bugreportVisible
+            ? ''
+            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex h-[50dvh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
+    >
+        <textarea
+            class="min-h-36 w-full rounded bg-eerie_black p-1"
+            placeholder="bug description"
+        ></textarea>
+        <button class="mt-auto w-full rounded bg-gunmetal p-2 font-bold"
+            >Submit</button
+        >
     </footer>
 </div>
