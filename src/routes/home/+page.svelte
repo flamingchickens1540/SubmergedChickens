@@ -4,7 +4,7 @@
 
     let name = "<insert name>"
 
-    let bugreportVisible = false
+    let bugReportVisible = false
 </script>
 
 <div class="flex w-full flex-col gap-2 p-2">
@@ -47,14 +47,14 @@
         <button
             class="rounded bg-gunmetal p-2"
             on:click={() => {
-                bugreportVisible = !bugreportVisible
+                bugReportVisible = !bugReportVisible
             }}>Bug Report</button
         >
     </div>
     <footer
-        class=" {bugreportVisible
+        class=" {bugReportVisible
             ? ''
-            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex h-[50dvh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
+            : 'hidden'} no-scrollbar absolute inset-x-0 bottom-0 flex min-h-[30svh] max-h-[80svh] w-dvw flex-col items-center gap-3 overflow-y-scroll rounded-t-lg bg-gunmetal p-3 text-white"
     >
         <textarea
             class="min-h-36 w-full rounded bg-eerie_black p-1"
