@@ -54,6 +54,11 @@
     )
 </script>
 
+<svelte:head>
+    <!-- eerie black + 10% eminence -->
+    <meta name="theme-color" content="#241e26" />
+</svelte:head>
+
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
 >

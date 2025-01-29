@@ -47,6 +47,11 @@
     )
 </script>
 
+<svelte:head>
+    <!-- eerie black + 10% steel blue -->
+    <meta name="theme-color" content="#1f262b" />
+</svelte:head>
+
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-steel_blue bg-mix-steel_blue bg-mix-amount-10"
 >
