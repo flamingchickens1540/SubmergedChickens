@@ -19,10 +19,12 @@
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
-            case "left":
-                goto("/match-scout/postmatch")
             case "right":
                 goto("/match-scout/auto")
+                break
+            case "left":
+                goto("/match-scout/postmatch")
+                break
         }
     }
 
