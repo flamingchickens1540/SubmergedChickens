@@ -110,7 +110,7 @@
         }}>Show Timeline</button
     >
     <Timeline
-        bg={"bg-eerie_black bg-mix-amount-10 bg-mix-amount-10"}
+        bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
         bind:actions
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
