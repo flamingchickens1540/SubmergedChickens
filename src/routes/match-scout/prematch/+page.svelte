@@ -4,13 +4,14 @@
     import Header from "../Header.svelte"
 
     const swipeHandler = (event: SwipeCustomEvent) => {
-        if ((event.detail.direction = "left")) goto("/match-scout/tele")
+        if ((event.detail.direction = "left")) goto("/match-scout/auto")
     }
 </script>
 
 <div
     use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
     onswipe={swipeHandler}
+    class="min-h-svh"
 >
     <Header
         game_stage={"Prematch"}

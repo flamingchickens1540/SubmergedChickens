@@ -11,6 +11,7 @@
 <div
     use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
     onswipe={swipeHandler}
+    class="min-h-svh"
 >
     <Header
         game_stage={"Postmatch"}
