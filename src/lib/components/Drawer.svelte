@@ -2,9 +2,16 @@
     let {
         children,
         displaying = $bindable(),
+        scrollbar = false,
         bg = "bg-eerie_black",
+        gap = "gap-2",
+        p = "p-2",
+        text = "text-white",
+        max_h = "max-h-[80svh]",
+        min_h = "min-h-[40svh]",
     }: {
         displaying: boolean
+        scrollbar: boolean
         bg: String
     } = $props()
 </script>
@@ -20,7 +27,9 @@
     }}
 >
     <div
-        class="no-scrollbar absolute inset-x-0 bottom-0 flex max-h-[80svh] min-h-[40svh] w-dvw flex-col items-center gap-2 overflow-y-scroll rounded-t-lg {bg} p-2 text-white"
+        class="{!scrollbar
+            ? 'no-scrollbar'
+            : ''} absolute inset-x-0 bottom-0 flex {min_h} {max_h} w-dvw flex-col items-center {gap} overflow-y-scroll rounded-t-lg {bg} {p} {text}"
     >
         {#if children}
             {@render children()}
