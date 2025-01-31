@@ -28,7 +28,6 @@
     <span class="align-right">
         {event}
     </span>
-
 </header>
 <div class="flex flex-grow flex-col gap-4 p-4">
     <button class="mt-auto rounded bg-gunmetal p-2 text-lg font-semibold">
