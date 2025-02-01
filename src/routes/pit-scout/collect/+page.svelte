@@ -30,9 +30,14 @@
     </span>
 </header>
 <div class="flex flex-grow flex-col gap-4 p-4">
-    <button class="mt-auto rounded bg-gunmetal p-2 text-lg font-semibold">
-        Upload Image
-    </button>
+    <input
+        class="w-full rounded bg-gunmetal p-2 text-lg font-semibold"
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        value="Upload Images"
+        multiple
+    />
+    <!-- TODO: fix, is wonky :( -->
 </div>
 
 <div class="flex flex-col gap-2 p-2">
