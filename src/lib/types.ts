@@ -28,18 +28,6 @@ export type TeleActionData = {
     success: boolean
 }
 
-// The TeamMatch sent to the database
-export type TeamMatchData = {
-    scout_id: string
-    team_key: string
-    match_key: string
-
-    timeline: Timeline
-    end: EndAction
-    driver_skill: 1 | 2 | 3 | 4 | 5
-    notes: string
-}
-
 export type Timeline = {
     auto: AutoActionData[]
     tele: TeleActionData[]

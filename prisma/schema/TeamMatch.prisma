@@ -1,5 +1,7 @@
 model TeamMatch {
-  id                               Int          @id @default(autoincrement())
+  @@unique(name: "id_key", fields: [match_key, team_number])
+  id_num                           Int          @id @default(autoincrement())
+  match_key                        String
   team                             Team         @relation(fields: [team_number], references: [number])
   team_number                      Int
   event_key                        String
