@@ -46,15 +46,10 @@
     "echarts": "^5.5.1",
     "echarts-stat": "^1.2.0",
     "lucide-svelte": "^0.469.0",
-<<<<<<< HEAD
-    "pg": "^8.13.1",
-    "prisma": "^6.3.0"
-=======
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tailwindcss-color-mix": "^0.0.9",
     "svelte-gestures": "^5.1.3"
->>>>>>> 1cbba2907e9ca8e6b1dbd6ed50008c8f09f3db2b
   },
   "prisma": {
     "seed": "bun ./prisma/seed.ts"
