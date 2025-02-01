@@ -1,4 +1,4 @@
-import { json } from '@sveltejs/kit';
+import { json } from "@sveltejs/kit"
 // import type { RequestHandler } from './$types';
 // import { submitTeamMatch } from '$lib/scripts/submit';
 // import type { TeamMatch } from '@prisma/client'
