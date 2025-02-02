@@ -1,4 +1,6 @@
 <script lang="ts">
+    import type { Snippet } from "svelte"
+
     let {
         children,
         displaying = $bindable(),
@@ -10,9 +12,15 @@
         max_h = "max-h-[80svh]",
         min_h = "min-h-[40svh]",
     }: {
+        children?: Snippet<[]>
         displaying: boolean
         scrollbar: boolean
-        bg: String
+        bg: string
+        gap: string
+        p: string
+        text: string
+        max_h: string
+        min_h: string
     } = $props()
 </script>
 

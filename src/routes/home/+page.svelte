@@ -2,10 +2,19 @@
     import Drawer from "$lib/components/Drawer.svelte"
     import { FlaskRound, LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
+    import { browser } from "$app/environment"
+    import { onMount } from "svelte"
 
-    let name = "<insert name>"
+    let name = $state("Hello")
 
-    let bugReportVisible = false
+    onMount(() => {
+        let username = ((browser && localStorage.getItem("username")) ??
+            "Hello Scout") as string
+        const first = username.charAt(0).toUpperCase()
+        name = "Hello " + first + username.slice(1)
+    })
+
+    let bugReportVisible = $state(false)
 </script>
 
 <div class="flex w-full flex-col gap-2 p-2">
@@ -17,48 +26,44 @@
     <div class="grid gap-2 text-xl font-semibold">
         <button
             class="rounded bg-gunmetal p-2"
-            on:click={() => {
+            onclick={() => {
                 goto("pit-display")
             }}>Pit Display</button
         >
         <button
             class="rounded bg-gunmetal p-2"
-            on:click={() => {
+            onclick={() => {
                 goto("qual-scout")
             }}>Pit Scout</button
         >
         <button
             class="rounded bg-gunmetal p-2"
-            on:click={() => {
-                goto("match-scout/prematch")
+            onclick={() => {
+                goto("queue")
             }}>Match Scout</button
         >
         <button
             class="rounded bg-gunmetal p-2"
-            on:click={() => {
-                goto("admin")
-            }}>Admin</button
-        >
-        <button
-            class="rounded bg-gunmetal p-2"
-            on:click={() => {
+            onclick={() => {
                 goto("analysis")
             }}>Analysis</button
         >
         <button
             class="rounded bg-gunmetal p-2"
-            on:click={() => {
+            onclick={() => {
                 bugReportVisible = !bugReportVisible
             }}>Bug Report</button
         >
     </div>
     <Drawer bind:displaying={bugReportVisible}>
-        <textarea
-            class="w-full flex-grow rounded bg-eerie_black p-1"
-            placeholder="bug description"
-        ></textarea>
-        <button class="w-full rounded bg-eerie_black p-2 font-bold"
-            >Submit</button
-        >
+        <div class="grid grid-rows-2 place-items-center">
+            <textarea
+                class="w-full flex-grow rounded bg-eerie_black p-1 text-center"
+                placeholder="Bug Description"
+            ></textarea>
+            <button class="w-full rounded bg-eerie_black p-2 font-bold"
+                >Submit</button
+            >
+        </div>
     </Drawer>
 </div>
