@@ -55,15 +55,13 @@
             }}>Bug Report</button
         >
     </div>
-    <Drawer bind:displaying={bugReportVisible}>
-        <div class="grid grid-rows-2 place-items-center">
-            <textarea
-                class="w-full flex-grow rounded bg-eerie_black p-1 text-center"
-                placeholder="Bug Description"
-            ></textarea>
-            <button class="w-full rounded bg-eerie_black p-2 font-bold"
-                >Submit</button
-            >
-        </div>
+    <Drawer bind:displaying={bugReportVisible} bg="bg-gunmetal">
+        <textarea
+            class="w-full flex-grow rounded bg-eerie_black p-1"
+            placeholder="Bug Description"
+        ></textarea>
+        <button class="w-full rounded bg-eerie_black p-2 font-bold"
+            >Submit</button
+        >
     </Drawer>
 </div>
