@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply bg-eerie_black font-sans text-white accent-xanthous;
+}
+
 @layer base {
     :root {
         --background: 0 0% 100%;
