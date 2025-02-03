@@ -2,6 +2,7 @@
     import LineChart from "@/components/charts/LineChart.svelte"
     import BarChart from "@/components/charts/BarChart.svelte"
 </script>
+
 <BarChart
     data={[
         {
