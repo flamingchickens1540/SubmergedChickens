@@ -1,4 +1,14 @@
-import { PrismaClient, Event, EventState, User, Tag, TeamEvent, TeamMatch, Comparison, Team } from "@prisma/client"
+import {
+    PrismaClient,
+    Event,
+    EventState,
+    User,
+    Tag,
+    TeamEvent,
+    TeamMatch,
+    Comparison,
+    Team,
+} from "@prisma/client"
 import { faker } from "@faker-js/faker"
 
 const prisma = new PrismaClient()
@@ -19,7 +29,7 @@ async function seedEvent() {
     await prisma.event.createMany({
         data: {
             event_key: "2025demo",
-        }
+        },
     })
 }
 
@@ -29,7 +39,7 @@ async function seedEventState() {
             id: 0,
             event_key: "2025demo",
             stream_url: "https://www.twitch.tv/firstinspires",
-        }
+        },
     })
 }
 
@@ -63,7 +73,7 @@ async function seedTags() {
         damage: ["lost-comms", "bumper-damage", "mech-fail"],
     }
 
-    let id = 0;
+    let id = 0
     for (let key in category_roles) {
         for (let i = 0; i < category_roles[key].length; i++) {
             tags.push({
