@@ -14,8 +14,6 @@ import { faker } from "@faker-js/faker"
 const prisma = new PrismaClient()
 
 async function main() {
-    console.log("ERROR: Database seeding needs to be implemented!")
-
     await clearDB()
 
     await seedEvent()
@@ -91,18 +89,18 @@ async function seedTags() {
 
 async function seedTeams() {
     const teams: Team[] = []
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1100; i <= 1116; i++) {
         teams.push({
             number: i,
-            name: faker.company.name(),
+            name: faker.commerce.productName() + "s",
         })
     }
     return await prisma.team.createMany({ data: teams })
 }
 
 async function clearDB() {
-    await prisma.event.deleteMany()
     await prisma.eventState.deleteMany()
+    await prisma.event.deleteMany()
     await prisma.user.deleteMany()
     await prisma.tag.deleteMany()
     await prisma.team.deleteMany()
