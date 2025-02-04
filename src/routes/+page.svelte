@@ -12,7 +12,7 @@
     onMount(() => {
         const isLoggedIn = browser && window.localStorage.getItem("username")
         if (isLoggedIn) {
-            goto("/homepage")
+            goto("/home")
         }
     })
 
@@ -29,7 +29,7 @@
 
     socket.on("allowed_user", () => {
         browser && window.localStorage.setItem("username", inputname)
-        goto("/homepage")
+        goto("/home")
     })
 </script>
 

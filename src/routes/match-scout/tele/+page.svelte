@@ -15,6 +15,19 @@
     import Incap from "../Incap.svelte"
     import Timeline from "../Timeline.svelte"
 
+    import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+
+    const swipeHandler = (event: SwipeCustomEvent) => {
+        switch (event.detail.direction) {
+            case "right":
+                goto("/match-scout/auto")
+                break
+            case "left":
+                goto("/match-scout/postmatch")
+                break
+        }
+    }
+
     let displaying_timeline = $state(false)
     let furthest_auto_index = $state(0)
 
@@ -41,6 +54,11 @@
     )
 </script>
 
+<svelte:head>
+    <!-- eerie black + 10% eminence -->
+    <meta name="theme-color" content="#241e26" />
+</svelte:head>
+
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
 >
@@ -54,7 +72,11 @@
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
-            <div class="grid flex-grow gap-2">
+            <div
+                use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
+                onswipe={swipeHandler}
+                class="grid flex-grow gap-2"
+            >
                 <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
                 <button class="rounded {bg_color}" onclick={score_algae}
@@ -88,7 +110,7 @@
         }}>Show Timeline</button
     >
     <Timeline
-        bg={"bg-eerie_black bg-mix-amount-10 bg-mix-amount-10"}
+        bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
         bind:actions
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
