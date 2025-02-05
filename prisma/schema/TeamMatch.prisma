@@ -20,7 +20,6 @@ model TeamMatch {
   auto_score_net_succeed           Int
   auto_clean_l2_succeed            Int
   auto_clean_l3_succeed            Int
-  auto_clean_succeed                  Int
   auto_intake_coral_preplaced_fail    Int
   auto_intake_algae_preplaced_fail    Int
   auto_intake_station_fail         Int

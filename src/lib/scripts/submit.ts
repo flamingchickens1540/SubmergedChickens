@@ -14,7 +14,7 @@ export async function submitTeamMatch(tm: Omit<TeamMatch, "id_num">) {
     })
 }
 
-export async function submitPairwise(pw: Comparison) {
+export async function submitPairwise(pw: Omit<Comparison, "id">) {
     await prisma.comparison.create({
         data: pw,
     })
