@@ -36,17 +36,17 @@ export type Timeline = {
 }
 
 export type UncountedTeamMatch = {
-    match_key : string;
-    team_number : number; 
-    event_key : string; 
-    auto_start_location: AutoStart;
-    auto_leave_start : boolean;
-    timeline : Timeline;
-    endgame: Endgame;
-    skill : number;
-    notes : string; 
-    incap_time : number[];
-    user_id : number; 
+    match_key: string
+    team_number: number
+    event_key: string
+    auto_start_location: AutoStart
+    auto_leave_start: boolean
+    timeline: Timeline
+    endgame: Endgame
+    skill: number
+    notes: string
+    incap_time: number[]
+    user_id: number
 }
 
 export type EndAction = "DeepClimb" | "ShallowClimb" | "Failed" | "None"
