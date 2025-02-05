@@ -1,8 +1,10 @@
+import type { AutoStart, Endgame } from "@prisma/client"
+
 // Match Scout Page State Enums
 export type TelePageState =
     | "Verify"
     | "ScoreAlgae"
-    | "RemoveAlgae"
+    | "CleanAlgae"
     | "ScoreCoral"
     | "Incap"
     | "None"
@@ -10,7 +12,7 @@ export type AutoPageState = TelePageState | "Intake"
 
 export type TeleActionState =
     | `ScoreAlgae${"Processor" | "Net"}`
-    | `RemoveAlgae${"L2" | "L3"}`
+    | `CleanAlgae${"L2" | "L3"}`
     | `ScoreCoral${"L1" | "L2" | "L3" | "L4"}`
     | "Incap"
     | "None"
@@ -31,6 +33,20 @@ export type TeleActionData = {
 export type Timeline = {
     auto: AutoActionData[]
     tele: TeleActionData[]
+}
+
+export type UncountedTeamMatch = {
+    match_key : string;
+    team_number : number; 
+    event_key : string; 
+    auto_start_location: AutoStart;
+    auto_leave_start : boolean;
+    timeline : Timeline;
+    endgame: Endgame;
+    skill : number;
+    notes : string; 
+    incap_time : number[];
+    user_id : number; 
 }
 
 export type EndAction = "DeepClimb" | "ShallowClimb" | "Failed" | "None"
