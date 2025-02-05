@@ -33,7 +33,7 @@
         <button
             class="rounded bg-gunmetal p-2"
             onclick={() => {
-                goto("qual-scout")
+                goto("pit-scout/teamlist")
             }}>Pit Scout</button
         >
         <button
