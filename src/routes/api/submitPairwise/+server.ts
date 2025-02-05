@@ -4,6 +4,6 @@ import { submitPairwise } from "$lib/scripts/submit"
 import type { Comparison } from "@prisma/client"
 
 export const POST: RequestHandler = async ({ request }: any) => {
-    const comp : Omit<Comparison, "id"> = await request.json()
+    const comp: Omit<Comparison, "id"> = await request.json()
     return json(await submitPairwise(comp))
 }
