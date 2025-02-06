@@ -14,7 +14,7 @@
         <!-- svelte-ignore event_directive_deprecated -->
         <button on:click={() => (value = i + 1)}>
             <svg
-                width="60"
+                width="80%"
                 height="60"
                 viewBox="0 0 45 45"
                 class="mx-3 shrink-0 fill-xanthous"
@@ -31,7 +31,7 @@
         <!-- svelte-ignore event_directive_deprecated -->
         <button on:click={() => (value += i + 1)}>
             <svg
-                width="60"
+                width="80%"
                 height="60"
                 viewBox="0 0 45 45"
                 class="mx-3 shrink-0 fill-gunmetal"
