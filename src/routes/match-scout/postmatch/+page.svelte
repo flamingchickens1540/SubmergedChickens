@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { AutoAction, AutoActionData, EndAction } from "$lib/types"
+    import type { AutoActionData, EndAction } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import Rating from "@/components/Rating.svelte"
@@ -14,7 +14,7 @@
 
     let displaying_timeline = $state(false)
     let actions: AutoActionData[] = $state([])
-    let furthest_auto_index = 0
+    let furthest_auto_index = $state(0)
 
     let possibleEndActions: EndAction[] = [
         "DeepClimb",
