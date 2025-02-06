@@ -17,7 +17,7 @@
 </script>
 
 <div
-    class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
+    class="flex min-h-dvh flex-col"
     use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
     onswipe={(event: SwipeCustomEvent) => {
         if ((event.detail.direction = "right")) goto("/match-scout/postmatch")
