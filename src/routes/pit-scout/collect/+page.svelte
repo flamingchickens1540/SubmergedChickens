@@ -30,11 +30,11 @@
     </span>
 </header>
 <div class="flex flex-col gap-4 p-4">
-    <label class="w-full rounded bg-gunmetal p-4 text-lg text-center font-semibold">
-        <input
-            class="hidden"
-        />
-        Upload Images 
+    <label
+        class="w-full rounded bg-gunmetal p-4 text-center text-lg font-semibold"
+    >
+        <input class="hidden" />
+        Upload Images
     </label>
     <!-- TODO: fix, is wonky :( -->
 </div>
