@@ -36,7 +36,6 @@
         <input class="hidden" />
         Upload Images
     </label>
-    <!-- TODO: fix, is wonky :( -->
 </div>
 
 <div class="flex flex-col gap-2 p-2">
@@ -54,56 +53,82 @@
     {/each}
 </div>
 
-<div class="flex flex-col gap-2 p-2">
-    <span class="font-heading text-xl font-semibold">Capablilites</span>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={l1} />
-        <span class="font-heading text-lg font-semibold">L1</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={l2} />
-        <span class="font-heading text-lg font-semibold">L2</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={l3} />
-        <span class="font-heading text-lg font-semibold">L3</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={l4} />
-        <span class="font-heading text-lg font-semibold">L4</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={clean} />
-        <span class="font-heading text-lg font-semibold">Clean</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={processor} />
-        <span class="font-heading text-lg font-semibold">Processor</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={net} />
-        <span class="font-heading text-lg font-semibold">Net</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={source} />
-        <span class="font-heading text-lg font-semibold">Source</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={ground} />
-        <span class="font-heading text-lg font-semibold">Ground</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={reef} />
-        <span class="font-heading text-lg font-semibold">Reef</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={shallow} />
-        <span class="font-heading text-lg font-semibold">Shallow</span>
-    </label>
-    <label class="flex gap-1 p-2">
-        <input type="checkbox" bind:checked={deep} />
-        <span class="font-heading text-lg font-semibold">Deep</span>
-    </label>
+<span class="font-heading text-xl font-semibold">Capablilites</span>
+<div class="m-2 grid grid-cols-2 gap-2 text-center text-white">
+    <button
+        class="flex h-56 gap-1 p-2 {l1 ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            l1 = !l1
+        }}>L1</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {l2 ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            l2 = !l2
+        }}>L2</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {l3 ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            l3 = !l3
+        }}>L3</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {l4 ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            l4 = !l4
+        }}>L4</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {clean ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            clean = !clean
+        }}>Clean</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {processor ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            processor = !processor
+        }}>Processor</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {net ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            net = !net
+        }}>Net</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {source ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            source = !source
+        }}>Source</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {ground ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            ground = !ground
+        }}>Ground</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {reef ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            reef = !reef
+        }}>Reef</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {shallow ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            shallow = !shallow
+        }}>Shallow</button
+    >
+    <button
+        class="flex h-56 gap-1 p-2 {deep ? 'bg-green-500' : ''} rounded"
+        onclick={() => {
+            deep = !deep
+        }}
+    >
+        Deep
+    </button>
 </div>
 
 <div class="p-2">
