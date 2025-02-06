@@ -32,11 +32,12 @@
         <span class="font-heading text-xl font-semibold">Notes</span>
 
         <textarea
-            class="border-red w-full flex-grow rounded bg-eerie_black"
+            class="border-red w-full flex-grow rounded bg-gunmetal p-1"
+            placeholder="notes..."
             bind:value={notes}
         ></textarea>
 
-        <button class="mt-auto rounded bg-gunmetal p-5 text-lg font-semibold">
+        <button class="mt-auto rounded bg-gunmetal py-4 text-lg font-semibold">
             Submit
         </button>
     </div>
