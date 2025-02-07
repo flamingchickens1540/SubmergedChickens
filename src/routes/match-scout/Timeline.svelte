@@ -12,7 +12,7 @@
         actions: AutoActionData[] // TODO Action[]
         furthest_auto_index: number
         displaying: boolean
-        bg: String
+        bg: string
     } = $props()
 
     /// Determine if currying is the right solution or if we should use a binding
