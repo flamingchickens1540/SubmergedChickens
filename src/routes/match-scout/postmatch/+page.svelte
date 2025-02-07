@@ -27,7 +27,7 @@
 </script>
 
 <div
-    class="flex min-h-dvh flex-col"
+    class="flex h-dvh flex-col"
     use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
     onswipe={(event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
@@ -46,7 +46,7 @@
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
     />
-    <div class="flex flex-grow flex-col gap-4 p-4">
+    <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>
         <RadioGroup bind:value={endState} labels={possibleEndActions}
         ></RadioGroup>
