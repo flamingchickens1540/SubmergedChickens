@@ -17,7 +17,7 @@
                 width="80%"
                 height="60"
                 viewBox="0 0 45 45"
-                class="mx-3 shrink-0 fill-xanthous"
+                class="m-auto shrink-0 fill-xanthous"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path
@@ -34,7 +34,7 @@
                 width="80%"
                 height="60"
                 viewBox="0 0 45 45"
-                class="mx-3 shrink-0 fill-gunmetal"
+                class="m-auto shrink-0 fill-gunmetal"
                 xmlns="http://www.w3.org/2000/svg"
             >
                 <path
