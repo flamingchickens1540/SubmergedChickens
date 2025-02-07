@@ -6,57 +6,57 @@ model TeamMatch {
   event_key                           String
   event                               Event        @relation(fields: [event_key], references: [event_key])
   actions                             ActionData[]
-  auto_start_location                 AutoStart
-  auto_leave_start                    Boolean
-  auto_intake_coral_preplaced_succeed Int
-  auto_intake_algae_preplaced_succeed Int
-  auto_intake_station_succeed      Int
-  auto_intake_reef_succeed         Int
-  auto_score_l1_succeed            Int
-  auto_score_l2_succeed            Int
-  auto_score_l3_succeed            Int
-  auto_score_l4_succeed            Int
-  auto_score_processor_succeed     Int
-  auto_score_net_succeed           Int
-  auto_clean_l2_succeed            Int
-  auto_clean_l3_succeed            Int
-  auto_intake_coral_preplaced_fail    Int
-  auto_intake_algae_preplaced_fail    Int
-  auto_intake_station_fail         Int
-  auto_intake_reef_fail            Int
-  auto_score_l1_fail               Int
-  auto_score_l2_fail               Int
-  auto_score_l3_fail               Int
-  auto_score_l4_fail               Int
-  auto_score_processor_fail        Int
-  auto_score_net_fail              Int
-  auto_clean_l2_fail               Int
-  auto_clean_l3_fail               Int
-  tele_score_l1_succeed            Int
-  tele_score_l2_succeed            Int
-  tele_score_l3_succeed            Int
-  tele_score_l4_succeed            Int
-  tele_score_processor_succeed     Int
-  tele_score_net_succeed           Int
-  tele_clean_l2_succeed            Int
-  tele_clean_l3_succeed            Int
-  tele_score_l1_fail               Int
-  tele_score_l2_fail               Int
-  tele_score_l3_fail               Int
-  tele_score_l4_fail               Int
-  tele_score_processor_fail        Int
-  tele_score_net_fail              Int
-  tele_clean_l2_fail               Int
-  tele_clean_l3_fail               Int
-  endgame                          Endgame
-  skill                            Int
+  auto_start_location                 AutoStart?
+  auto_leave_start                    Boolean?
+  auto_intake_coral_preplaced_succeed Int?
+  auto_intake_algae_preplaced_succeed Int?
+  auto_intake_station_succeed      Int?
+  auto_intake_reef_succeed         Int?
+  auto_score_l1_succeed            Int?
+  auto_score_l2_succeed            Int?
+  auto_score_l3_succeed            Int?
+  auto_score_l4_succeed            Int?
+  auto_score_processor_succeed     Int?
+  auto_score_net_succeed           Int?
+  auto_clean_l2_succeed            Int?
+  auto_clean_l3_succeed            Int?
+  auto_intake_coral_preplaced_fail    Int?
+  auto_intake_algae_preplaced_fail    Int?
+  auto_intake_station_fail         Int?
+  auto_intake_reef_fail            Int?
+  auto_score_l1_fail               Int?
+  auto_score_l2_fail               Int?
+  auto_score_l3_fail               Int?
+  auto_score_l4_fail               Int?
+  auto_score_processor_fail        Int?
+  auto_score_net_fail              Int?
+  auto_clean_l2_fail               Int?
+  auto_clean_l3_fail               Int?
+  tele_score_l1_succeed            Int?
+  tele_score_l2_succeed            Int?
+  tele_score_l3_succeed            Int?
+  tele_score_l4_succeed            Int?
+  tele_score_processor_succeed     Int?
+  tele_score_net_succeed           Int?
+  tele_clean_l2_succeed            Int?
+  tele_clean_l3_succeed            Int?
+  tele_score_l1_fail               Int?
+  tele_score_l2_fail               Int?
+  tele_score_l3_fail               Int?
+  tele_score_l4_fail               Int?
+  tele_score_processor_fail        Int?
+  tele_score_net_fail              Int?
+  tele_clean_l2_fail               Int?
+  tele_clean_l3_fail               Int?
+  endgame                          Endgame?
+  skill                            Int?
   tags                             Tag[]
-  notes                            String
+  notes                            String?
   incap_time                       Float[]
-  userId                           Int
+  userId                           Int?
   ComparisonA                      Comparison[] @relation("TeamMatchA")
   ComparisonB                      Comparison[] @relation("TeamMatchB")
-  user                             User         @relation(fields: [userId], references: [id])
+  user                             User?         @relation(fields: [userId], references: [id])
   
   @@unique(name: "id_key", fields: [match_key, team_number])
 }
