@@ -1,7 +1,7 @@
 import { prisma } from "$lib/prisma"
-import { type TeamMatch, type Comparison } from "@prisma/client"
+import { type TeamMatch, type Comparison, type Tag } from "@prisma/client"
 
-export async function submitTeamMatch(tm: Omit<TeamMatch, "id_num">) {
+export async function submitTeamMatch(tm: Omit<TeamMatch, "id_num">, tags: Omit<Tag, "id">[]) {
     // Todo: confirm that omit works this way
     await prisma.teamMatch.update({
         where: {
@@ -10,7 +10,12 @@ export async function submitTeamMatch(tm: Omit<TeamMatch, "id_num">) {
                 team_number: tm.team_number,
             },
         },
-        data: tm,
+        data: {
+            ...tm,
+            tags: { 
+                create: tags
+            }
+        }
     })
 }
 

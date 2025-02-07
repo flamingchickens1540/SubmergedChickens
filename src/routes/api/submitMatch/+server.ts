@@ -1,7 +1,7 @@
 import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { submitTeamMatch } from "$lib/scripts/submit"
-import type { TeamMatch } from "@prisma/client"
+import type { TeamMatch, Tag } from "@prisma/client"
 import type {
     UncountedTeamMatch,
     Timeline,
@@ -11,7 +11,7 @@ import type {
 
 export const POST: RequestHandler = async ({ request }: any) => {
     const tm: UncountedTeamMatch = await request.json()
-    return json(await submitTeamMatch(count(tm)))
+    return json(await submitTeamMatch(count(tm), tm.tags))
 }
 
 function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
