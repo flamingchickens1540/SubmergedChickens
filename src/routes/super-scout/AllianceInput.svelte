@@ -3,7 +3,7 @@
     import TeamInput from "./TeamInput.svelte"
     import Sorting from "./Sorting.svelte"
 
-    let { alliance }: { alliance: string } = $props()
+    let { alliance, tagcategories }: { alliance: string, tagcategories: any } = $props()
 </script>
 
 <Resizable.Pane defaultSize={50}>
@@ -17,7 +17,7 @@
         <Resizable.Handle />
         <Resizable.Pane defaultSize={80}>
             <div class="flex h-full">
-                <TeamInput />
+                <TeamInput {tagcategories}/>
             </div>
         </Resizable.Pane>
     </Resizable.PaneGroup>
