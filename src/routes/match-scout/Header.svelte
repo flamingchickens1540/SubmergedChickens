@@ -9,11 +9,11 @@
         next_page,
         prev_page,
     }: {
-        team_name: String
-        game_stage: String
-        page_state: AutoPageState
-        prev_page: null | (() => void)
-        next_page: null | (() => void)
+        team_name?: String
+        game_stage?: String
+        page_state?: AutoPageState
+        prev_page?: (() => void)
+        next_page?: (() => void)
     } = $props()
 </script>
 

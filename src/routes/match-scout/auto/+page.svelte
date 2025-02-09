@@ -8,10 +8,25 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type { AutoPageState, AutoAction, AutoActionData } from "$lib/types"
+    import type { AutoPageState, AutoAction, AutoActionData, TeamMatchData } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+    import { localStore } from "@/localStore.svelte"
+
+    let matchData = $state(localStore<TeamMatchData>("matchData", {
+        scout_id: "",
+        team_key: "",
+        match_key: "",
+        timeline: {
+            auto: [],
+            tele: [],
+        },
+        end: "None",
+        driver_skill: 3,
+        notes: "",
+        tags: [],
+    }))
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
@@ -30,8 +45,6 @@
     let page_state: AutoPageState = $state("None")
     let action_state: AutoAction = $state("None")
 
-    let actions: AutoActionData[] = $state([])
-
     const score_algae = () => (page_state = "ScoreAlgae")
     const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
@@ -40,10 +53,10 @@
     const bg_color = "bg-steel_blue"
 
     const prev_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/prematch") : null
+        page_state == "None" ? () => goto("/match-scout/prematch") : undefined
     )
     const next_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/tele") : null
+        page_state == "None" ? () => goto("/match-scout/tele") : undefined
     )
 </script>
 
@@ -57,7 +70,7 @@
 >
     <Header
         game_stage={"Auto"}
-        team_name={1540}
+        team_name={matchData.value.team_key}
         {page_state}
         {prev_page}
         {next_page}
@@ -91,7 +104,7 @@
         {:else if page_state == "Intake"}
             <Intake bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions />
+            <SucceedFail bind:page_state bind:action_state bind:actions={matchData.value.timeline.auto} />
         {/if}
     </div>
 
@@ -104,7 +117,7 @@
     >
     <Timeline
         bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"}
-        bind:actions
+        bind:actions={matchData.value.timeline.auto}
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
     />
