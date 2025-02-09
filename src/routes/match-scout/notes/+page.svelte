@@ -1,24 +1,31 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { AutoAction, AutoActionData, EndAction, TeamMatchData } from "$lib/types"
+    import type {
+        AutoAction,
+        AutoActionData,
+        EndAction,
+        TeamMatchData,
+    } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
 
-    let matchData = $state(localStore<TeamMatchData>("matchData", {
-        scout_id: "",
-        team_key: "",
-        match_key: "",
-        timeline: {
-            auto: [],
-            tele: [],
-        },
-        end: "None",
-        driver_skill: 3,
-        notes: "",
-        tags: [],
-    }))
+    let matchData = $state(
+        localStore<TeamMatchData>("matchData", {
+            scout_id: "",
+            team_key: "",
+            match_key: "",
+            timeline: {
+                auto: [],
+                tele: [],
+            },
+            end: "None",
+            driver_skill: 3,
+            notes: "",
+            tags: [],
+        })
+    )
 
     let displaying_timeline = $state(false)
     let furthest_auto_index = $state(0)
@@ -58,7 +65,7 @@
         }}>Show Timeline</button
     >
     <Timeline
-        bind:actions={matchData.value.timeline.auto} 
+        bind:actions={matchData.value.timeline.auto}
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
     />

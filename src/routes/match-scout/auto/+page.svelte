@@ -8,25 +8,32 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type { AutoPageState, AutoAction, AutoActionData, TeamMatchData } from "$lib/types"
+    import type {
+        AutoPageState,
+        AutoAction,
+        AutoActionData,
+        TeamMatchData,
+    } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
 
-    let matchData = $state(localStore<TeamMatchData>("matchData", {
-        scout_id: "",
-        team_key: "",
-        match_key: "",
-        timeline: {
-            auto: [],
-            tele: [],
-        },
-        end: "None",
-        driver_skill: 3,
-        notes: "",
-        tags: [],
-    }))
+    let matchData = $state(
+        localStore<TeamMatchData>("matchData", {
+            scout_id: "",
+            team_key: "",
+            match_key: "",
+            timeline: {
+                auto: [],
+                tele: [],
+            },
+            end: "None",
+            driver_skill: 3,
+            notes: "",
+            tags: [],
+        })
+    )
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
@@ -104,7 +111,11 @@
         {:else if page_state == "Intake"}
             <Intake bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions={matchData.value.timeline.auto} />
+            <SucceedFail
+                bind:page_state
+                bind:action_state
+                bind:actions={matchData.value.timeline.auto}
+            />
         {/if}
     </div>
 

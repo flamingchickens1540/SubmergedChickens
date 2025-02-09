@@ -12,8 +12,8 @@
         team_name?: String
         game_stage?: String
         page_state?: AutoPageState
-        prev_page?: (() => void)
-        next_page?: (() => void)
+        prev_page?: () => void
+        next_page?: () => void
     } = $props()
 </script>
 

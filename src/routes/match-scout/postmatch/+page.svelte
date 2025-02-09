@@ -74,7 +74,7 @@
             <span class="font-heading text-xl font-semibold"
                 >{tagcategory.category}</span
             >
-            <CheckGroup labels={tagcategory.tags} bind:selected={selected}></CheckGroup>
+            <CheckGroup labels={tagcategory.tags} bind:selected></CheckGroup>
         {/each}
     </div>
 
