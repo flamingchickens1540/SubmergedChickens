@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type { TelePageState, AutoPageState, AutoAction } from "$lib/types"
+    import type { TelePageState, AutoPageState, AutoAction, TeleActionData, AutoActionData } from "$lib/types"
+    import UndoButton from "@/components/UndoButton.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
 
     let {
@@ -8,12 +9,14 @@
         page_state = $bindable(),
         next_page,
         prev_page,
+        timeline = $bindable()
     }: {
         team_name?: String
         game_stage?: String
         page_state?: AutoPageState
         prev_page?: () => void
         next_page?: () => void
+        timeline?: AutoActionData[] | TeleActionData[]
     } = $props()
 </script>
 
@@ -24,6 +27,7 @@
         {team_name}
     </span>
     <!-- TODO: Undo button -->
+     <UndoButton {timeline}/>
     <div class="align-item-center flex gap-2">
         <button
             onclick={prev_page}

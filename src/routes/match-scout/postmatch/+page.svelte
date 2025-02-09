@@ -60,6 +60,7 @@
         team_name={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
+        bind:timeline={matchData.value.timeline.tele}
     />
     <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>

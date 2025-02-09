@@ -42,6 +42,7 @@
         game_stage={"Notes"}
         team_name={"1540"}
         prev_page={() => goto("/match-scout/postmatch")}
+        bind:timeline={matchData.value.timeline.tele}
     />
     <div class="flex flex-grow flex-col gap-4 p-4">
         <span class="font-heading text-xl font-semibold">Notes</span>
