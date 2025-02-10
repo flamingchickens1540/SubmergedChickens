@@ -4,7 +4,7 @@
         selected: string[]
     }
 
-    let { labels, selected = [] }: Props = $props()
+    let { labels, selected = $bindable([]) }: Props = $props()
 
     function toggleLabel(label: string) {
         if (selected.includes(label)) {

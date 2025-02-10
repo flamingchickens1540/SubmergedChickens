@@ -1,19 +1,34 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { AutoAction, AutoActionData, EndAction } from "$lib/types"
+    import type {
+        AutoAction,
+        AutoActionData,
+        EndAction,
+        TeamMatchData,
+    } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
+    import { localStore } from "@/localStore.svelte"
+
+    let matchData = $state(
+        localStore<TeamMatchData>("matchData", {
+            scout_id: "",
+            team_key: "",
+            match_key: "",
+            timeline: {
+                auto: [],
+                tele: [],
+            },
+            end: "None",
+            driver_skill: 3,
+            notes: "",
+            tags: [],
+        })
+    )
 
     let displaying_timeline = $state(false)
-    let actions: AutoActionData[] = $state([])
-    let furthest_auto_index = 0
-
-    let notes = $state("")
-
-    $effect(() => {
-        console.log(notes)
-    })
+    let furthest_auto_index = $state(0)
 </script>
 
 <div
@@ -27,6 +42,7 @@
         game_stage={"Notes"}
         team_name={"1540"}
         prev_page={() => goto("/match-scout/postmatch")}
+        bind:timeline={matchData.value.timeline.tele}
     />
     <div class="flex flex-grow flex-col gap-4 p-4">
         <span class="font-heading text-xl font-semibold">Notes</span>
@@ -34,7 +50,7 @@
         <textarea
             class="border-red w-full flex-grow rounded bg-gunmetal p-1"
             placeholder="notes..."
-            bind:value={notes}
+            bind:value={matchData.value.notes}
         ></textarea>
 
         <button class="mt-auto rounded bg-gunmetal py-4 text-lg font-semibold">
@@ -50,7 +66,7 @@
         }}>Show Timeline</button
     >
     <Timeline
-        bind:actions
+        bind:actions={matchData.value.timeline.auto}
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
     />

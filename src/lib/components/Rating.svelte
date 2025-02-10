@@ -4,7 +4,7 @@
         value: number
     }
 
-    let { name, value = 3 }: RatingProps = $props()
+    let { name, value = $bindable(3) }: RatingProps = $props()
 </script>
 
 <span class="font-heading text-xl font-semibold">Driver Skill</span>
