@@ -18,7 +18,7 @@ export type TeleActionState =
     | "None"
 export type AutoAction =
     | TeleActionState
-    | `Intake${`Coral${"Station" | "Preplaced" | "Floor"}` | `Algae${"Preplaced" | "Reef" | "Floor"}`}`
+    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
     | "Leave"
 
 export type AutoActionData = {
