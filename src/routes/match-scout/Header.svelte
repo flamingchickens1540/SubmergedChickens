@@ -17,9 +17,9 @@
         prev_page,
         timeline = $bindable(),
     }: {
-        team_name?: String
-        game_stage?: String
-        page_state?: AutoPageState
+        team_name: String
+        game_stage: String
+        page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
         timeline?: AutoActionData[] | TeleActionData[]
