@@ -1,25 +1,38 @@
 <script lang="ts">
     import LineChart from "@/components/charts/LineChart.svelte"
 
-    let teams: Array<{team: number, rank: string, record: string, rp: number}> = [
-		{ team: 1540, rank: "rank1", record: "record1", rp: 8 },
-        { team: 1844, rank: "rank2", record: "record2", rp: 2 }
-	]
+    let teams: Array<{
+        team: number
+        rank: string
+        record: string
+        rp: number
+    }> = [
+        { team: 1540, rank: "rank1", record: "record1", rp: 8 },
+        { team: 1844, rank: "rank2", record: "record2", rp: 2 },
+    ]
 
     let averagePoints: number = 30
 </script>
+
 <div
-    class="m-auto grid w-full h-96 grid-cols-2 grid-rows-4 gap-1 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid h-96 w-full grid-cols-2 grid-rows-4 gap-1 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
 >
-    <div class="rounded border border-solid border-white p-2 col-start-1 row-span-4 text-center">
+    <div
+        class="col-start-1 row-span-4 rounded border border-solid border-white p-2 text-center"
+    >
         Teams
         {#each teams as teams}
-            <div class="bg-gunmetal rounded border border-solid border-white p-2 mb-2">
-                Team: {teams.team} | Rank: {teams.rank} | Record: {teams.record} | RP: {teams.rp}
+            <div
+                class="mb-2 rounded border border-solid border-white bg-gunmetal p-2"
+            >
+                Team: {teams.team} | Rank: {teams.rank} | Record: {teams.record}
+                | RP: {teams.rp}
             </div>
         {/each}
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-2 col-span-2 row-span-2">
+    <div
+        class="col-span-2 col-start-2 row-span-2 rounded border border-solid border-white p-2"
+    >
         <LineChart
             data={[
                 {
@@ -42,16 +55,20 @@
             height={"100%"}
         />
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-2 row-start-3 row-span-2 text-center content-center">
+    <div
+        class="col-start-2 row-span-2 row-start-3 content-center rounded border border-solid border-white p-2 text-center"
+    >
         Average Points
         <p class="text-3xl">{averagePoints}</p>
-
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-3 row-start-3 row-span-2">
+    <div
+        class="col-start-3 row-span-2 row-start-3 rounded border border-solid border-white p-2"
+    >
         Robot photo
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-4 row-span-4">
+    <div
+        class="col-start-4 row-span-4 rounded border border-solid border-white p-2"
+    >
         "choose data"
-        
     </div>
 </div>
