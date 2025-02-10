@@ -32,8 +32,9 @@
     <span class="">
         {team_name}
     </span>
-    <!-- TODO: Undo button -->
-    <UndoButton {timeline} />
+    {#if timeline}
+        <UndoButton {timeline} />
+    {/if}
     <div class="align-item-center flex gap-2">
         <button
             onclick={prev_page}
@@ -43,7 +44,9 @@
         </button>
         <span
             >{page_state == "None" || page_state == null
-                ? game_stage
+                ? game_stage == "Prematch"
+                    ? "Pre"
+                    : game_stage.slice(0, 4)
                 : page_state}</span
         >
         <button
