@@ -4,7 +4,7 @@ const info = (s: string) => console.log(`\x1b[32m ${s} \x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
 let robot_queue: [string, "red" | "blue"][] = []
-let curr_match_key: string = ""
+let curr_match_key: string = "qm1"
 
 const webSocketServer = {
     name: "webSocketServer",
@@ -77,7 +77,13 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
+                console.log("team_dta: " + team_data)
                 io.to("admin_room").emit("robot_left_queue", team_data)
+
+                console.log("match: " + curr_match_key)
+                console.log("team: " + team_data[0])
+                console.log("color: " + team_data[1])
+
                 socket.emit("time_to_scout", [curr_match_key, ...team_data])
             })
 
@@ -144,6 +150,7 @@ const webSocketServer = {
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
                     robot_queue.push(...teams)
+                    console.log("robot_queue:" + robot_queue)
 
                     // Update all connected sockets with new match info (for cosmetic purposes)
                     io.emit("new_match", match_key)
