@@ -11,11 +11,29 @@
         TelePageState,
         TeleActionState,
         TeleActionData,
+        TeamMatchData,
     } from "$lib/types"
     import Incap from "../Incap.svelte"
     import Timeline from "../Timeline.svelte"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+    import { localStore } from "@/localStore.svelte"
+
+    let matchData = $state(
+        localStore<TeamMatchData>("matchData", {
+            scout_id: "",
+            team_key: "",
+            match_key: "",
+            timeline: {
+                auto: [],
+                tele: [],
+            },
+            end: "None",
+            driver_skill: 3,
+            notes: "",
+            tags: [],
+        })
+    )
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
@@ -34,10 +52,8 @@
     let page_state: TelePageState = $state("None")
     let action_state: TeleActionState = $state("None")
 
-    let actions: TeleActionData[] = $state([])
-
     const incap = () => {
-        actions.push({ action: "Incap", success: true })
+        matchData.value.timeline.tele.push({ action: "Incap", success: true })
         page_state = "Incap"
     }
     const score_algae = () => (page_state = "ScoreAlgae")
@@ -47,10 +63,10 @@
     const bg_color = "bg-eminence"
 
     const prev_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/auto") : null
+        page_state == "None" ? () => goto("/match-scout/auto") : undefined
     )
     const next_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/postmatch") : null
+        page_state == "None" ? () => goto("/match-scout/postmatch") : undefined
     )
 </script>
 
@@ -64,10 +80,11 @@
 >
     <Header
         game_stage={"Tele"}
-        team_name={1540}
+        team_name={matchData.value.team_key}
         {page_state}
         {prev_page}
         {next_page}
+        bind:timeline={matchData.value.timeline.tele}
     />
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
@@ -96,7 +113,11 @@
         {:else if page_state == "ScoreCoral"}
             <ScoreCoral bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Verify"}
-            <SucceedFail bind:page_state bind:action_state bind:actions />
+            <SucceedFail
+                bind:page_state
+                bind:action_state
+                bind:actions={matchData.value.timeline.tele}
+            />
         {:else if page_state == "Incap"}
             <Incap bind:page_state bind:action_state {bg_color} />
         {/if}
@@ -111,7 +132,7 @@
     >
     <Timeline
         bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
-        bind:actions
+        bind:actions={matchData.value.timeline.tele}
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
     />
