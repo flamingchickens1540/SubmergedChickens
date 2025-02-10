@@ -15,23 +15,30 @@
     })
 
     let bugReportVisible = $state(false)
+
+    const logout = () => {
+        localStorage.removeItem("username")
+        goto("/")
+    }
+
+    const disable = "opacity-30 pointer-events-none"
 </script>
 
-<div class="flex w-full flex-col gap-2 p-2">
+<div class="flex h-full w-full flex-grow flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
-        <button class="rounded p-1"><LogOut /></button>
+        <button class="rounded p-1" onclick={logout}><LogOut /></button>
         <span class="font-semibold">{name}</span>
         <button class="rounded p-1"><Settings /></button>
     </div>
-    <div class="grid gap-2 text-xl font-semibold">
+    <div class="grid flex-grow gap-2 text-xl font-semibold">
         <button
-            class="rounded bg-gunmetal p-2"
+            class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
                 goto("pit-view")
             }}>Pit Display</button
         >
         <button
-            class="rounded bg-gunmetal p-2"
+            class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
                 goto("pit-scout/teamlist") // Guessing teamlist is where you choose the team to pit scout?
             }}>Pit Scout</button
@@ -43,7 +50,7 @@
             }}>Match Scout</button
         >
         <button
-            class="rounded bg-gunmetal p-2"
+            class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
                 goto("analysis")
             }}>Analysis</button

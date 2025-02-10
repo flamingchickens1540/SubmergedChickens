@@ -57,6 +57,7 @@
 >
     <Header
         game_stage={"Postmatch"}
+        page_state="None"
         team_name={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
@@ -86,9 +87,5 @@
             displaying_timeline = true
         }}>Show Timeline</button
     >
-    <Timeline
-        bind:actions={matchData.value.timeline.auto}
-        bind:displaying={displaying_timeline}
-        bind:furthest_auto_index
-    />
+    <Timeline bind:displaying={displaying_timeline} />
 </div>

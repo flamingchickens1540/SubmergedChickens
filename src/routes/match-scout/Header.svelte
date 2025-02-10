@@ -7,7 +7,10 @@
         AutoActionData,
     } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
+    import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
+
+    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
     let {
         team_name,
@@ -17,8 +20,8 @@
         prev_page,
         timeline = $bindable(),
     }: {
-        team_name: String
-        game_stage: String
+        team_name: string
+        game_stage: string
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
@@ -29,7 +32,7 @@
 <header
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
-    <span class="">
+    <span class="text-{team_color.value}-400">
         {team_name}
     </span>
     {#if timeline}
@@ -45,7 +48,7 @@
         <span
             >{page_state == "None" || page_state == null
                 ? game_stage == "Prematch"
-                    ? "Pre"
+                    ? "Prematch"
                     : game_stage.slice(0, 4)
                 : page_state}</span
         >

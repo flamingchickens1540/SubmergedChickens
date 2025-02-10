@@ -77,7 +77,13 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
+                console.log("team_dta: " + team_data)
                 io.to("admin_room").emit("robot_left_queue", team_data)
+
+                console.log("match: " + curr_match_key)
+                console.log("team: " + team_data[0])
+                console.log("color: " + team_data[1])
+
                 socket.emit("time_to_scout", [curr_match_key, ...team_data])
             })
 
@@ -88,6 +94,7 @@ const webSocketServer = {
                 // NOTE This event handles the the case where the scout removed itself from the queue
                 io.emit("scout_left_queue", scout_id)
                 // NOTE This event handles the case where the admin removed the scout from the queue
+                // FIXME
                 io.sockets.sockets.get(scout_sid)?.leave("scout_queue")
             })
 
@@ -119,26 +126,24 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    // TODO: New TeamMatch in DB request here
-
                     info(`${match_key}: ${teams}`)
                     robot_queue = []
 
                     const scout_queue = (
                         await io.in("scout_queue").fetchSockets()
                     ).reverse()
-                    for (const socket of scout_queue) {
+                    for (const scout of scout_queue) {
                         const team_data = teams.pop()
                         if (!team_data) break
 
-                        const username = sid_to_username.get(socket.id)
+                        const username = sid_to_username.get(scout.id)
                         if (!username) {
                             console.error("Scout in queue not in map")
                             continue
                         }
 
-                        socket.leave("scout_queue")
-                        socket.emit("time_to_scout", [match_key, ...team_data])
+                        scout.leave("scout_queue")
+                        scout.emit("time_to_scout", [match_key, ...team_data])
                         io.to("admin_room").emit("scout_left_queue", username)
                     }
 
