@@ -40,7 +40,7 @@
         <button
             class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
-                goto("pit-scout/teamlist") // Guessing teamlist is where you choose the team to pit scout?
+                goto("pit-scout/teamlist")
             }}>Pit Scout</button
         >
         <button
