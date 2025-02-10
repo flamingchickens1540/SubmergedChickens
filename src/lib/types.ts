@@ -49,7 +49,12 @@ export type Timeline = {
     tele: TeleActionData[]
 }
 
-export type EndAction = "DeepClimb" | "ShallowClimb" | "Parked" | "Failed" | "None"
+export type EndAction =
+    | "DeepClimb"
+    | "ShallowClimb"
+    | "Parked"
+    | "Failed"
+    | "None"
 
 type TagCategory = {
     category: string
