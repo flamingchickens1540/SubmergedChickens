@@ -1,6 +1,5 @@
 <script lang="ts">
     import LineChart from "@/components/charts/LineChart.svelte"
-    import BarChart from "@/components/charts/BarChart.svelte"
 
     let teams: Array<{team: number, rank: string, record: string, rp: number}> = [
 		{ team: 1540, rank: "rank1", record: "record1", rp: 8 },
