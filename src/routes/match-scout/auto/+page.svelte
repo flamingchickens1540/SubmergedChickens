@@ -19,6 +19,8 @@
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
 
+    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
+
     // NOTE The passed object will only be set if there's nothing there
     // Meaning this object should never actually get set
     let matchData = $state(
