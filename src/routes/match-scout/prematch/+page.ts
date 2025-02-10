@@ -1,4 +1,4 @@
-import { error, redirect } from "@sveltejs/kit"
+import { error } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
 
 export const load: PageLoad = ({ params, url }) => {
@@ -6,12 +6,17 @@ export const load: PageLoad = ({ params, url }) => {
     const team_key = url.searchParams.get("team")
     const color = url.searchParams.get("color")
 
-    if (!team_key || !match_key || !color)
+    if (
+        !team_key ||
+        !match_key ||
+        !color ||
+        (color != "blue" && color != "red")
+    )
         return error(400, "Bad Query Parameters")
 
     return {
         match_key,
         team_key,
-        color,
+        color: color as "blue" | "red",
     }
 }

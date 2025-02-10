@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { AutoActionData, EndAction } from "$lib/types"
+    import type { AutoActionData, EndAction, TeamMatchData } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import Rating from "@/components/Rating.svelte"
@@ -9,11 +9,25 @@
     import CheckGroup from "@/components/CheckGroup.svelte"
 
     import type { PageProps } from "./$types"
+    import { localStore } from "@/localStore.svelte"
+
+    let matchData = localStore<TeamMatchData>("matchData", {
+        scout_id: "",
+        team_key: "",
+        match_key: "",
+        timeline: {
+            auto: [],
+            tele: [],
+        },
+        end: "None",
+        driver_skill: 3,
+        notes: "",
+        tags: [],
+    })
 
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
-    let actions: AutoActionData[] = $state([])
     let furthest_auto_index = $state(0)
 
     let possibleEndActions: EndAction[] = [
@@ -22,8 +36,9 @@
         "Failed",
         "None",
     ]
-    let endState: EndAction = $state("None")
-    let driverSkill = $state(0)
+
+    //TODO ADD TAGS TO THE MATCHDATA
+    let selected: string[] = $state([])
 </script>
 
 <div
@@ -42,23 +57,26 @@
 >
     <Header
         game_stage={"Postmatch"}
-        team_name={"1540"}
+        page_state="None"
+        team_name={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
+        bind:timeline={matchData.value.timeline.tele}
     />
     <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>
-        <RadioGroup bind:value={endState} labels={possibleEndActions}
+        <RadioGroup bind:value={matchData.value.end} labels={possibleEndActions}
         ></RadioGroup>
-        <Rating name="Driver Skill" value={driverSkill} />
+        <Rating name="Driver Skill" bind:value={matchData.value.driver_skill} />
         <span class="font-heading mt-4 text-center text-2xl font-semibold"
             >Tags</span
         >
-        {#each data.tagcategories as tagcategory}
+        <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
+        {#each data.tagcategories as tagcategory, i}
             <span class="font-heading text-xl font-semibold"
                 >{tagcategory.category}</span
             >
-            <CheckGroup labels={tagcategory.tags} selected={[]}></CheckGroup>
+            <CheckGroup labels={tagcategory.tags} bind:selected></CheckGroup>
         {/each}
     </div>
 
@@ -70,7 +88,7 @@
         }}>Show Timeline</button
     >
     <Timeline
-        bind:actions
+        bind:actions={matchData.value.timeline.auto}
         bind:displaying={displaying_timeline}
         bind:furthest_auto_index
     />

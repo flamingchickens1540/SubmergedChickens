@@ -1,6 +1,6 @@
 import type { PageServerLoad } from "./$types"
 
-//TODO: pull this from the database
+// TODO: Pull tags from the database
 export const load: PageServerLoad = async ({ params }) => {
     return {
         tagcategories: [

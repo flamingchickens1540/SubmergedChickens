@@ -4,7 +4,7 @@ const info = (s: string) => console.log(`\x1b[32m ${s} \x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
 let robot_queue: [string, "red" | "blue"][] = []
-let curr_match_key: string = "qm1"
+let curr_match_key: string = ""
 
 const webSocketServer = {
     name: "webSocketServer",
@@ -94,6 +94,7 @@ const webSocketServer = {
                 // NOTE This event handles the the case where the scout removed itself from the queue
                 io.emit("scout_left_queue", scout_id)
                 // NOTE This event handles the case where the admin removed the scout from the queue
+                // FIXME
                 io.sockets.sockets.get(scout_sid)?.leave("scout_queue")
             })
 
@@ -125,32 +126,29 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    // TODO: New TeamMatch in DB request here
-
                     info(`${match_key}: ${teams}`)
                     robot_queue = []
 
                     const scout_queue = (
                         await io.in("scout_queue").fetchSockets()
                     ).reverse()
-                    for (const socket of scout_queue) {
+                    for (const scout of scout_queue) {
                         const team_data = teams.pop()
                         if (!team_data) break
 
-                        const username = sid_to_username.get(socket.id)
+                        const username = sid_to_username.get(scout.id)
                         if (!username) {
                             console.error("Scout in queue not in map")
                             continue
                         }
 
-                        socket.leave("scout_queue")
-                        socket.emit("time_to_scout", [match_key, ...team_data])
+                        scout.leave("scout_queue")
+                        scout.emit("time_to_scout", [match_key, ...team_data])
                         io.to("admin_room").emit("scout_left_queue", username)
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
                     robot_queue.push(...teams)
-                    console.log("robot_queue:" + robot_queue)
 
                     // Update all connected sockets with new match info (for cosmetic purposes)
                     io.emit("new_match", match_key)
