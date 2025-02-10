@@ -50,9 +50,7 @@
         next_page={() => goto("/match-scout/auto")}
     />
     <!-- TODO Center Maybe -->
-    <div
-        class="grid flex-grow grid-cols-1 grid-rows-3 place-items-center text-white"
-    >
+    <div class="grid flex-grow place-items-center overflow-y-scroll text-white">
         <div class="text-2xl">You're Scouting Team:</div>
         <div class="text-2xl text-{data.color}-400">
             {data.team_key}

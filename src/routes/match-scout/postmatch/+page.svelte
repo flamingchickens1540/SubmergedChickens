@@ -68,7 +68,7 @@
         <RadioGroup bind:value={matchData.value.end} labels={possibleEndActions}
         ></RadioGroup>
         <Rating name="Driver Skill" bind:value={matchData.value.driver_skill} />
-        <span class="font-heading mt-4 text-center text-2xl font-semibold"
+        <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->

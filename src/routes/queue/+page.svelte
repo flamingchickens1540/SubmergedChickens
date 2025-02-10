@@ -39,15 +39,13 @@
     }
 </script>
 
-<div
-    class="grid min-h-dvh grid-cols-1 grid-rows-2 place-items-center gap-4 align-middle"
->
+<div class="flex min-h-dvh flex-col items-center justify-center gap-4 p-6">
     <h1 class="font-heading p-2 text-5xl font-bold text-yellow-400">
         In Queue
     </h1>
 
     <button
-        class="rounded bg-gunmetal p-4 text-center text-2xl text-white"
+        class="rounded bg-gunmetal px-4 py-2 text-center text-xl"
         onclick={leave}>Leave Queue</button
     >
 </div>

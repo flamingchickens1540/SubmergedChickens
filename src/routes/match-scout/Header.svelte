@@ -41,7 +41,8 @@
     <div class="align-item-center flex gap-2">
         <button
             onclick={prev_page}
-            class={prev_page == null ? "pointer-events-none opacity-30" : ""}
+            class="disabled:opacity-30"
+            disabled={prev_page == null}
         >
             <ArrowLeft />
         </button>

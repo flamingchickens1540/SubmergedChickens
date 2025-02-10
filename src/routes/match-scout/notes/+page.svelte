@@ -46,18 +46,18 @@
         prev_page={() => goto("/match-scout/postmatch")}
         bind:timeline={matchData.value.timeline.tele}
     />
-    <div class="flex flex-grow flex-col gap-4 p-4">
+    <div class="m-2 flex flex-grow flex-col gap-2 rounded p-2">
         <span class="font-heading text-xl font-semibold">Notes</span>
 
         <textarea
-            class="border-red w-full flex-grow rounded bg-gunmetal p-1"
+            class="w-full flex-grow rounded bg-gunmetal p-2"
             placeholder="Notes..."
             bind:value={matchData.value.notes}
         ></textarea>
 
         <button
             onclick={submit}
-            class="mt-auto rounded bg-gunmetal py-4 text-lg font-semibold"
+            class="mt-auto rounded bg-gunmetal p-2 text-lg font-semibold"
         >
             Submit
         </button>
