@@ -87,9 +87,5 @@
             displaying_timeline = true
         }}>Show Timeline</button
     >
-    <Timeline
-        bind:actions={matchData.value.timeline.auto}
-        bind:displaying={displaying_timeline}
-        bind:furthest_auto_index
-    />
+    <Timeline bind:displaying={displaying_timeline} />
 </div>
