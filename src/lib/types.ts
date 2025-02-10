@@ -4,7 +4,7 @@ import type { Tag } from "lucide-svelte"
 export type TelePageState =
     | "Verify"
     | "ScoreAlgae"
-    | "RemoveAlgae"
+    | "CleanAlgae"
     | "ScoreCoral"
     | "Incap"
     | "None"
@@ -18,7 +18,7 @@ export type TeleActionState =
     | "None"
 export type AutoAction =
     | TeleActionState
-    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
+    | `Intake${`Coral${"Station" | "Preplaced" | "Floor"}` | `Algae${"Preplaced" | "Reef" | "Floor"}`}`
     | "Leave"
 
 export type AutoActionData = {

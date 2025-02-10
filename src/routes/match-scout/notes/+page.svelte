@@ -1,12 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type {
-        AutoAction,
-        AutoActionData,
-        EndAction,
-        TeamMatchData,
-    } from "$lib/types"
+    import type { TeamMatchData } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
@@ -28,7 +23,13 @@
     )
 
     let displaying_timeline = $state(false)
-    let furthest_auto_index = $state(0)
+
+    const submit = () => {
+        console.log(matchData.value)
+        // TODO Submit data to backend
+        matchData.reset()
+        goto("/home")
+    }
 </script>
 
 <div
@@ -40,7 +41,8 @@
 >
     <Header
         game_stage={"Notes"}
-        team_name={"1540"}
+        team_name={matchData.value.team_key}
+        page_state="None"
         prev_page={() => goto("/match-scout/postmatch")}
         bind:timeline={matchData.value.timeline.tele}
     />
@@ -49,11 +51,14 @@
 
         <textarea
             class="border-red w-full flex-grow rounded bg-gunmetal p-1"
-            placeholder="notes..."
+            placeholder="Notes..."
             bind:value={matchData.value.notes}
         ></textarea>
 
-        <button class="mt-auto rounded bg-gunmetal py-4 text-lg font-semibold">
+        <button
+            onclick={submit}
+            class="mt-auto rounded bg-gunmetal py-4 text-lg font-semibold"
+        >
             Submit
         </button>
     </div>
@@ -65,9 +70,5 @@
             displaying_timeline = true
         }}>Show Timeline</button
     >
-    <Timeline
-        bind:actions={matchData.value.timeline.auto}
-        bind:displaying={displaying_timeline}
-        bind:furthest_auto_index
-    />
+    <Timeline bind:displaying={displaying_timeline} />
 </div>

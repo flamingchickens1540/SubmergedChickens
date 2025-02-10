@@ -1,22 +1,29 @@
 <script lang="ts">
     import { X, Check } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
-    import { Progress } from "$lib/components/ui/progress/index.js"
-    // import { SubmittedMatch } from "$lib/types.ts"
-    import Modal from "./Modal.svelte"
+    import { localStore } from "@/localStore.svelte"
 
-    let next_match_key = $state("")
+    let next_match_key = $state(localStore<string>("next_match_key", ""))
 
-    let next_red_robots = $state(["", "", ""])
-    let next_blue_robots = $state(["", "", ""])
+    let next_red_robots = $state(
+        localStore<string[]>("next_red_robots", ["", "", ""])
+    )
+    let next_blue_robots = $state(
+        localStore<string[]>("next_blue_robots", ["", "", ""])
+    )
 
-    let curr_red_robots = $state(["", "", ""])
-    let curr_blue_robots = $state(["", "", ""])
+    let curr_red_robots = $state(
+        localStore<string[]>("curr_red_robots", ["", "", ""])
+    )
+    let curr_blue_robots = $state(
+        localStore<string[]>("curr_blue_robots", ["", "", ""])
+    )
 
     let new_users: string[] = $state([])
     let scout_queue: string[] = $state([])
-    // TODO change to actual type
-    let submitted_team_matches: string[] = $state(["qm14:1540"])
+    // TODO Change to actual type
+    // TODO Pull from backend
+    let submitted_team_matches: string[] = $state([])
 
     let socket: Socket = io({
         auth: {
@@ -49,33 +56,21 @@
     })
 
     const queue_match = async () => {
-        // NOTE robot == "" gets filted out on the backend so color is preserved through index
-        let next_robots = [...next_red_robots, ...next_red_robots]
-        // TODO robot_queue = []
-        // TODO next_robots.toReversed().forEach((team_key, i) =>
-        //     team_matches.value.push({
-        //         status: "pending",
-        //         team_match_key: `${next_match_key} ${team_key}`,
-        //         color: team_color[i][1],
-        //         timeline: null,
-        //     })
-        // )
-        socket.emit("send_match", [next_match_key, next_robots])
+        let next_robots = [
+            ...next_red_robots.value.map(team => [team, "red"]),
+            ...next_blue_robots.value.map(team => [team, "blue"]),
+        ]
 
-        await fetch("/api/newmatch", {
-            method: "POST",
-            body: JSON.stringify(next_match_key),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
+        socket.emit("send_match", [next_match_key.value, next_robots])
 
-        next_match_key = ""
-        next_red_robots = ["", "", ""]
-        next_blue_robots = ["", "", ""]
+        curr_red_robots.value = next_red_robots.value
+        curr_blue_robots.value = next_blue_robots.value
 
-        curr_red_robots = next_robots.slice(0, 2)
-        curr_blue_robots = next_robots.slice(3, 6)
+        next_match_key.value =
+            next_match_key.value.slice(0, 2) +
+            (Number.parseInt(next_match_key.value.slice(2)) + 1).toString()
+        next_red_robots.value = ["", "", ""]
+        next_blue_robots.value = ["", "", ""]
     }
 
     const remove_scout = (scout_id: string) => {
@@ -107,8 +102,6 @@
 
         socket.emit("approve_new_user", user)
     }
-
-    const percent_team_matches_submitted = $state(36)
 </script>
 
 <div
@@ -117,7 +110,7 @@
     <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
             <input
-                bind:value={next_match_key}
+                bind:value={next_match_key.value}
                 placeholder="Next Match"
                 class="rounded bg-eerie_black p-2"
             />
@@ -127,26 +120,26 @@
             <button onclick={queue_match} class="rounded bg-eerie_black p-2"
                 >Queue Match</button
             >
-            {#each next_red_robots as _robot, i}
+            {#each next_red_robots.value as _robot, i}
                 <input
-                    bind:value={next_red_robots[i]}
+                    bind:value={next_red_robots.value[i]}
                     class="rounded bg-bittersweet p-2"
                 />
             {/each}
-            {#each next_blue_robots as _robot, i}
+            {#each next_blue_robots.value as _robot, i}
                 <input
-                    bind:value={next_blue_robots[i]}
+                    bind:value={next_blue_robots.value[i]}
                     class="rounded bg-steel_blue p-2"
                 />
             {/each}
         </div>
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-            <span class="col-span-3 text-center">Currently Scouting</span>
+            <span class="col-span-3 text-center">Currently Playing</span>
             <div class="grid flex-grow grid-cols-3 grid-rows-2 gap-2">
-                {#each curr_red_robots as robot}
+                {#each curr_red_robots.value as robot}
                     <div class="rounded bg-bittersweet p-2">{robot}</div>
                 {/each}
-                {#each curr_blue_robots as robot}
+                {#each curr_blue_robots.value as robot}
                     <div class="rounded bg-steel_blue p-2">{robot}</div>
                 {/each}
             </div>
@@ -200,15 +193,6 @@
                     {team_match}
                 </button>
             {/each}
-        </div>
-    </div>
-    <div class="flex flex-col gap-2 rounded bg-gunmetal p-2">
-        <span class="text-center">Team Matches Submitted</span>
-        <div class="h-4 w-full rounded-full bg-eerie_black">
-            <div
-                class="h-4 rounded-full bg-xanthous"
-                style="width: {percent_team_matches_submitted}%"
-            ></div>
         </div>
     </div>
 </div>

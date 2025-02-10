@@ -3,7 +3,7 @@
 
     import Header from "../Header.svelte"
     import ScoreAlgae from "../ScoreAlgae.svelte"
-    import RemoveAlgae from "../RemoveAlgae.svelte"
+    import CleanAlgae from "../CleanAlgae.svelte"
     import ScoreCoral from "../ScoreCoral.svelte"
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
@@ -19,6 +19,8 @@
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
 
+    // NOTE The passed object will only be set if there's nothing there
+    // Meaning this object should never actually get set
     let matchData = $state(
         localStore<TeamMatchData>("matchData", {
             scout_id: "",
@@ -38,7 +40,9 @@
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
             case "right":
-                goto("/match-scout/prematch")
+                goto(
+                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${matchData.value.color}`
+                )
                 break
             case "left":
                 goto("/match-scout/tele")
@@ -46,21 +50,25 @@
         }
     }
 
-    let displaying_timeline = $state(false)
-    let furthest_auto_index = $state(0)
-
     let page_state: AutoPageState = $state("None")
     let action_state: AutoAction = $state("None")
 
+    const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")
-    const remove_algae = () => (page_state = "RemoveAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
     const intake = () => (page_state = "Intake")
 
     const bg_color = "bg-steel_blue"
 
     const prev_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/prematch") : undefined
+        page_state == "None"
+            ? () => {
+                  console.log(matchData.value.team_key)
+                  goto(
+                      `/match-scout/prematch?team=${matchData.value.team_key}&match=${matchData.value.match_key}&color=${team_color.value}`
+                  )
+              }
+            : undefined
     )
     const next_page = $derived(
         page_state == "None" ? () => goto("/match-scout/tele") : undefined
@@ -88,13 +96,13 @@
             <div
                 use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
                 onswipe={swipeHandler}
-                class="grid flex-grow gap-2"
+                class="grid flex-grow grid-cols-2 gap-2"
             >
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
-                <button class="rounded {bg_color}" onclick={remove_algae}
-                    >Remove Algae</button
+                <button class="rounded {bg_color}" onclick={clean_algae}
+                    >Clean Algae</button
                 >
                 <button class="rounded {bg_color}" onclick={score_coral}
                     >Score Coral</button
@@ -105,8 +113,8 @@
             </div>
         {:else if page_state == "ScoreAlgae"}
             <ScoreAlgae bind:page_state bind:action_state {bg_color} />
-        {:else if page_state == "RemoveAlgae"}
-            <RemoveAlgae bind:page_state bind:action_state {bg_color} />
+        {:else if page_state == "CleanAlgae"}
+            <CleanAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "ScoreCoral"}
             <ScoreCoral bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "Intake"}
@@ -120,17 +128,15 @@
         {/if}
     </div>
 
-    <button
-        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
-        onclick={(e: Event) => {
-            e.stopPropagation()
-            displaying_timeline = true
-        }}>Show Timeline</button
-    >
-    <Timeline
-        bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"}
-        bind:actions={matchData.value.timeline.auto}
-        bind:displaying={displaying_timeline}
-        bind:furthest_auto_index
-    />
+    <!-- <button -->
+    <!--     class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold" -->
+    <!--     onclick={(e: Event) => { -->
+    <!--         e.stopPropagation() -->
+    <!--         displaying_timeline = true -->
+    <!--     }}>Show Timeline</button -->
+    <!-- > -->
+    <!-- <Timeline -->
+    <!--     bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"} -->
+    <!--     bind:displaying={displaying_timeline} -->
+    <!-- /> -->
 </div>

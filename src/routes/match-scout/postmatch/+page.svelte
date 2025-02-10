@@ -57,6 +57,7 @@
 >
     <Header
         game_stage={"Postmatch"}
+        page_state="None"
         team_name={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
