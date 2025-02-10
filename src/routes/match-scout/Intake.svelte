@@ -36,8 +36,7 @@
     <button onclick={algae_preplaced} class="rounded {bg_color}"
         >Algae Preplaced</button
     >
-    <button onclick={algae_reef} class="rounded {bg_color}">Algae Reef</button
-    >
+    <button onclick={algae_reef} class="rounded {bg_color}">Algae Reef</button>
     <button onclick={coral_station} class="rounded {bg_color}"
         >Coral Station</button
     >
