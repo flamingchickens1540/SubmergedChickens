@@ -20,4 +20,5 @@ vite.config.ts.timestamp-*
 
 # postgresql
 .pg
+.dev_postgres
 PG_DATA
