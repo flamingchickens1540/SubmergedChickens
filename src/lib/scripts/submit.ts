@@ -15,7 +15,7 @@ export async function submitTeamMatch(
         data: {
             ...tm,
             tags: {
-                connect: tagNames.map((name) => ({name}))
+                connect: tagNames.map(name => ({ name })),
             },
         },
     })
