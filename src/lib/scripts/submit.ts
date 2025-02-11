@@ -22,16 +22,16 @@ export async function submitTeamMatch(
     })
 }
 
-function namesToTagQuery(tagNames: string[]) : {name: string}[] {
+function namesToTagQuery(tagNames: string[]): { name: string }[] {
     let toBeReturned = []
     for (let a in tagNames) {
-        toBeReturned.push({name: a});
+        toBeReturned.push({ name: a })
     }
-    return toBeReturned;
+    return toBeReturned
 }
 
 export async function submitPairwise(pw: Omit<Comparison, "id">) {
     await prisma.comparison.create({
-        data: pw
+        data: pw,
     })
 }
