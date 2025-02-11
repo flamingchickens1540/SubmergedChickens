@@ -47,7 +47,7 @@ export type UncountedTeamMatch = {
     notes: string
     incap_time: number[]
     user_id: number
-    tags: Omit<Tag, "id">[]
+    tagNames: string[]
 }
 
 export type EndAction = "DeepClimb" | "ShallowClimb" | "Failed" | "None"
