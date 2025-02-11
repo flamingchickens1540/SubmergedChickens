@@ -18,7 +18,7 @@ export type TeleActionState =
     | "None"
 export type AutoAction =
     | TeleActionState
-    | `Intake${`Coral${"Station" | "Preplaced" | "Floor"}` | `Algae${"Preplaced" | "Reef" | "Floor"}`}`
+    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
     | "Leave"
 
 export type AutoActionData = {
@@ -49,7 +49,12 @@ export type Timeline = {
     tele: TeleActionData[]
 }
 
-export type EndAction = "DeepClimb" | "ShallowClimb" | "Failed" | "None"
+export type EndAction =
+    | "DeepClimb"
+    | "ShallowClimb"
+    | "Parked"
+    | "Failed"
+    | "None"
 
 type TagCategory = {
     category: string
