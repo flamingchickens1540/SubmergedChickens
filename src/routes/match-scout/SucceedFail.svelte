@@ -7,8 +7,8 @@
         action_state = $bindable(),
     }: {
         page_state: AutoPageState
+        actions: AutoActionData[]
         action_state: AutoAction
-        actions: AutoActionData[] // TODO Change to Action[]
     } = $props()
 
     const succeed = () => {
