@@ -17,8 +17,11 @@
     <div class="rounded border border-solid border-white p-2 col-start-1 col-span-1 row-span-2 text-center overflow-scroll">
         Teams
         {#each teams as teams}
-            <div class="bg-gunmetal rounded border border-solid border-white p-2 mb-2">
-                Team: {teams.team} | Rank: {teams.rank} | Record: {teams.record} | RP: {teams.rp}
+            <div
+                class="mb-2 rounded border border-solid border-white bg-gunmetal p-2"
+            >
+                Team: {teams.team} | Rank: {teams.rank} | Record: {teams.record}
+                | RP: {teams.rp}
             </div>
         {/each}
     </div>
@@ -52,7 +55,6 @@
     <div class="rounded border border-solid border-white p-2 col-start-1 row-start-4 row-span-1 text-center content-center">
         Average Points
         <p class="text-3xl">{averagePoints}</p>
-
     </div>
     <div class="rounded border border-solid border-white p-2 col-start-2 col-span-1 row-start-4 row-span-1">
         Robot photo
