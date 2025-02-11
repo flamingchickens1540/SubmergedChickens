@@ -9,7 +9,7 @@
 
     onMount(() => {
         let username = ((browser && localStorage.getItem("username")) ??
-            "scout") as string
+            "Hello Scout") as string
         const first = username.charAt(0).toUpperCase()
         name = "Hello " + first + username.slice(1)
     })
@@ -34,13 +34,13 @@
         <button
             class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
-                goto("pit-view")
+                goto("pit-display")
             }}>Pit Display</button
         >
         <button
             class="rounded bg-gunmetal p-2 {disable}"
             onclick={() => {
-                goto("pit-scout/teamlist")
+                goto("qual-scout")
             }}>Pit Scout</button
         >
         <button

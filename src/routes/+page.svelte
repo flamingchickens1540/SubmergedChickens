@@ -34,7 +34,7 @@
 </script>
 
 <h1 class="pt-6 text-center text-5xl font-bold text-white">
-    Submerged Chickens
+    Inflated Chickens :3
 </h1>
 <div class="mt-16 grid w-full grid-flow-col grid-cols-1 grid-rows-2 gap-4">
     <div class="m-4 grid grid-cols-1 place-items-center gap-4">
