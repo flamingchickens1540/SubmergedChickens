@@ -33,7 +33,6 @@
     })
 </script>
 
-
 <div class="flex flex-col justify-center gap-8 p-6">
     <h1 class="text-center text-4xl font-bold text-white">
         Submerged Chickens :3
