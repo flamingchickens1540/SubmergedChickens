@@ -25,7 +25,7 @@
 <div class="flex flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
         <button class="rounded p-1" onclick={logout}><LogOut /></button>
-        <span class="font-semibold text-xl">{name}</span>
+        <span class="text-xl font-semibold">{name}</span>
         <button class="rounded p-1"><Settings /></button>
     </div>
     <div class="grid gap-2 text-xl font-semibold">
