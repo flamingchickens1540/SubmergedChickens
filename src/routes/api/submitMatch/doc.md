@@ -1,4 +1,5 @@
 For those interested, here's an example query to this route:
+
 ```typescript
 const match = {
     match_key: "2025demo_match2",
@@ -8,21 +9,21 @@ const match = {
     auto_leave_start: false,
     timeline: {
         auto: [],
-        tele: []
+        tele: [],
     },
     endgame: "Shallow",
     skill: 5,
     notes: "bad :(",
     incap_time: [],
     user_id: 0,
-    tagNames: ["defender", "mech-fail"]
+    tagNames: ["defender", "mech-fail"],
 }
 
-await fetch('/api/submitMatch', {
-    method: 'POST',
+await fetch("/api/submitMatch", {
+    method: "POST",
     body: JSON.stringify(match),
     headers: {
-        'Content-Type': 'application/json'
-    }
+        "Content-Type": "application/json",
+    },
 })
 ```

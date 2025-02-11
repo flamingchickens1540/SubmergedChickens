@@ -1,4 +1,5 @@
 For those interested, here's an example query to this route:
+
 ```typescript
 const comp = {
     team_A_team_num: 1100,
@@ -10,11 +11,11 @@ const comp = {
     event_key: "2025demo",
 }
 
-await fetch('/api/submitPairwise', {
-    method: 'POST',
+await fetch("/api/submitPairwise", {
+    method: "POST",
     body: JSON.stringify(comp),
     headers: {
-        'Content-Type': 'application/json'
-    }
+        "Content-Type": "application/json",
+    },
 })
 ```
