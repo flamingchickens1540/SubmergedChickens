@@ -3,15 +3,18 @@
 
     let teams: Array<{team: number, rank: string, record: string, rp: number}> = [
 		{ team: 1540, rank: "rank1", record: "record1", rp: 8 },
-        { team: 1844, rank: "rank2", record: "record2", rp: 2 }
+        { team: 1844, rank: "rank2", record: "record2", rp: 2 },
+		{ team: 1540, rank: "rank1", record: "record1", rp: 8 },
+        { team: 1844, rank: "rank2", record: "record2", rp: 2 },
 	]
 
     let averagePoints: number = 30
 </script>
+<h1 class="text-3xl text-center">Analysis</h1>
 <div
-    class="m-auto grid w-full h-96 grid-cols-2 grid-rows-4 gap-1 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid w-full h-screen grid-cols-2 grid-rows-4 gap-1 p-2"
 >
-    <div class="rounded border border-solid border-white p-2 col-start-1 row-span-4 text-center">
+    <div class="rounded border border-solid border-white p-2 col-start-1 col-span-1 row-span-2 text-center overflow-scroll">
         Teams
         {#each teams as teams}
             <div class="bg-gunmetal rounded border border-solid border-white p-2 mb-2">
@@ -19,7 +22,11 @@
             </div>
         {/each}
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-2 col-span-2 row-span-2">
+    <div class="rounded border border-solid border-white p-2 col-start-2 col-span-1 row-span-2">
+        "choose data"
+        
+    </div>
+    <div class="rounded border border-solid border-white p-2 col-start-1 col-span-2 row-span-1">
         <LineChart
             data={[
                 {
@@ -42,16 +49,12 @@
             height={"100%"}
         />
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-2 row-start-3 row-span-2 text-center content-center">
+    <div class="rounded border border-solid border-white p-2 col-start-1 row-start-4 row-span-1 text-center content-center">
         Average Points
         <p class="text-3xl">{averagePoints}</p>
 
     </div>
-    <div class="rounded border border-solid border-white p-2 col-start-3 row-start-3 row-span-2">
+    <div class="rounded border border-solid border-white p-2 col-start-2 col-span-1 row-start-4 row-span-1">
         Robot photo
-    </div>
-    <div class="rounded border border-solid border-white p-2 col-start-4 row-span-4">
-        "choose data"
-        
     </div>
 </div>

@@ -57,10 +57,16 @@
                 title: {
                     text: title,
                     left: "center",
+                    textStyle: {
+                        color: "rgba(255, 255, 255, 1)"
+                    }
                 },
                 legend: {
                     data: data.map(d => d.name),
                     top: 20,
+                    textStyle: {
+                        color: "rgba(255, 255, 255, 1)"
+                    }
                 },
                 xAxis: {
                     type: "value",
