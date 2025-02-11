@@ -5,7 +5,6 @@ export async function submitTeamMatch(
     tm: Omit<TeamMatch, "id_num">,
     tagNames: string[]
 ) {
-    // Todo: confirm that omit works this way
     await prisma.teamMatch.update({
         where: {
             id_key: {
@@ -16,18 +15,10 @@ export async function submitTeamMatch(
         data: {
             ...tm,
             tags: {
-                connect: namesToTagQuery(tagNames),
+                connect: tagNames.map((name) => ({name}))
             },
         },
     })
-}
-
-function namesToTagQuery(tagNames: string[]) : {name: string}[] {
-    let toBeReturned = []
-    for (let a in tagNames) {
-        toBeReturned.push({name: a});
-    }
-    return toBeReturned;
 }
 
 export async function submitPairwise(pw: Omit<Comparison, "id">) {
