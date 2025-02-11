@@ -23,6 +23,6 @@ export async function submitTeamMatch(
 
 export async function submitPairwise(pw: Omit<Comparison, "id">) {
     await prisma.comparison.create({
-        data: pw
+        data: pw,
     })
 }
