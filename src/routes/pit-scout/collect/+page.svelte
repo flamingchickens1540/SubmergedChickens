@@ -20,13 +20,15 @@
     let team_number = $state("3636") // TODO: make this changeable
     let event = "bb-2024" // TODO: get actual event
 
-
-    let image_base64_strings = [];
+    let image_base64_strings = []
     function onFileSelected(e: any) {
         const image = e.target.files[0]
         const reader = new FileReader()
         reader.onloadend = () => {
-            const base64string = reader.result?.toString().replace('data:', '').replace(/^.+,/, '')
+            const base64string = reader.result
+                ?.toString()
+                .replace("data:", "")
+                .replace(/^.+,/, "")
             image_base64_strings.push(base64string)
         }
         reader.readAsDataURL(image)
@@ -155,5 +157,7 @@
         placeholder="bug description"
     ></textarea>
 
-    <button class="w-full rounded bg-gunmetal p-2 font-bold" onclick={submit}>Submit</button>
+    <button class="w-full rounded bg-gunmetal p-2 font-bold" onclick={submit}
+        >Submit</button
+    >
 </div>
