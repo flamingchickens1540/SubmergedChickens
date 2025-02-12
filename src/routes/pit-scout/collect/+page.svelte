@@ -1,4 +1,6 @@
-<script>
+<script lang="ts">
+    import { base } from "$service-worker"
+
     let l1 = $state(false)
     let l2 = $state(false)
     let l3 = $state(false)
@@ -17,6 +19,22 @@
 
     let team_number = $state("3636") // TODO: make this changeable
     let event = "bb-2024" // TODO: get actual event
+
+
+    let image_base64_strings = [];
+    function onFileSelected(e: any) {
+        const image = e.target.files[0]
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            const base64string = reader.result?.toString().replace('data:', '').replace(/^.+,/, '')
+            image_base64_strings.push(base64string)
+        }
+        reader.readAsDataURL(image)
+    }
+
+    function submit() {
+        console.log("uwu owo uwu")
+    }
 </script>
 
 <header
@@ -33,7 +51,7 @@
     <label
         class="w-full rounded bg-gunmetal p-4 text-center text-lg font-semibold"
     >
-        <input class="hidden" />
+        <input class="hidden" onchange={onFileSelected} />
         Upload Images
     </label>
 </div>
@@ -137,5 +155,5 @@
         placeholder="bug description"
     ></textarea>
 
-    <button class="w-full rounded bg-gunmetal p-2 font-bold">Submit</button>
+    <button class="w-full rounded bg-gunmetal p-2 font-bold" onclick={submit}>Submit</button>
 </div>

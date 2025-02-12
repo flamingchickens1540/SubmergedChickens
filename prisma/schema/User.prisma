@@ -6,4 +6,5 @@ model User {
   comparison Comparison[]
   image      Image[]
   team_match TeamMatch[]
+  team_event TeamEvent[]
 }

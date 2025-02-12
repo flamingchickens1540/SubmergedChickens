@@ -19,6 +19,8 @@ model TeamEvent {
   reef        Boolean
   shallow     Boolean
   deep        Boolean
+  user        User @relation(fields: [user_id], references: [id])
+  user_id     Int
 }
 
 model Image {
