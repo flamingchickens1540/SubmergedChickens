@@ -5,6 +5,7 @@
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
+    import { browser } from "$app/environment"
 
     let matchData = $state(
         localStore<TeamMatchData>("matchData", {
@@ -27,9 +28,11 @@
     const submit = () => {
         console.log(matchData.value)
         // TODO Submit data to backend
-        const match_key = matchData
+        const scout = (browser && localStorage.getItem("username")) ?? ""
+        const match_key = matchData.value.match_key
+        const team_key = matchData.value.team_key
         matchData.reset()
-        goto("/pairwise")
+        goto(`/pairwise?match=${match_key}&one=${team_key}&scout=${scout}`)
     }
 </script>
 
