@@ -1,17 +1,23 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import { FlaskRound, LogOut, Settings } from "lucide-svelte"
+    import { LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
     import { browser } from "$app/environment"
     import { onMount } from "svelte"
+    import type { PageData } from "./$types"
 
-    let name = $state("Hello")
+    // TODO Decide if we want to display the current match
+    const data: PageData = $props()
+
+    let greeting = $state("Hello")
 
     onMount(() => {
+        browser && localStorage.setItem("event_key", data.event_key)
+
         let username = ((browser && localStorage.getItem("username")) ??
             "scout") as string
         const first = username.charAt(0).toUpperCase()
-        name = "Hello " + first + username.slice(1)
+        greeting = "Hello " + first + username.slice(1)
     })
 
     let bugReportVisible = $state(false)
@@ -25,7 +31,8 @@
 <div class="flex flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
         <button class="rounded p-1" onclick={logout}><LogOut /></button>
-        <span class="font-semibold">{name}</span>
+        <span class="font-semibold">{greeting}</span>
+
         <button class="rounded p-1"><Settings /></button>
     </div>
     <div class="grid gap-2 text-xl font-semibold">
