@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { TeamMatchData } from "$lib/types"
+    import type { TeamMatchData } from "@/types.ts"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
@@ -27,8 +27,9 @@
     const submit = () => {
         console.log(matchData.value)
         // TODO Submit data to backend
+        const match_key = matchData
         matchData.reset()
-        goto("/home")
+        goto("/pairwise")
     }
 </script>
 
