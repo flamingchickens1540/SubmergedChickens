@@ -1,11 +1,11 @@
 model Comparison {
   id                  Int       @id @default(autoincrement())
-  team_A_team_num     Int
+  team_A_team_key     Int
   team_A_match_key    String
-  team_match_A        TeamMatch @relation("TeamMatchA", fields: [team_A_match_key, team_A_team_num], references: [match_key, team_number])
-  team_B_team_num     Int
+  team_match_A        TeamMatch @relation("TeamMatchA", fields: [team_A_match_key, team_A_team_key], references: [match_key, team_key])
+  team_B_team_key     Int
   team_B_match_key    String
-  team_match_B        TeamMatch @relation("TeamMatchB", fields: [team_B_match_key, team_B_team_num], references: [match_key, team_number])
+  team_match_B        TeamMatch @relation("TeamMatchB", fields: [team_B_match_key, team_B_team_key], references: [match_key, team_key])
   diff                Int
   category            String
   event_key           String

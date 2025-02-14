@@ -91,7 +91,7 @@ async function seedTeams() {
     const teams: Team[] = []
     for (let i = 1100; i <= 1116; i++) {
         teams.push({
-            number: i,
+            key: i,
             name: faker.commerce.productName() + "s",
         })
     }

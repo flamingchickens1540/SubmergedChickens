@@ -1,11 +1,12 @@
 model TeamMatch {
   id_num                              Int          @id @default(autoincrement())
   match_key                           String
-  team                                Team         @relation(fields: [team_number], references: [number])
-  team_number                         Int
+  team                                Team         @relation(fields: [team_key], references: [key])
+  team_key                            Int
   event_key                           String
   event                               Event        @relation(fields: [event_key], references: [event_key])
-  actions                             ActionData[]
+  TeleActions                         TeleActionData[]
+  AutoActions                         AutoActionData[]
   auto_start_location                 AutoStart?
   auto_leave_start                    Boolean?
   auto_intake_coral_preplaced_succeed Int?
@@ -53,17 +54,24 @@ model TeamMatch {
   tags                             Tag[]
   notes                            String?
   incap_time                       Float[]
-  userId                           Int?
+  scoutId                          Int?
+  scout                             User?         @relation(fields: [scoutId], references: [id])
   ComparisonA                      Comparison[] @relation("TeamMatchA")
   ComparisonB                      Comparison[] @relation("TeamMatchB")
-  user                             User?         @relation(fields: [userId], references: [id])
   
-  @@unique(name: "id_key", fields: [match_key, team_number])
+  @@unique(name: "id_key", fields: [match_key, team_key])
 }
 
-model ActionData {
+model TeleActionData {
   id         Int         @id @default(autoincrement())
-  action     Action
+  action     TeleAction
+  success    Boolean
+  team_match TeamMatch[]
+}
+
+model AutoActionData {
+  id         Int         @id @default(autoincrement())
+  action     AutoAction
   success    Boolean
   team_match TeamMatch[]
 }
@@ -77,30 +85,35 @@ enum AutoStart {
   Close
 }
 
-enum Action {
-  AutoLeaveStart
-  AutoIntakeCoralPreplaced
-  AutoIntakeAlgaePreplaced
-  AutoIntakeStation
-  AutoIntakeReef
-  AutoScoreL1
-  AutoScoreL2
-  AutoScoreL3
-  AutoScoreL4
-  AutoScoreProcessor
-  AutoScoreNet
-  AutoClean
+enum TeleAction {
+  ScoreAlgaeProcessor
+  ScoreAlgaeNet
+  CleanAlgaeL2
+  CleanAlgaeL3
+  ScoreCoralL1
+  ScoreCoralL2
+  ScoreCoralL3
+  ScoreCoralL4
+  Incap
+}
 
-  TeleScoreL1
-  TeleScoreL2
-  TeleScoreL3
-  TeleScoreL4
-  TeleScoreProcessor
-  TeleScoreNet
-  TeleClean
+enum AutoAction {
+  IntakeCoral
+  IntakeStation 
+  IntakePreplaced
+  IntakeAlgaePreplaced
+  IntakeAlgaeReef
+  LeaveStart
 
-  IncapStart
-  IncapEnd
+  ScoreAlgaeProcessor
+  ScoreAlgaeNet
+  CleanAlgaeL2
+  CleanAlgaeL3
+  ScoreCoralL1
+  ScoreCoralL2
+  ScoreCoralL3
+  ScoreCoralL4
+  Incap
 }
 
 enum Endgame {

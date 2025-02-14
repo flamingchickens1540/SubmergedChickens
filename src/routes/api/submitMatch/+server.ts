@@ -11,13 +11,20 @@ import type {
 
 export const POST: RequestHandler = async ({ request }: any) => {
     const tm: UncountedTeamMatch = await request.json()
-    return json(await submitTeamMatch(count(tm), tm.tagNames))
+    return json(
+        await submitTeamMatch(
+            count(tm),
+            tm.timeline.tele,
+            tm.timeline.auto,
+            tm.tagNames
+        )
+    )
 }
 
 function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
     return {
         match_key: match.match_key,
-        team_number: match.team_number,
+        team_key: match.team_number,
         event_key: match.event_key,
         auto_start_location: match.auto_start_location,
         auto_leave_start: match.auto_leave_start,
@@ -225,7 +232,7 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
         skill: match.skill,
         notes: match.notes,
         incap_time: match.incap_time,
-        userId: match.user_id,
+        scoutId: match.user_id,
     }
 }
 
