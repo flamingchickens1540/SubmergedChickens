@@ -1,67 +1,78 @@
 model TeamMatch {
-  id                           Int          @id @default(autoincrement())
-  team                         Team         @relation(fields: [team_number], references: [number])
-  team_number                  Int
-  event_key                    String
-  event                        Event        @relation(fields: [event_key], references: [event_key])
-  actions                      ActionData[]
-  auto_start_location          AutoStart
-  auto_leave_start             Boolean
-  auto_intake_ground_succeed   Int
-  auto_intake_source_succeed   Int
-  auto_intake_reef_succeed     Int
-  auto_score_l1_succeed        Int
-  auto_score_l2_succeed        Int
-  auto_score_l3_succeed        Int
-  auto_score_l4_succeed        Int
-  auto_score_processor_succeed Int
-  auto_score_net_succeed       Int
-  auto_clean_succeed           Int
-  auto_leave_start_fail        Int
-  auto_intake_ground_fail      Int
-  auto_intake_source_fail      Int
-  auto_intake_reef_fail        Int
-  auto_score_l1_fail           Int
-  auto_score_l2_fail           Int
-  auto_score_l3_fail           Int
-  auto_score_l4_fail           Int
-  auto_score_processor_fail    Int
-  auto_score_net_fail          Int
-  auto_clean_fail              Int
-  tele_intake_ground_succeed   Int
-  tele_intake_source_succeed   Int
-  tele_intake_reef_succeed     Int
-  tele_score_l1_succeed        Int
-  tele_score_l2_succeed        Int
-  tele_score_l3_succeed        Int
-  tele_score_l4_succeed        Int
-  tele_score_processor_succeed Int
-  tele_score_net_succeed       Int
-  tele_clean_succeed           Int
-  tele_intake_ground_fail      Int
-  tele_intake_source_fail      Int
-  tele_intake_reef_fail        Int
-  tele_score_l1_fail           Int
-  tele_score_l2_fail           Int
-  tele_score_l3_fail           Int
-  tele_score_l4_fail           Int
-  tele_score_processor_fail    Int
-  tele_score_net_fail          Int
-  tele_clean_fail              Int
-  endgame                      Endgame
-  skill                        Int
-  tags                         Tag[]
-  notes                        String
-  incap_time                   Float[]
-  userId                       Int
-  ComparisonA                  Comparison[] @relation("TeamMatchA")
-  ComparisonB                  Comparison[] @relation("TeamMatchB")
-  user                         User         @relation(fields: [userId], references: [id])
+  id_num                              Int          @id @default(autoincrement())
+  match_key                           String
+  team                                Team         @relation(fields: [team_key], references: [key])
+  team_key                            Int
+  event_key                           String
+  event                               Event        @relation(fields: [event_key], references: [event_key])
+  TeleActions                         TeleActionData[]
+  AutoActions                         AutoActionData[]
+  auto_start_location                 AutoStart?
+  auto_leave_start                    Boolean?
+  auto_intake_coral_preplaced_succeed Int?
+  auto_intake_algae_preplaced_succeed Int?
+  auto_intake_station_succeed      Int?
+  auto_intake_reef_succeed         Int?
+  auto_score_l1_succeed            Int?
+  auto_score_l2_succeed            Int?
+  auto_score_l3_succeed            Int?
+  auto_score_l4_succeed            Int?
+  auto_score_processor_succeed     Int?
+  auto_score_net_succeed           Int?
+  auto_clean_l2_succeed            Int?
+  auto_clean_l3_succeed            Int?
+  auto_intake_coral_preplaced_fail    Int?
+  auto_intake_algae_preplaced_fail    Int?
+  auto_intake_station_fail         Int?
+  auto_intake_reef_fail            Int?
+  auto_score_l1_fail               Int?
+  auto_score_l2_fail               Int?
+  auto_score_l3_fail               Int?
+  auto_score_l4_fail               Int?
+  auto_score_processor_fail        Int?
+  auto_score_net_fail              Int?
+  auto_clean_l2_fail               Int?
+  auto_clean_l3_fail               Int?
+  tele_score_l1_succeed            Int?
+  tele_score_l2_succeed            Int?
+  tele_score_l3_succeed            Int?
+  tele_score_l4_succeed            Int?
+  tele_score_processor_succeed     Int?
+  tele_score_net_succeed           Int?
+  tele_clean_l2_succeed            Int?
+  tele_clean_l3_succeed            Int?
+  tele_score_l1_fail               Int?
+  tele_score_l2_fail               Int?
+  tele_score_l3_fail               Int?
+  tele_score_l4_fail               Int?
+  tele_score_processor_fail        Int?
+  tele_score_net_fail              Int?
+  tele_clean_l2_fail               Int?
+  tele_clean_l3_fail               Int?
+  endgame                          Endgame?
+  skill                            Int?
+  tags                             Tag[]
+  notes                            String?
+  incap_time                       Float[]
+  scoutId                          Int?
+  scout                             User?         @relation(fields: [scoutId], references: [id])
+  ComparisonA                      Comparison[] @relation("TeamMatchA")
+  ComparisonB                      Comparison[] @relation("TeamMatchB")
+  last
+  
+  @@unique(name: "id_key", fields: [match_key, team_key])
 }
 
-model ActionData {
+model TeleActionData {
   id         Int         @id @default(autoincrement())
-  action     Action
+  action     TeleAction
+  success    Boolean
+  team_match TeamMatch[]
+}
+
+model AutoActionData {
+  id         Int         @id @default(autoincrement())
+  action     AutoAction
   success    Boolean
   team_match TeamMatch[]
 }
@@ -75,32 +86,35 @@ enum AutoStart {
   Close
 }
 
-enum Action {
-  AutoLeaveStart
-  AutoIntakeGround
-  AutoIntakeSource
-  AutoIntakeReef
-  AutoScoreL1
-  AutoScoreL2
-  AutoScoreL3
-  AutoScoreL4
-  AutoScoreProcessor
-  AutoScoreNet
-  AutoClean
+enum TeleAction {
+  ScoreAlgaeProcessor
+  ScoreAlgaeNet
+  CleanAlgaeL2
+  CleanAlgaeL3
+  ScoreCoralL1
+  ScoreCoralL2
+  ScoreCoralL3
+  ScoreCoralL4
+  Incap
+}
 
-  TeleIntakeGround
-  TeleIntakeSource
-  TeleIntakeReef
-  TeleScoreL1
-  TeleScoreL2
-  TeleScoreL3
-  TeleScoreL4
-  TeleScoreProcessor
-  TeleScoreNet
-  TeleClean
+enum AutoAction {
+  IntakeCoral
+  IntakeStation 
+  IntakePreplaced
+  IntakeAlgaePreplaced
+  IntakeAlgaeReef
+  LeaveStart
 
-  IncapStart
-  IncapEnd
+  ScoreAlgaeProcessor
+  ScoreAlgaeNet
+  CleanAlgaeL2
+  CleanAlgaeL3
+  ScoreCoralL1
+  ScoreCoralL2
+  ScoreCoralL3
+  ScoreCoralL4
+  Incap
 }
 
 enum Endgame {

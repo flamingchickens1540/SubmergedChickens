@@ -6,4 +6,7 @@ model User {
   comparison Comparison[]
   image      Image[]
   team_match TeamMatch[]
+  last_team_match TeamMatch @relation(fields: [last_teammatch_match_key, last_teammatch_team_key], references: [match_key, team_key])
+  last_teammatch_match_key String
+  last_teammatch_team_key  Int
 }
