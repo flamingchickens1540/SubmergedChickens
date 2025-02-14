@@ -58,7 +58,6 @@ model TeamMatch {
   scout                             User?         @relation(fields: [scoutId], references: [id])
   ComparisonA                      Comparison[] @relation("TeamMatchA")
   ComparisonB                      Comparison[] @relation("TeamMatchB")
-  last
   
   @@unique(name: "id_key", fields: [match_key, team_key])
 }
