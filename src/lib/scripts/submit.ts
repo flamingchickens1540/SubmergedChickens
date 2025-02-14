@@ -1,5 +1,10 @@
 import { prisma } from "$lib/prisma"
-import { type TeamMatch, type Comparison, type TeleActionData, type AutoActionData } from "@prisma/client"
+import {
+    type TeamMatch,
+    type Comparison,
+    type TeleActionData,
+    type AutoActionData,
+} from "@prisma/client"
 
 export async function submitTeamMatch(
     tm: Omit<TeamMatch, "id_num">,
@@ -20,11 +25,11 @@ export async function submitTeamMatch(
                 connect: tagNames.map(name => ({ name })),
             },
             TeleActions: {
-                create: tele_actions
+                create: tele_actions,
             },
             AutoActions: {
-                create: auto_actions
-            }
+                create: auto_actions,
+            },
         },
     })
 }
