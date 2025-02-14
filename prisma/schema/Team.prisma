@@ -1,6 +1,6 @@
 model Team {
-  number      Int          @unique
-  name        String
-  team_event  TeamEvent[]
-  team_match  TeamMatch[]
+  number     Int         @unique
+  name       String
+  team_event TeamEvent[]
+  team_match TeamMatch[]
 }
