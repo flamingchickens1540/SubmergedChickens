@@ -27,8 +27,8 @@ export type AutoAction =
     | "Leave"
 
 export type Timeline = {
-    auto: AutoActionData[]
-    tele: TeleActionData[]
+    auto: Omit<AutoActionData, "id">[]
+    tele: Omit<TeleActionData, "id">[]
 }
 
 export type UncountedTeamMatch = {
