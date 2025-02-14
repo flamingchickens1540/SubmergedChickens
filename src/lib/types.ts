@@ -1,4 +1,9 @@
-import type { AutoStart, Endgame, AutoActionData, TeleActionData } from "@prisma/client"
+import type {
+    AutoStart,
+    Endgame,
+    AutoActionData,
+    TeleActionData,
+} from "@prisma/client"
 
 // Match Scout Page State Enums
 export type TelePageState =
@@ -41,7 +46,12 @@ export type UncountedTeamMatch = {
     tagNames: string[]
 }
 
-export type EndAction = "DeepClimb" | "ShallowClimb" | "Parked" | "Failed" | "None"
+export type EndAction =
+    | "DeepClimb"
+    | "ShallowClimb"
+    | "Parked"
+    | "Failed"
+    | "None"
 
 type TagCategory = {
     category: string

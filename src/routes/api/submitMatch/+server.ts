@@ -11,7 +11,14 @@ import type {
 
 export const POST: RequestHandler = async ({ request }: any) => {
     const tm: UncountedTeamMatch = await request.json()
-    return json(await submitTeamMatch(count(tm), tm.timeline.tele, tm.timeline.auto, tm.tagNames))
+    return json(
+        await submitTeamMatch(
+            count(tm),
+            tm.timeline.tele,
+            tm.timeline.auto,
+            tm.tagNames
+        )
+    )
 }
 
 function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {

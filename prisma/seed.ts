@@ -1,27 +1,63 @@
-import { PrismaClient, User, Post } from "@prisma/client"
+import {
+    PrismaClient,
+    Event,
+    EventState,
+    User,
+    Tag,
+    TeamEvent,
+    TeamMatch,
+    Comparison,
+    Team,
+} from "@prisma/client"
 import { faker } from "@faker-js/faker"
 
 const prisma = new PrismaClient()
 
 async function main() {
-    console.log("ERROR: Database seeding needs to be implemented!")
+    await clearDB()
 
-    // await prisma.post.deleteMany() // WARNING: DELETES ALL POSTS
-    // await prisma.user.deleteMany() // WARNING: DELETES ALL USERS
-
-    // const users = await seedUsers()
-    // await seedPosts(users)
+    await seedEvent()
+    await seedEventState()
+    await seedUsers()
+    await seedTags()
+    await seedTeams()
 }
 
-// async function seedUsers() {
-//     const users: User[] = []
-//     for (let i = 1; i <= 10; i++) {
-//         users.push({
-//             id: i,
-//             name: faker.person.fullName(),
-//         })
-//     }
-//     await prisma.user.createMany({ data: users })
+async function seedEvent() {
+    await prisma.event.createMany({
+        data: {
+            event_key: "2025demo",
+        },
+    })
+}
+
+async function seedEventState() {
+    await prisma.eventState.createMany({
+        data: {
+            id: 0,
+            event_key: "2025demo",
+            stream_url: "https://www.twitch.tv/firstinspires",
+        },
+    })
+}
+
+async function seedUsers() {
+    const users: User[] = []
+    users.push({
+        id: 0,
+        username: "admin",
+        is_enabled: true,
+        is_admin: true,
+    })
+    for (let i = 1; i <= 9; i++) {
+        users.push({
+            id: i,
+            username: faker.person.firstName(),
+            is_enabled: faker.number.int(100) > 30,
+            is_admin: false,
+        })
+    }
+    await prisma.user.createMany({ data: users })
 
     return await prisma.user.findMany()
 }
