@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  push:
   pull_request:
 
 jobs:
@@ -20,13 +21,15 @@ jobs:
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 3
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v2
       - run: bun install
-      - name: Setup DB
-        run: bun run db:load
+      - name: Generate Prisma Client
+        run: bunx prisma generate
+      - name: Prisma Migrate
+        run: bunx prisma migrate deploy && bunx prisma db seed
         env:
           DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
       - name: Build
