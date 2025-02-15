@@ -10,7 +10,7 @@
 <header
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
-    <span class="text-center ml-auto">Team List</span>
+    <span class="ml-auto text-center">Team List</span>
 </header>
 
 <div class="flex flex-col p-2">
@@ -24,13 +24,22 @@
                     class="flex items-center space-x-2 px-1 py-1"
                     onclick={() => goto(`/pit-scout/image?team=${team.number}`)}
                 >
-                    <Camera class="h-8 w-8 {team.images ? "text-xanthous" : "text-white"}" />
+                    <Camera
+                        class="h-8 w-8 {team.images
+                            ? 'text-xanthous'
+                            : 'text-white'}"
+                    />
                 </button>
                 <button
                     class="flex items-center space-x-2 px-1 py-1"
-                    onclick={() => goto(`/pit-scout/collect?team=${team.number}`)}
+                    onclick={() =>
+                        goto(`/pit-scout/collect?team=${team.number}`)}
                 >
-                    <ClipboardList class="h-8 w-8 {team.data ? "text-xanthous" : "text-white"}" />
+                    <ClipboardList
+                        class="h-8 w-8 {team.data
+                            ? 'text-xanthous'
+                            : 'text-white'}"
+                    />
                 </button>
             </div>
         </div>
