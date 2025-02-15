@@ -37,6 +37,7 @@
     )
 
     onMount(() => {
+        matchData.reset()
         matchData.value.event_key =
             (browser && localStorage.getItem("event_key")) || ""
         matchData.value.team_key = Number.parseInt(data.team_key)
