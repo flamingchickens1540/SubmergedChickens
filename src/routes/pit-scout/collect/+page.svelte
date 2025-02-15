@@ -196,5 +196,7 @@
 </div>
 
 <div class="p-2">
-    <button class="w-full rounded bg-gunmetal p-5 text-lg font-semibold">Submit</button>
+    <button class="w-full rounded bg-gunmetal p-5 text-lg font-semibold"
+        >Submit</button
+    >
 </div>
