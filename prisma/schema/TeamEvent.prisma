@@ -1,24 +1,24 @@
 model TeamEvent {
-  id          Int        @id @default(autoincrement())
-  team        Team       @relation(fields: [team_key], references: [key])
-  team_key Int
-  event_key   String
-  event       Event      @relation(fields: [event_key], references: [event_key])
-  image       Image[]
-  summary     String
-  drivetrain  Drivetrain
-  L1          Boolean
-  L2          Boolean
-  L3          Boolean
-  L4          Boolean
-  clean       Boolean
-  processor   Boolean
-  net         Boolean
-  source      Boolean
-  ground      Boolean
-  reef        Boolean
-  shallow     Boolean
-  deep        Boolean
+  id         Int        @id @default(autoincrement())
+  team       Team       @relation(fields: [team_key], references: [key])
+  team_key   Int
+  event_key  String
+  event      Event      @relation(fields: [event_key], references: [event_key])
+  image      Image[]
+  summary    String
+  drivetrain Drivetrain
+  L1         Boolean
+  L2         Boolean
+  L3         Boolean
+  L4         Boolean
+  clean      Boolean
+  processor  Boolean
+  net        Boolean
+  source     Boolean
+  ground     Boolean
+  reef       Boolean
+  shallow    Boolean
+  deep       Boolean
 }
 
 model Image {
