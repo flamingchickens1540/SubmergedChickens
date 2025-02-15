@@ -1,9 +1,13 @@
 <script lang="ts">
     import { X } from "lucide-svelte"
+    import type { PageProps } from "./$types"
+
+    let { data }: PageProps = $props()
+
     let avatar: string
     let fileinput: HTMLInputElement
     let images: string[] = $state([])
-    let team_number = $state("1540")
+    let team_key = $state(data.team_key)
 
     const onFileSelected = (e: any) => {
         const files = e.target.files
@@ -26,7 +30,7 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span>
-        {team_number}
+        {team_key}
     </span>
     <span class="text-left"> Image Collection </span>
 </header>

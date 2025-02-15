@@ -1,5 +1,8 @@
-<script>
+<script lang="ts">
     import RadioGroup from "@/components/RadioGroup.svelte"
+    import type { PageProps } from "./$types"
+
+    let { data }: PageProps = $props()
 
     let l1 = $state(false)
     let l2 = $state(false)
@@ -20,14 +23,14 @@
     let drivetrain = $state("Swerve")
     let summary = $state("")
 
-    let team_number = $state("1540") // TODO: make this changeable
+    let team_key = $state(data.team_key)
 </script>
 
 <header
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span>
-        {team_number}
+        {team_key}
     </span>
     <span class="text-left"> Data Collection </span>
 </header>
