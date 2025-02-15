@@ -12,11 +12,11 @@
     } = $props()
 
     const l2 = () => {
-        action_state = "RemoveAlgaeL2"
+        action_state = "CleanAlgaeL2"
         page_state = "Verify"
     }
     const l3 = () => {
-        action_state = "RemoveAlgaeL3"
+        action_state = "CleanAlgaeL3"
         page_state = "Verify"
     }
     const cancel = () => {

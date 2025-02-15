@@ -1,32 +1,48 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { TeamMatchData } from "$lib/types"
+    import type {
+        AutoActionData,
+        UncountedTeamMatch,
+        TeleActionData,
+    } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
 
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: "Far",
+            auto_leave_start: false,
             timeline: {
-                auto: [],
-                tele: [],
+                auto: [] as AutoActionData[],
+                tele: [] as TeleActionData[],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: "None",
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
 
     let displaying_timeline = $state(false)
 
-    const submit = () => {
+    const submit = async () => {
         console.log(matchData.value)
-        // TODO Submit data to backend
+
+        await fetch("/api/submitMatch", {
+            method: "POST",
+            body: JSON.stringify(matchData.value),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
         matchData.reset()
         goto("/home")
     }
@@ -41,7 +57,7 @@
 >
     <Header
         game_stage={"Notes"}
-        team_name={matchData.value.team_key}
+        team_key={matchData.value.team_key}
         page_state="None"
         prev_page={() => goto("/match-scout/postmatch")}
         bind:timeline={matchData.value.timeline.tele}

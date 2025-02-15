@@ -9,28 +9,34 @@
 
     import type {
         TelePageState,
-        TeleActionState,
+        TeleAction,
+        UncountedTeamMatch,
+        AutoActionData,
         TeleActionData,
-        TeamMatchData,
-    } from "$lib/types"
+    } from "@/types"
+
     import Incap from "../Incap.svelte"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
 
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: "Far",
+            auto_leave_start: false,
             timeline: {
-                auto: [],
-                tele: [],
+                auto: [] as AutoActionData[],
+                tele: [] as TeleActionData[],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: "None",
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
 
@@ -46,7 +52,7 @@
     }
 
     let page_state: TelePageState = $state("None")
-    let action_state: TeleActionState = $state("None")
+    let action_state: TeleAction = $state("None")
 
     const incap = () => {
         matchData.value.timeline.tele.push({ action: "Incap", success: true })
@@ -76,7 +82,7 @@
 >
     <Header
         game_stage={"Tele"}
-        team_name={matchData.value.team_key}
+        team_key={matchData.value.team_key}
         {page_state}
         {prev_page}
         {next_page}

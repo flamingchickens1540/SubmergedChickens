@@ -12,7 +12,8 @@
         AutoPageState,
         AutoAction,
         AutoActionData,
-        TeamMatchData,
+        TeleActionData,
+        UncountedTeamMatch,
     } from "$lib/types"
     import Timeline from "../Timeline.svelte"
 
@@ -24,18 +25,22 @@
     // NOTE The passed object will only be set if there's nothing there
     // Meaning this object should never actually get set
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: "Far",
+            auto_leave_start: false,
             timeline: {
-                auto: [],
-                tele: [],
+                auto: [] as AutoActionData[],
+                tele: [] as TeleActionData[],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: "None",
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
 
@@ -43,7 +48,7 @@
         switch (event.detail.direction) {
             case "right":
                 goto(
-                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${matchData.value.color}`
+                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${team_color.value}`
                 )
                 break
             case "left":
@@ -87,7 +92,7 @@
 >
     <Header
         game_stage={"Auto"}
-        team_name={matchData.value.team_key}
+        team_key={matchData.value.team_key}
         {page_state}
         {prev_page}
         {next_page}
