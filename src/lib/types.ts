@@ -1,4 +1,9 @@
-import type { AutoStart, Endgame } from "@prisma/client"
+import type {
+    AutoStart,
+    Endgame,
+    AutoActionData,
+    TeleActionData,
+} from "@prisma/client"
 
 // Match Scout Page State Enums
 export type TelePageState =
@@ -10,30 +15,12 @@ export type TelePageState =
     | "None"
 export type AutoPageState = TelePageState | "Intake"
 
-export type TeleAction =
-    | `ScoreAlgae${"Processor" | "Net"}`
-    | `CleanAlgae${"L2" | "L3"}`
-    | `ScoreCoral${"L1" | "L2" | "L3" | "L4"}`
-    | "Incap"
-    | "None"
-export type AutoAction =
-    | TeleAction
-    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
-    | "Leave"
-
-export type AutoActionData = {
-    action: AutoAction
-    success: boolean
-}
-
-export type TeleActionData = {
-    action: TeleAction
-    success: boolean
-}
+export type FrontendAutoActionData = Omit<AutoActionData, "id" | "team_match">
+export type FrontendTeleActionData = Omit<TeleActionData, "id" | "team_match">
 
 export type Timeline = {
-    auto: AutoActionData[]
-    tele: TeleActionData[]
+    auto: FrontendAutoActionData[]
+    tele: FrontendTeleActionData[]
 }
 
 export type UncountedTeamMatch = {
@@ -50,13 +37,6 @@ export type UncountedTeamMatch = {
     scout_id: string
     tagNames: string[]
 }
-
-export type EndAction =
-    | "DeepClimb"
-    | "ShallowClimb"
-    | "Parked"
-    | "Failed"
-    | "None"
 
 type TagCategory = {
     category: string

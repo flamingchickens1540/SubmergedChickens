@@ -3,31 +3,29 @@
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import Header from "../Header.svelte"
     import { localStore } from "@/localStore.svelte"
-    import type {
-        AutoActionData,
-        TeleActionData,
-        UncountedTeamMatch,
-    } from "@/types"
+    import type { UncountedTeamMatch } from "@/types"
     import type { PageProps } from "./$types"
     import { onMount } from "svelte"
     import { browser } from "$app/environment"
+    import { AutoStart, Endgame } from "@prisma/client"
 
     let { data }: PageProps = $props()
 
     let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
+    // TODO Add auto start location to prematch
     let matchData = $state(
         localStore<UncountedTeamMatch>("matchData", {
             event_key: "",
             match_key: "",
             team_key: 0,
-            auto_start_location: "Far",
+            auto_start_location: AutoStart.Far,
             auto_leave_start: false,
             timeline: {
-                auto: [] as AutoActionData[],
-                tele: [] as TeleActionData[],
+                auto: [],
+                tele: [],
             },
-            endgame: "None",
+            endgame: Endgame.None,
             skill: 3,
             notes: "",
             incap_time: [],

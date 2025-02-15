@@ -7,31 +7,26 @@
     import ScoreCoral from "../ScoreCoral.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type {
-        TelePageState,
-        TeleAction,
-        UncountedTeamMatch,
-        AutoActionData,
-        TeleActionData,
-    } from "@/types"
+    import type { TelePageState, UncountedTeamMatch } from "@/types"
 
     import Incap from "../Incap.svelte"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame, TeleAction } from "@prisma/client"
 
     let matchData = $state(
         localStore<UncountedTeamMatch>("matchData", {
             event_key: "",
             match_key: "",
             team_key: 0,
-            auto_start_location: "Far",
+            auto_start_location: AutoStart.Far,
             auto_leave_start: false,
             timeline: {
-                auto: [] as AutoActionData[],
-                tele: [] as TeleActionData[],
+                auto: [],
+                tele: [],
             },
-            endgame: "None",
+            endgame: Endgame.None,
             skill: 3,
             notes: "",
             incap_time: [],
@@ -52,7 +47,7 @@
     }
 
     let page_state: TelePageState = $state("None")
-    let action_state: TeleAction = $state("None")
+    let action_state: TeleAction | null = $state(null)
 
     const incap = () => {
         matchData.value.timeline.tele.push({ action: "Incap", success: true })

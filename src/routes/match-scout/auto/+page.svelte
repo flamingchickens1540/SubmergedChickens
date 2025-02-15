@@ -8,17 +8,11 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type {
-        AutoPageState,
-        AutoAction,
-        AutoActionData,
-        TeleActionData,
-        UncountedTeamMatch,
-    } from "$lib/types"
-    import Timeline from "../Timeline.svelte"
+    import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame, AutoAction } from "@prisma/client"
 
     let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
@@ -29,13 +23,13 @@
             event_key: "",
             match_key: "",
             team_key: 0,
-            auto_start_location: "Far",
+            auto_start_location: AutoStart.Far,
             auto_leave_start: false,
             timeline: {
-                auto: [] as AutoActionData[],
-                tele: [] as TeleActionData[],
+                auto: [],
+                tele: [],
             },
-            endgame: "None",
+            endgame: Endgame.None,
             skill: 3,
             notes: "",
             incap_time: [],
@@ -58,7 +52,7 @@
     }
 
     let page_state: AutoPageState = $state("None")
-    let action_state: AutoAction = $state("None")
+    let action_state: AutoAction | null = $state(null)
 
     const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")

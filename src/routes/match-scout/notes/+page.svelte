@@ -1,27 +1,24 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type {
-        AutoActionData,
-        UncountedTeamMatch,
-        TeleActionData,
-    } from "$lib/types"
+    import type { UncountedTeamMatch } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame } from "@prisma/client"
 
     let matchData = $state(
         localStore<UncountedTeamMatch>("matchData", {
             event_key: "",
             match_key: "",
             team_key: 0,
-            auto_start_location: "Far",
+            auto_start_location: AutoStart.Far,
             auto_leave_start: false,
             timeline: {
-                auto: [] as AutoActionData[],
-                tele: [] as TeleActionData[],
+                auto: [],
+                tele: [],
             },
-            endgame: "None",
+            endgame: Endgame.None,
             skill: 3,
             notes: "",
             incap_time: [],

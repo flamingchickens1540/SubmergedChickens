@@ -1,12 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type {
-        AutoActionData,
-        EndAction,
-        UncountedTeamMatch,
-        TeleActionData,
-    } from "$lib/types"
+    import type { UncountedTeamMatch } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import Rating from "@/components/Rating.svelte"
@@ -15,18 +10,19 @@
 
     import type { PageProps } from "./$types"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame } from "@prisma/client"
 
     let matchData = localStore<UncountedTeamMatch>("matchData", {
         event_key: "",
         match_key: "",
         team_key: 0,
-        auto_start_location: "Far",
+        auto_start_location: AutoStart.Far,
         auto_leave_start: false,
         timeline: {
-            auto: [] as AutoActionData[],
-            tele: [] as TeleActionData[],
+            auto: [],
+            tele: [],
         },
-        endgame: "None",
+        endgame: Endgame.None,
         skill: 3,
         notes: "",
         incap_time: [],
@@ -37,13 +33,6 @@
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
-
-    let possibleEndActions: EndAction[] = [
-        "DeepClimb",
-        "ShallowClimb",
-        "Failed",
-        "None",
-    ]
 
     //TODO ADD TAGS TO THE MATCHDATA
     let selected: string[] = $state([])
@@ -75,7 +64,7 @@
         <span class="font-heading text-xl font-semibold">End State</span>
         <RadioGroup
             bind:value={matchData.value.endgame}
-            labels={possibleEndActions}
+            labels={Object.keys(Endgame)}
         ></RadioGroup>
         <Rating name="Driver Skill" bind:value={matchData.value.skill} />
         <span class="font-heading p-2 text-center text-3xl font-semibold"
