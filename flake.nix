@@ -46,6 +46,7 @@
                 pg_ctl -D $PGDATA -l $PG/postgres.log start &&
                 createdb
               }
+              alias exit="pg_ctl -D $PGDATA stop && exit"
             '';
           };
       });
