@@ -20,7 +20,7 @@
     let drivetrain = $state("Swerve")
     let summary = $state("")
 
-    let team_number = $state("3636") // TODO: make this changeable
+    let team_number = $state("1540") // TODO: make this changeable
 </script>
 
 <header
@@ -29,6 +29,7 @@
     <span>
         {team_number}
     </span>
+    <span class="text-left"> Data Collection </span>
 </header>
 
 <div class="flex flex-col gap-2 p-2">
