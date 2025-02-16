@@ -46,17 +46,17 @@
             <button
                 class="{one_is_better
                     ? 'bg-green-500'
-                    : 'bg-gunmetal'} row-span-4 rounded"
+                    : 'bg-gunmetal'} row-span-4 rounded-lg"
                 onclick={() => (one_is_better = true)}>{data.one}</button
             >
             <button
                 class="{one_is_better
                     ? 'bg-gunmetal'
-                    : 'bg-green-500'} row-span-4 rounded"
+                    : 'bg-green-500'} row-span-4 rounded-lg"
                 onclick={() => (one_is_better = false)}>{data.two}</button
             >
             <button
-                class="col-span-2 rounded bg-gunmetal"
+                class="col-span-2 rounded-lg bg-gunmetal"
                 onclick={() => submit()}>Submit Comparison</button
             >
         </div>
