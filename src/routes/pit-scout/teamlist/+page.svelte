@@ -19,7 +19,7 @@
             class="m-1 ml-0 flex w-full flex-row items-center justify-between rounded bg-gunmetal p-4 text-xl"
         >
             <span>{team.number}</span>
-            <div class="flex flex-row space-x-4">
+            <div class="flex flex-row gap-4">
                 <button
                     class="flex items-center space-x-2 px-1 py-1"
                     onclick={() => goto(`/pit-scout/image?team=${team.number}`)}
