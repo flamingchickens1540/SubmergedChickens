@@ -21,7 +21,7 @@
             <span>{team.number}</span>
             <div class="flex flex-row gap-4">
                 <button
-                    class="flex items-center space-x-2 px-1 py-1"
+                    class="flex items-center gap-2 p-1"
                     onclick={() => goto(`/pit-scout/image?team=${team.number}`)}
                 >
                     <Camera
