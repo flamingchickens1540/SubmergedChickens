@@ -1,30 +1,38 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type { AutoActionData, TeamMatchData } from "$lib/types"
+    import type {
+        AutoActionData,
+        TeleActionData,
+        UncountedTeamMatch,
+    } from "$lib/types"
     import { localStore } from "@/localStore.svelte"
     import Action from "./Action.svelte"
 
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: "Far",
+            auto_leave_start: false,
             timeline: {
-                auto: [],
-                tele: [],
+                auto: [] as AutoActionData[],
+                tele: [] as TeleActionData[],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: "None",
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
     let {
         displaying = $bindable(),
-        bg = "bg-eerie_black",
+        bg,
     }: {
         displaying: boolean
-        bg: string
+        bg: string | undefined
     } = $props()
 
     /// Determine if currying is the right solution or if we should use a binding

@@ -15,25 +15,17 @@ export type TelePageState =
     | "None"
 export type AutoPageState = TelePageState | "Intake"
 
-export type TeleActionState =
-    | `ScoreAlgae${"Processor" | "Net"}`
-    | `CleanAlgae${"L2" | "L3"}`
-    | `ScoreCoral${"L1" | "L2" | "L3" | "L4"}`
-    | "Incap"
-    | "None"
-export type AutoAction =
-    | TeleActionState
-    | `Intake${`Coral${"Station" | "Preplaced"}` | `Algae${"Preplaced" | "Reef"}`}`
-    | "Leave"
+export type FrontendAutoActionData = Omit<AutoActionData, "id" | "team_match">
+export type FrontendTeleActionData = Omit<TeleActionData, "id" | "team_match">
 
 export type Timeline = {
-    auto: Omit<AutoActionData, "id">[]
-    tele: Omit<TeleActionData, "id">[]
+    auto: FrontendAutoActionData[]
+    tele: FrontendTeleActionData[]
 }
 
 export type UncountedTeamMatch = {
     match_key: string
-    team_number: number
+    team_key: number
     event_key: string
     auto_start_location: AutoStart
     auto_leave_start: boolean
@@ -42,16 +34,9 @@ export type UncountedTeamMatch = {
     skill: 1 | 2 | 3 | 4 | 5
     notes: string
     incap_time: number[]
-    user_id: number
+    scout_id: string
     tagNames: string[]
 }
-
-export type EndAction =
-    | "DeepClimb"
-    | "ShallowClimb"
-    | "Parked"
-    | "Failed"
-    | "None"
 
 type TagCategory = {
     category: string

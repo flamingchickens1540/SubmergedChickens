@@ -1,8 +1,6 @@
 <script lang="ts">
     import type {
-        TelePageState,
         AutoPageState,
-        AutoAction,
         TeleActionData,
         AutoActionData,
     } from "$lib/types"
@@ -13,14 +11,14 @@
     let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
     let {
-        team_name,
+        team_key,
         game_stage,
         page_state = $bindable(),
         next_page,
         prev_page,
         timeline = $bindable(),
     }: {
-        team_name: string
+        team_key: number
         game_stage: string
         page_state: AutoPageState
         prev_page?: () => void
@@ -33,7 +31,7 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span class="text-{team_color.value}-400">
-        {team_name}
+        {team_key}
     </span>
     {#if timeline}
         <UndoButton {timeline} />
