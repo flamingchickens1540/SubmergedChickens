@@ -36,7 +36,7 @@
                         goto(`/pit-scout/collect?team=${team.number}`)}
                 >
                     <ClipboardList
-                        class="h-8 w-8 {team.data
+                        class="size-8 {team.data
                             ? 'text-xanthous'
                             : 'text-white'}"
                     />
