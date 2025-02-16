@@ -1,6 +1,7 @@
 <script lang="ts">
     import { X } from "lucide-svelte"
     import type { PageProps } from "./$types"
+    import { goto } from "$app/navigation"
 
     let { data }: PageProps = $props()
 
@@ -23,6 +24,12 @@
 
     function removeImage(index: number) {
         images = images.filter((_, i) => i !== index)
+    }
+
+    function submit() {
+        // TODO Submit images here
+        images = []
+        goto("/pit-scout/teamlist")
     }
 </script>
 
@@ -69,7 +76,10 @@
         bind:this={fileinput}
     />
 
-    <button class="mt-2 w-full rounded bg-gunmetal p-5 text-lg font-semibold">
+    <button
+        class="mt-2 w-full rounded bg-gunmetal p-5 text-lg font-semibold"
+        onclick={submit}
+    >
         Submit
     </button>
 </div>

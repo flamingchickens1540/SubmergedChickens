@@ -1,6 +1,7 @@
 <script lang="ts">
     import RadioGroup from "@/components/RadioGroup.svelte"
     import type { PageProps } from "./$types"
+    import { goto } from "$app/navigation"
 
     let { data }: PageProps = $props()
 
@@ -24,6 +25,12 @@
     let summary = $state("")
 
     let team_key = $state(data.team_key)
+
+    function submit() {
+        // TODO Submit data to endpoint here
+
+        goto("/pit-scout/teamlist")
+    }
 </script>
 
 <header
@@ -200,7 +207,8 @@
 </div>
 
 <div class="p-2">
-    <button class="w-full rounded bg-gunmetal p-5 text-lg font-semibold"
-        >Submit</button
+    <button
+        class="w-full rounded bg-gunmetal p-5 text-lg font-semibold"
+        onclick={submit}>Submit</button
     >
 </div>

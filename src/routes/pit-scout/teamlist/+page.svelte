@@ -13,10 +13,10 @@
     <span class="ml-auto text-center">Team List</span>
 </header>
 
-<div class="flex flex-col p-2">
+<div class="flex flex-col gap-1 p-2">
     {#each data.teams as team}
         <div
-            class="m-1 ml-0 flex w-full flex-row items-center justify-between rounded bg-gunmetal p-4 text-xl"
+            class="flex w-full flex-row items-center justify-between rounded bg-gunmetal p-4 text-xl"
         >
             <span>{team.number}</span>
             <div class="flex flex-row gap-4">
