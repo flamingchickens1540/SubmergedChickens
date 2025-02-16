@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import type { AutoActionData, EndAction, TeamMatchData } from "$lib/types"
+    import type { UncountedTeamMatch } from "$lib/types"
     import Header from "../Header.svelte"
     import Timeline from "../Timeline.svelte"
     import Rating from "@/components/Rating.svelte"
@@ -10,32 +10,29 @@
 
     import type { PageProps } from "./$types"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame } from "@prisma/client"
 
-    let matchData = localStore<TeamMatchData>("matchData", {
-        scout_id: "",
-        team_key: "",
+    let matchData = localStore<UncountedTeamMatch>("matchData", {
+        event_key: "",
         match_key: "",
+        team_key: 0,
+        auto_start_location: AutoStart.Far,
+        auto_leave_start: false,
         timeline: {
             auto: [],
             tele: [],
         },
-        end: "None",
-        driver_skill: 3,
+        endgame: Endgame.None,
+        skill: 3,
         notes: "",
-        tags: [],
+        incap_time: [],
+        scout_id: "",
+        tagNames: [],
     })
 
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
-    let furthest_auto_index = $state(0)
-
-    let possibleEndActions: EndAction[] = [
-        "DeepClimb",
-        "ShallowClimb",
-        "Failed",
-        "None",
-    ]
 
     //TODO ADD TAGS TO THE MATCHDATA
     let selected: string[] = $state([])
@@ -57,21 +54,24 @@
 >
     <Header
         game_stage={"Postmatch"}
-        team_name={matchData.value.team_key}
+        page_state="None"
+        team_key={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
         bind:timeline={matchData.value.timeline.tele}
     />
     <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>
-        <RadioGroup bind:value={matchData.value.end} labels={possibleEndActions}
+        <RadioGroup
+            bind:value={matchData.value.endgame}
+            labels={Object.keys(Endgame)}
         ></RadioGroup>
-        <Rating name="Driver Skill" bind:value={matchData.value.driver_skill} />
-        <span class="font-heading mt-4 text-center text-2xl font-semibold"
+        <Rating name="Driver Skill" bind:value={matchData.value.skill} />
+        <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each data.tagcategories as tagcategory, i}
+        {#each data.tagcategories as tagcategory}
             <span class="font-heading text-xl font-semibold"
                 >{tagcategory.category}</span
             >
@@ -86,9 +86,5 @@
             displaying_timeline = true
         }}>Show Timeline</button
     >
-    <Timeline
-        bind:actions={matchData.value.timeline.auto}
-        bind:displaying={displaying_timeline}
-        bind:furthest_auto_index
-    />
+    <Timeline bind:displaying={displaying_timeline} />
 </div>

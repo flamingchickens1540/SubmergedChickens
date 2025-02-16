@@ -1,24 +1,25 @@
 <script lang="ts">
     import type {
-        TelePageState,
         AutoPageState,
-        AutoAction,
         TeleActionData,
         AutoActionData,
     } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
+    import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
 
+    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
+
     let {
-        team_name,
+        team_key,
         game_stage,
         page_state = $bindable(),
         next_page,
         prev_page,
         timeline = $bindable(),
     }: {
-        team_name: String
-        game_stage: String
+        team_key: number
+        game_stage: string
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
@@ -29,8 +30,8 @@
 <header
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
-    <span class="">
-        {team_name}
+    <span class="text-{team_color.value}-400">
+        {team_key}
     </span>
     {#if timeline}
         <UndoButton {timeline} />
@@ -38,14 +39,15 @@
     <div class="align-item-center flex gap-2">
         <button
             onclick={prev_page}
-            class={prev_page == null ? "pointer-events-none opacity-30" : ""}
+            class="disabled:opacity-30"
+            disabled={prev_page == null}
         >
             <ArrowLeft />
         </button>
         <span
             >{page_state == "None" || page_state == null
                 ? game_stage == "Prematch"
-                    ? "Pre"
+                    ? "Prematch"
                     : game_stage.slice(0, 4)
                 : page_state}</span
         >

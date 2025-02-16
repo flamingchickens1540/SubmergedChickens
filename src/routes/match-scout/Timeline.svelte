@@ -1,47 +1,87 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type { AutoActionData } from "$lib/types"
+    import type {
+        AutoActionData,
+        TeleActionData,
+        UncountedTeamMatch,
+    } from "$lib/types"
+    import { localStore } from "@/localStore.svelte"
     import Action from "./Action.svelte"
 
+    let matchData = $state(
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
+            match_key: "",
+            team_key: 0,
+            auto_start_location: "Far",
+            auto_leave_start: false,
+            timeline: {
+                auto: [] as AutoActionData[],
+                tele: [] as TeleActionData[],
+            },
+            endgame: "None",
+            skill: 3,
+            notes: "",
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
+        })
+    )
     let {
-        actions = $bindable(),
         displaying = $bindable(),
-        furthest_auto_index = $bindable(),
-        bg = "bg-eerie_black",
+        bg,
     }: {
-        actions: AutoActionData[] // TODO Action[]
-        furthest_auto_index: number
         displaying: boolean
-        bg: string
+        bg: string | undefined
     } = $props()
 
     /// Determine if currying is the right solution or if we should use a binding
     function remove(index: number) {
-        if (furthest_auto_index >= index) furthest_auto_index--
-        actions.splice(index, 1)
+        if (index < auto_len) {
+            matchData.value.timeline.auto.splice(index, 1)
+        } else {
+            matchData.value.timeline.tele.splice(index - auto_len)
+        }
     }
 
     function shift(index: number, change: -1 | 1) {
-        ;[actions[index], actions[index + change]] = [
-            actions[index + change],
-            actions[index],
+        const [actions, new_index] =
+            index < auto_len
+                ? [matchData.value.timeline.auto, index]
+                : [matchData.value.timeline.tele, index - auto_len]
+
+        if (new_index == 0 && change == -1) return
+        ;[actions[new_index], actions[new_index + change]] = [
+            actions[new_index + change],
+            actions[new_index],
         ]
     }
+
+    const auto_len = $derived(matchData.value.timeline.auto.length)
+    const tele_len = $derived(matchData.value.timeline.tele.length)
 </script>
 
 <Drawer bind:displaying {bg}>
-    {#each actions as _, i}
+    {#each matchData.value.timeline.tele as _, i}
         <Action
-            action_data={actions[actions.length - i - 1]}
-            index={actions.length - i - 1}
+            action_data={matchData.value.timeline.tele[tele_len - i - 1]}
+            index={tele_len - i - 1}
+            sub_timeline_len={tele_len}
             {remove}
             {shift}
         />
-        {#if furthest_auto_index === actions.length - i - 1}
-            <hr />
-        {/if}
     {/each}
-    {#if actions.length === 0}
+    <hr />
+    {#each matchData.value.timeline.auto as _, i}
+        <Action
+            action_data={matchData.value.timeline.auto[auto_len - i - 1]}
+            index={auto_len - i - 1}
+            sub_timeline_len={auto_len}
+            {remove}
+            {shift}
+        />
+    {/each}
+    {#if auto_len + tele_len === 0}
         <h3 class="font-heading m-auto font-bold">No actions yet :3</h3>
     {/if}
 </Drawer>

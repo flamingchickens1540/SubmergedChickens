@@ -1,49 +1,51 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    utils.url = "github:numtide/flake-utils";
-    devDB = {
-      url = "github:hermann-p/nix-postgres-dev-db";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      utils,
-      devDB,
-      systems,
-    }:
-    utils.lib.eachSystem (import systems) (
-      system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-        db = devDB.outputs.packages.${system};
-      in
-      {
-        devShells.default =
-          with pkgs;
-          mkShell {
-            env = {
-              PRISMA_QUERY_ENGINE_LIBRARY = "${prisma-engines}/lib/libquery_engine.node";
-              PRISMA_QUERY_ENGINE_BINARY = "${prisma-engines}/bin/query-engine";
-              PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-engines}/bin/schema-engine";
-            };
-            buildInputs = [
-              postgresql_17
-              db.start-database
-              db.stop-database
-              db.psql-wrapped
-              bun
-              nodePackages_latest.prettier
-              openssl
-            ];
-            shellHook = ''
-              export PG_ROOT=$(git rev-parse --show-toplevel)
-            '';
+  outputs = {nixpkgs, ...}: let
+    forAllSystems = with nixpkgs.lib;
+      f: genAttrs systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
+  in {
+    devShells = forAllSystems (pkgs: {
+      default = with pkgs;
+        mkShell {
+          env = {
+            PRISMA_QUERY_ENGINE_LIBRARY = "${prisma-engines}/lib/libquery_engine.node";
+            PRISMA_QUERY_ENGINE_BINARY = "${prisma-engines}/bin/query-engine";
+            PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-engines}/bin/schema-engine";
           };
-      }
-    );
+          buildInputs = [
+            postgresql_17
+            bun
+            nodePackages_latest.prettier
+            openssl
+          ];
+          shellHook = ''
+            export PG=$PWD/.dev_postgres/
+            export PGDATA="$PG"data
+            export PGPORT=5432
+            export PGHOST=localhost
+            export PGUSER=$USER
+            export PGPASSWORD=postgres
+            export PGDATABASE=example
+            export DATABASE_URL=postgres://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE
+
+            pg_setup() {
+              pg_stop;
+              rm -rf $PG;
+              initdb -D $PGDATA &&
+              echo "unix_socket_directories = '$PGDATA'" >> $PGDATA/postgresql.conf &&
+              pg_ctl -D $PGDATA -l $PG/postgres.log start &&
+              createdb
+            }
+
+            alias pg_start="pg_ctl -D $PGDATA -l $PG/postgres.log start"
+            alias pg_stop="pg_ctl -D $PGDATA stop"
+            alias pg_drop="psql -U $PGUSER -c 'DROP DATABASE $PGDATABASE'"
+            alias exit="pg_ctl -D $PGDATA stop && exit"
+          '';
+        };
+    });
+  };
 }

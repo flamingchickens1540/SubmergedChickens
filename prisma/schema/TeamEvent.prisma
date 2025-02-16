@@ -1,7 +1,7 @@
 model TeamEvent {
   id          Int        @id @default(autoincrement())
-  team        Team       @relation(fields: [team_number], references: [number])
-  team_number Int
+  team        Team       @relation(fields: [team_key], references: [key])
+  team_key Int
   event_key   String
   event       Event      @relation(fields: [event_key], references: [event_key])
   image       Image[]
