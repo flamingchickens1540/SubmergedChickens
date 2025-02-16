@@ -6,7 +6,8 @@
 
     let one_is_better = $state(false)
 
-    const submit = async (category: string) => {
+    const submit = async () => {
+        const category = data.categories.shift()
         const event_key = (browser && localStorage.getItem("event_key")) || ""
         // TODO Type after `Brandon/backend` gets merged
         const comp = {
@@ -30,24 +31,34 @@
     }
 </script>
 
-{#each data.categories as category}
-    <div class="m-2 grid grid-cols-2 gap-2 text-center text-white">
-        <div class="col-span-2">
-            Please select the robot better at {category}
+{#if data.categories.length < 1}
+    <span>TODO: redirect or something</span>
+{:else}
+    <div class="flex h-dvh flex-col gap-2 p-2 text-center">
+        <span class="col-span-2 text-lg">
+            Please select the robot better at <b class="font-bold"
+                >{data.categories[0]}</b
+            >
+        </span>
+        <div
+            class="grid h-dvh grid-cols-2 grid-rows-5 gap-2 text-xl font-semibold"
+        >
+            <button
+                class="{one_is_better
+                    ? 'bg-green-500'
+                    : 'bg-gunmetal'} row-span-4 rounded"
+                onclick={() => (one_is_better = true)}>{data.one}</button
+            >
+            <button
+                class="{one_is_better
+                    ? 'bg-gunmetal'
+                    : 'bg-green-500'} row-span-4 rounded"
+                onclick={() => (one_is_better = false)}>{data.two}</button
+            >
+            <button
+                class="col-span-2 rounded bg-gunmetal"
+                onclick={() => submit()}>Submit Comparison</button
+            >
         </div>
-        <button
-            class="{one_is_better
-                ? 'bg-green-500'
-                : 'bg-gunmetal'} h-96 rounded"
-            onclick={() => (one_is_better = true)}>{data.one}</button
-        >
-        <button
-            class="{one_is_better ? 'bg-gunmetal' : 'bg-green-500'} rounded"
-            onclick={() => (one_is_better = false)}>{data.two}</button
-        >
-        <button
-            class="col-span-2 h-24 rounded bg-gunmetal"
-            onclick={() => submit(category)}>Submit Comparison</button
-        >
     </div>
-{/each}
+{/if}
