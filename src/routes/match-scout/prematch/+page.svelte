@@ -3,32 +3,42 @@
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import Header from "../Header.svelte"
     import { localStore } from "@/localStore.svelte"
-    import { type TeamMatchData } from "@/types"
+    import type { UncountedTeamMatch } from "@/types"
     import type { PageProps } from "./$types"
     import { onMount } from "svelte"
+    import { browser } from "$app/environment"
+    import { AutoStart, Endgame } from "@prisma/client"
 
     let { data }: PageProps = $props()
 
     let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
+    // TODO Add auto start location to prematch
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: AutoStart.Far,
+            auto_leave_start: false,
             timeline: {
                 auto: [],
                 tele: [],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: Endgame.None,
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
 
     onMount(() => {
-        matchData.value.team_key = data.team_key
+        matchData.reset()
+        matchData.value.event_key =
+            (browser && localStorage.getItem("event_key")) || ""
+        matchData.value.team_key = Number.parseInt(data.team_key)
         matchData.value.match_key = data.match_key
         team_color.value = data.color
     })
@@ -45,7 +55,7 @@
 >
     <Header
         game_stage={"Prematch"}
-        team_name={matchData.value.team_key}
+        team_key={matchData.value.team_key}
         page_state="None"
         next_page={() => goto("/match-scout/auto")}
     />

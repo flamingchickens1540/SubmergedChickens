@@ -4,23 +4,23 @@
     let {
         children,
         displaying = $bindable(),
-        scrollbar = false,
         bg = "bg-eerie_black",
         gap = "gap-2",
         p = "p-2",
         text = "text-white",
         max_h = "max-h-[80svh]",
         min_h = "min-h-[40svh]",
+        scrollbar = false,
     }: {
         children?: Snippet<[]>
         displaying: boolean
-        scrollbar: boolean
-        bg: string
-        gap: string
-        p: string
-        text: string
-        max_h: string
-        min_h: string
+        bg?: string
+        gap?: string
+        p?: string
+        text?: string
+        max_h?: string
+        min_h?: string
+        scrollbar?: boolean
     } = $props()
 </script>
 
