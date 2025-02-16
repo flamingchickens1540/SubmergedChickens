@@ -9,5 +9,5 @@
 
 <Button {variant} {...restProps}>
     Author ID
-    <ArrowUpDown class="ml-2 px-4"/>
+    <ArrowUpDown class="ml-2 px-4" />
 </Button>

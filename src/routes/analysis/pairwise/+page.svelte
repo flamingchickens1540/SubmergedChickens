@@ -5,4 +5,8 @@
     let { data } = $props()
 </script>
 
-<DataTable data={data.comparisons.rankings} stability={data.comparisons.stability} {columns} />
+<DataTable
+    data={data.comparisons.rankings}
+    stability={data.comparisons.stability}
+    {columns}
+/>

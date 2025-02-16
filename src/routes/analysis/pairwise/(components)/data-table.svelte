@@ -93,13 +93,9 @@
             placeholder="Filter posts..."
             value={table.getColumn("team")?.getFilterValue() as string}
             onchange={e =>
-                table
-                    .getColumn("team")
-                    ?.setFilterValue(e.currentTarget.value)}
+                table.getColumn("team")?.setFilterValue(e.currentTarget.value)}
             oninput={e =>
-                table
-                    .getColumn("team")
-                    ?.setFilterValue(e.currentTarget.value)}
+                table.getColumn("team")?.setFilterValue(e.currentTarget.value)}
             class="max-w-sm"
         />
         <span class="pl-4">{`Stability: ${stability.toFixed(2)}`}</span>
