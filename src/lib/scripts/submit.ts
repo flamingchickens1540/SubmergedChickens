@@ -8,8 +8,8 @@ import {
 
 export async function submitTeamMatch(
     tm: Omit<TeamMatch, "id_num">,
-    tele_actions: Omit<TeleActionData, "id">[],
-    auto_actions: Omit<AutoActionData, "id">[],
+    tele_actions: Omit<Omit<TeleActionData, "id">, "team_match">[],
+    auto_actions: Omit<Omit<AutoActionData, "id">, "team_match">[],
     tagNames: string[]
 ) {
     await prisma.teamMatch.update({
