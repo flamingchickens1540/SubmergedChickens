@@ -8,6 +8,6 @@
 </script>
 
 <Button {variant} {...restProps}>
-    Author ID
+    Score
     <ArrowUpDown class="ml-2 px-4" />
 </Button>
