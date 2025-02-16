@@ -8,7 +8,7 @@ CREATE TYPE "AutoStart" AS ENUM ('Far', 'MidFar', 'Mid', 'MidClose', 'Close');
 CREATE TYPE "TeleAction" AS ENUM ('ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
 
 -- CreateEnum
-CREATE TYPE "AutoAction" AS ENUM ('IntakeCoral', 'IntakeStation', 'IntakePreplaced', 'IntakeAlgaePreplaced', 'IntakeAlgaeReef', 'LeaveStart', 'ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
+CREATE TYPE "AutoAction" AS ENUM ('IntakeCoralGround', 'IntakeCoralStation', 'IntakeCoralPreplaced', 'IntakeAlgaePreplaced', 'IntakeAlgaeReef', 'LeaveStart', 'ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
 
 -- CreateEnum
 CREATE TYPE "Endgame" AS ENUM ('Deep', 'Shallow', 'Park', 'Fail', 'None');
