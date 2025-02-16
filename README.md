@@ -15,10 +15,10 @@ bun db:load
 
 ```bash
 nix develop
-start-database
+pg_setup # only first time
+pg_start # if you didn't run above command
 bun i
 bun db:load
-echo DATABASE_URL="postgresql://$(whoami):<passwd>@localhost:5432/database?schema=public" >> .env
 # once your done
-stop-database && exit
+pg_stop && exit
 ```
