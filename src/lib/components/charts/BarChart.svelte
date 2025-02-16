@@ -92,15 +92,15 @@
                     text: title,
                     left: "center",
                     textStyle: {
-                        color: "rgba(255, 255, 255, 1)"
-                    }
+                        color: "rgba(255, 255, 255, 1)",
+                    },
                 },
                 legend: {
                     data: categories,
                     top: 20,
                     textStyle: {
-                        color: "rgba(255, 255, 255, 1)"
-                    }
+                        color: "rgba(255, 255, 255, 1)",
+                    },
                 },
                 xAxis: {
                     type: "category",
