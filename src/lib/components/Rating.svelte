@@ -1,10 +1,6 @@
 <script lang="ts">
-    type RatingProps = {
-        name: string
-        value: number
-    }
-
-    let { name, value = $bindable(3) }: RatingProps = $props()
+    let { value = $bindable() }: { name: string; value: number } = $props()
+    console.log(value)
 </script>
 
 <span class="font-heading text-xl font-semibold">Driver Skill</span>

@@ -8,34 +8,33 @@
     import Intake from "../Intake.svelte"
     import SucceedFail from "../SucceedFail.svelte"
 
-    import type {
-        AutoPageState,
-        AutoAction,
-        AutoActionData,
-        TeamMatchData,
-    } from "$lib/types"
-    import Timeline from "../Timeline.svelte"
+    import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
 
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { localStore } from "@/localStore.svelte"
+    import { AutoStart, Endgame, AutoAction } from "@prisma/client"
 
     let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
     // NOTE The passed object will only be set if there's nothing there
     // Meaning this object should never actually get set
     let matchData = $state(
-        localStore<TeamMatchData>("matchData", {
-            scout_id: "",
-            team_key: "",
+        localStore<UncountedTeamMatch>("matchData", {
+            event_key: "",
             match_key: "",
+            team_key: 0,
+            auto_start_location: AutoStart.Far,
+            auto_leave_start: false,
             timeline: {
                 auto: [],
                 tele: [],
             },
-            end: "None",
-            driver_skill: 3,
+            endgame: Endgame.None,
+            skill: 3,
             notes: "",
-            tags: [],
+            incap_time: [],
+            scout_id: "",
+            tagNames: [],
         })
     )
 
@@ -43,7 +42,7 @@
         switch (event.detail.direction) {
             case "right":
                 goto(
-                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${matchData.value.color}`
+                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${team_color.value}`
                 )
                 break
             case "left":
@@ -53,7 +52,7 @@
     }
 
     let page_state: AutoPageState = $state("None")
-    let action_state: AutoAction = $state("None")
+    let action_state: AutoAction | null = $state(null)
 
     const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")
@@ -87,7 +86,7 @@
 >
     <Header
         game_stage={"Auto"}
-        team_name={matchData.value.team_key}
+        team_key={matchData.value.team_key}
         {page_state}
         {prev_page}
         {next_page}

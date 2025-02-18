@@ -6,7 +6,7 @@ import type {
     UncountedTeamMatch,
     Timeline,
     AutoAction,
-    TeleActionState,
+    TeleAction,
 } from "$lib/types"
 
 export const POST: RequestHandler = async ({ request }: any) => {
@@ -24,7 +24,7 @@ export const POST: RequestHandler = async ({ request }: any) => {
 function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
     return {
         match_key: match.match_key,
-        team_key: match.team_number,
+        team_key: match.team_key,
         event_key: match.event_key,
         auto_start_location: match.auto_start_location,
         auto_leave_start: match.auto_leave_start,

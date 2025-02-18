@@ -58,7 +58,7 @@ model TeamMatch {
   scout                             User?         @relation(fields: [scoutId], references: [id])
   ComparisonA                      Comparison[] @relation("TeamMatchA")
   ComparisonB                      Comparison[] @relation("TeamMatchB")
-  
+
   @@unique(name: "id_key", fields: [match_key, team_key])
 }
 
@@ -98,9 +98,9 @@ enum TeleAction {
 }
 
 enum AutoAction {
-  IntakeCoral
-  IntakeStation 
-  IntakePreplaced
+  IntakeCoralGround
+  IntakeCoralStation
+  IntakeCoralPreplaced
   IntakeAlgaePreplaced
   IntakeAlgaeReef
   LeaveStart
