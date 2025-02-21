@@ -1,23 +1,17 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import { LogOut, Settings } from "lucide-svelte"
+    import { FlaskRound, LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
     import { browser } from "$app/environment"
     import { onMount } from "svelte"
-    import type { PageData } from "./$types"
 
-    // TODO Decide if we want to display the current match
-    const data: PageData = $props()
-
-    let greeting = $state("Hello")
+    let name = $state("Hello")
 
     onMount(() => {
-        browser && localStorage.setItem("event_key", data.event_key)
-
         let username = ((browser && localStorage.getItem("username")) ??
             "scout") as string
         const first = username.charAt(0).toUpperCase()
-        greeting = "Hello " + first + username.slice(1)
+        name = "Hello " + first + username.slice(1)
     })
 
     let bugReportVisible = $state(false)
@@ -28,14 +22,13 @@
     }
 </script>
 
-<div class="flex flex-col gap-4 p-2">
+<div class="flex h-dvh flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
         <button class="rounded p-1" onclick={logout}><LogOut /></button>
-        <span class="font-semibold">{greeting}</span>
-
+        <span class="text-xl font-semibold">{name}</span>
         <button class="rounded p-1"><Settings /></button>
     </div>
-    <div class="grid gap-2 text-xl font-semibold">
+    <div class="grid flex-grow gap-2 text-2xl font-semibold">
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
             disabled
