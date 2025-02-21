@@ -28,6 +28,7 @@
     })
 
     socket.on("allowed_user", () => {
+        console.log("allowed")
         browser && window.localStorage.setItem("username", inputname)
         goto("/home")
     })
