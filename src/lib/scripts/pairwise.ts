@@ -159,4 +159,4 @@ function test() {
     console.log(analyze_comparisons(sixteenDataSet))
 }
 
-test()
+// test()

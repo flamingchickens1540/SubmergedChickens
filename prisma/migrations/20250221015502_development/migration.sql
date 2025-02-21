@@ -8,7 +8,7 @@ CREATE TYPE "AutoStart" AS ENUM ('Far', 'MidFar', 'Mid', 'MidClose', 'Close');
 CREATE TYPE "TeleAction" AS ENUM ('ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
 
 -- CreateEnum
-CREATE TYPE "AutoAction" AS ENUM ('IntakeCoral', 'IntakeStation', 'IntakePreplaced', 'IntakeAlgaePreplaced', 'IntakeAlgaeReef', 'LeaveStart', 'ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
+CREATE TYPE "AutoAction" AS ENUM ('IntakeCoralGround', 'IntakeCoralStation', 'IntakeCoralPreplaced', 'IntakeAlgaePreplaced', 'IntakeAlgaeReef', 'LeaveStart', 'ScoreAlgaeProcessor', 'ScoreAlgaeNet', 'CleanAlgaeL2', 'CleanAlgaeL3', 'ScoreCoralL1', 'ScoreCoralL2', 'ScoreCoralL3', 'ScoreCoralL4', 'Incap');
 
 -- CreateEnum
 CREATE TYPE "Endgame" AS ENUM ('Deep', 'Shallow', 'Park', 'Fail', 'None');
@@ -66,20 +66,26 @@ CREATE TABLE "TeamEvent" (
     "id" SERIAL NOT NULL,
     "team_key" INTEGER NOT NULL,
     "event_key" TEXT NOT NULL,
-    "summary" TEXT NOT NULL,
-    "drivetrain" "Drivetrain" NOT NULL,
-    "L1" BOOLEAN NOT NULL,
-    "L2" BOOLEAN NOT NULL,
-    "L3" BOOLEAN NOT NULL,
-    "L4" BOOLEAN NOT NULL,
-    "clean" BOOLEAN NOT NULL,
-    "processor" BOOLEAN NOT NULL,
-    "net" BOOLEAN NOT NULL,
-    "source" BOOLEAN NOT NULL,
-    "ground" BOOLEAN NOT NULL,
-    "reef" BOOLEAN NOT NULL,
-    "shallow" BOOLEAN NOT NULL,
-    "deep" BOOLEAN NOT NULL,
+    "summary" TEXT NOT NULL DEFAULT '',
+    "drivetrain" "Drivetrain",
+    "coralIntakeSource" BOOLEAN,
+    "coralIntakeGround" BOOLEAN,
+    "coralScoreL1" BOOLEAN,
+    "coralScoreL2" BOOLEAN,
+    "coralScoreL3" BOOLEAN,
+    "coralScoreL4" BOOLEAN,
+    "algaeIntakeL2" BOOLEAN,
+    "algaeIntakeL3" BOOLEAN,
+    "algaeIntakeGround" BOOLEAN,
+    "algaeIntakeLollipop" BOOLEAN,
+    "algaeScoreProcessor" BOOLEAN,
+    "algaeScoreNet" BOOLEAN,
+    "cleanScoreL2" BOOLEAN,
+    "cleanScoreL3" BOOLEAN,
+    "shallowClimb" BOOLEAN,
+    "deepClimb" BOOLEAN,
+    "dataCollected" BOOLEAN NOT NULL DEFAULT false,
+    "imageCollected" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "TeamEvent_pkey" PRIMARY KEY ("id")
 );
@@ -208,6 +214,9 @@ CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Team_key_key" ON "Team"("key");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TeamEvent_team_key_event_key_key" ON "TeamEvent"("team_key", "event_key");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "TeamMatch_match_key_team_key_key" ON "TeamMatch"("match_key", "team_key");
