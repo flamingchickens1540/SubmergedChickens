@@ -19,7 +19,6 @@ export async function preload(event_key: string) {
     const placeholder_team_matches = team_matches.flatMap(
         ({ match_key, alliances }) =>
             [...alliances!.red, ...alliances!.blue].map(team_key => {
-                console.log(team_key.slice(3))
                 return {
                     match_key,
                     team_key: Number.parseInt(team_key.slice(3)),
@@ -32,18 +31,28 @@ export async function preload(event_key: string) {
     )
 
     // Filter out duplicates
-    const team_events = new Set(
-        team_matches.flatMap(team_match => [
-            ...team_match.alliances!.red,
-            ...team_match.alliances!.blue,
-        ])
-    ).map()
+    const team_events = [
+        ...new Set(
+            team_matches.flatMap(team_match => [
+                ...team_match.alliances!.red,
+                ...team_match.alliances!.blue,
+            ])
+        ),
+    ].map(team_key => {
+        return {
+            key: team_key,
+            name: "",
+            // team_event: {
+            //     create:
+            // }
+        }
+    })
 
     await prisma.event.create({
         data: {
             event_key,
             team_events: {
-                createMany: k,
+                createMany: {},
             },
         },
     })
