@@ -28,30 +28,3 @@ export async function getEventKey(): Promise<string | undefined> {
     const event_state = await prisma.eventState.findFirst({})
     return event_state?.event_key
 }
-
-async function newEvent(event_key: string, team_keys: string[]) {
-    await prisma.event.create({
-        data: {
-            event_key,
-            team_events: {
-                create: team_keys.map(key => {
-                    return {
-                        team_key: key,
-                        team: { create: [{ key: key, name: "" }] },
-                    }
-                }),
-            },
-            event_state: {
-                create: [
-                    {
-                        next_match_key: 1,
-                        stream_url: "",
-                    },
-                ],
-            },
-        },
-        include: {
-            event_state: true,
-        },
-    })
-}

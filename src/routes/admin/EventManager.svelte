@@ -6,8 +6,8 @@
     }: { selection: string; tba_event_keys: string[] } = $props()
 
     async function load_event() {
-        await fetch("/api/eventKey/", {
-            method: "PUT",
+        const res = await fetch("/api/eventKey/", {
+            method: "POST",
             body: JSON.stringify({ event_key: selection }),
             headers: {
                 "Content-Type": "application/json",
