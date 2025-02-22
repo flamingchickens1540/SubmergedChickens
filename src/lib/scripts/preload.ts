@@ -2,13 +2,6 @@ import { prisma } from "$lib/prisma"
 import { API_KEY } from "$env/static/private"
 
 export async function preload(event_key: string) {
-    // const event_key = await getEventKey() // placeholder until the api is fully working on main
-
-    if (event_key === undefined) {
-        console.log("Event key not set yet!")
-        return false
-    }
-
     const match_keys = await getMatchesInEvent(event_key)
     if (!match_keys) return
 
@@ -37,6 +30,25 @@ export async function preload(event_key: string) {
                 }
             })
     )
+
+    // Filter out duplicates
+    const team_events = new Set(
+        team_matches.flatMap(team_match => [
+            ...team_match.alliances!.red,
+            ...team_match.alliances!.blue,
+        ])
+    ).map()
+
+    await prisma.event.create({
+        data: {
+            event_key,
+            team_events: {
+                createMany: k,
+            },
+        },
+    })
+
+    await prisma
 
     await prisma.teamMatch.createMany({
         data: placeholder_team_matches,
