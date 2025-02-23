@@ -1,34 +1,81 @@
 <script lang="ts">
+    import LineChart from "@/components/charts/LineChart.svelte"
+
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
+    let dialogData: any
 
     type TeamAlliance = {
-        allianceNumber: string
+        alliance: string
+        allianceNumber: number
         teamNumber: number
         coral: number
         algae: number
-        ability: number
+        ability: string
+        coralData: any
+        algaeData: any
     }
 
-    let redTeams: TeamAlliance[] = [
-        { allianceNumber: "red1", teamNumber: data.red1, coral: 11, algae: 12, ability: 13 },
-        { allianceNumber: "red2", teamNumber: data.red2, coral: 21, algae: 22, ability: 23 },
-        { allianceNumber: "red3", teamNumber: data.red3, coral: 31, algae: 32, ability: 33 },
-    ]
-    let blueTeams: TeamAlliance[] = [
-        { allianceNumber: "blue1", teamNumber: data.blue1, coral: 11, algae: 12, ability: 13 },
-        { allianceNumber: "blue2", teamNumber: data.blue2, coral: 21, algae: 22, ability: 23 },
-        { allianceNumber: "blue3", teamNumber: data.blue3, coral: 31, algae: 32, ability: 33 },
-    ]
+    let redTeams: TeamAlliance[] = $state([
+        { alliance: "red", allianceNumber: 1, teamNumber: data.red1, coral: 11, algae: 12, ability: "ability1", 
+            algaeData: {name: data.red1,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
+                color: "#004777",},
+            coralData: {name: data.red1,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [17, 14, 16, 18, 21, 12, 14, 11, 13, 15,],
+                color: "#004777",}
+        },
+        { alliance: "red", allianceNumber: 2, teamNumber: data.red2, coral: 21, algae: 22, ability: "ability2", 
+            algaeData: {name: data.red2,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 14, 16, 18, 21, 11, 13, 15, 17, 14],
+                color: "#A30000",},
+            coralData: {name: data.red2,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [15, 17, 14, 16, 18, 21, 12, 14, 11, 13, ],
+                color: "#A30000",}
+        },
+        { alliance: "red", allianceNumber: 3, teamNumber: data.red3, coral: 31, algae: 32, ability: "ability3", 
+            algaeData: {name: data.red3,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 15, 17, 14, 14, 16, 18, 21, 11, 13],
+                color: "#FF7700",},
+            coralData: {name: data.red3,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [11, 13, 15, 17, 14, 18, 21, 12, 14, 16,],
+                color: "#FF7700",}
+        },
+    ])
 
-    // $effect(() => {
-    //     console.log(data.blue1) 
+    import Dialog from '@/components/ChartDialog.svelte'
+    let dialog = $state()
 
-    // })
+    function openCoral(teamData: TeamAlliance) {
+        let dialogData: any = teamData.coralData
+        dialog.showModal()
+    }
 </script>
-
-<div class="m-auto grid grid-cols-4 gap-2 w-full h-64 p-1 border-2 border-solid border-imperial_red mb-2">
+<Dialog bind:dialog>
+	<LineChart
+        data={[
+            {
+                name: data.red1,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [17, 14, 16, 18, 21, 12, 14, 11, 13, 15,],
+                color: "#004777",
+            },
+        ]}
+        title={"Tele Points vs Match Number"}
+        xLabel={"Match Number"}
+        yLabel={"Tele Points"}
+        width={"300px"}
+        height={"300px"}
+    />
+</Dialog>
+<div class="m-auto grid grid-cols-4 gap-2 w-full h-96 p-1 border-2 border-solid border-imperial_red mb-2">
     <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
         <div class="bg-imperial_red row-span-1 w-full text-center content-center">
             Team
@@ -43,41 +90,14 @@
             Ability
         </div>
     </div>
-    {#each redTeams as team}
+    {#each redTeams as team, i}
         <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
             <div class="bg-imperial_red row-span-1 w-full text-center content-center">
-                {team.allianceNumber} - {team.teamNumber}
+                {team.alliance}{team.allianceNumber} - {team.teamNumber}
             </div>
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.coral}" placeholder="{team.teamNumber} Coral" type="text">
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.algae}" placeholder="{team.teamNumber} Algae" type="text">
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.ability}" placeholder="{team.teamNumber} Ability" type="text">
-        </div>
-    {/each}
-</div>
-
-<div class="m-auto grid grid-cols-4 gap-2 w-full h-64 p-1 border-2 border-solid border-steel_blue">
-    <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
-        <div class="bg-steel_blue row-span-1 w-full text-center content-center">
-            Team
-        </div>
-        <div class="bg-gunmetal text-steel_blue row-span-1 w-full text-center content-center">
-            Coral
-        </div>
-        <div class="bg-gunmetal text-steel_blue row-span-1 w-full text-center content-center">
-            Algae
-        </div>
-        <div class="bg-gunmetal text-steel_blue row-span-1 w-full text-center content-center">
-            Ability
-        </div>
-    </div>
-    {#each blueTeams as team}
-        <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
-            <div class="bg-steel_blue row-span-1 w-full text-center content-center">
-                {team.allianceNumber} - {team.teamNumber}
-            </div>
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.coral}" placeholder="{team.teamNumber} Coral" type="text">
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.algae}" placeholder="{team.teamNumber} Algae" type="text">
-            <input class="bg-gunmetal row-span-1 w-full text-center" bind:value="{team.ability}" placeholder="{team.teamNumber} Ability" type="text">
+            <button class="bg-gunmetal row-span-1 w-full text-center" onclick={() => openCoral(team.coralData)}>{team.coral}</button>
+            <button class="bg-gunmetal row-span-1 w-full text-center" onclick={() => openCoral(team.algaeData)}>{team.algae}</button>
+            <div class="bg-gunmetal row-span-1 w-full text-center content-center">{team.ability}</div>
         </div>
     {/each}
 </div>
