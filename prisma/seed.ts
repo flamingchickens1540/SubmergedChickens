@@ -65,14 +65,14 @@ async function seedUsers() {
 async function seedTags() {
     const tags: Tag[] = []
 
-    let category_roles = {
+    const category_roles = {
         roles: ["defender", "algae", "coral"],
         matchplay: ["heavily-defended", "gamepiece-stuck", "tipped-over"],
         damage: ["lost-comms", "bumper-damage", "mech-fail"],
     }
 
     let id = 0
-    for (let key in category_roles) {
+    for (const key in category_roles) {
         for (let i = 0; i < category_roles[key].length; i++) {
             tags.push({
                 id: id++,

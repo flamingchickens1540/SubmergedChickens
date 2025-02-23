@@ -232,13 +232,13 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
         skill: match.skill,
         notes: match.notes,
         incap_time: match.incap_time,
-        scoutId: match.scout_id,
+        scoutId: match.user_id,
     }
 }
 
 function countActionAuto(tl: Timeline, succ: boolean, act: AutoAction) {
     return tl.auto.filter(a => a.action === act && a.success == succ).length
 }
-function countActionTele(tl: Timeline, succ: boolean, act: TeleAction) {
+function countActionTele(tl: Timeline, succ: boolean, act: TeleActionState) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
 }

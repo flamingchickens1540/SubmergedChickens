@@ -9,7 +9,7 @@
     }: {
         page_state: AutoPageState
         action_state: AutoAction | null
-        bg_color: String
+        bg_color: string
     } = $props()
 
     const l1 = () => {
