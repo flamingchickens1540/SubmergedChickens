@@ -18,7 +18,7 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            let old_entries = Object.entries(sid_to_username).find(
+            const old_entries = Object.entries(sid_to_username).find(
                 ([_key, value]) => value === username
             )
             if (old_entries) {
