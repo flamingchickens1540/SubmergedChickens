@@ -1,5 +1,6 @@
 import { prisma } from "$lib/prisma"
 import { API_KEY } from "$env/static/private"
+import { info, warn, error } from "@/consoleUtils"
 
 type Match = {
     match_key: string
@@ -9,11 +10,27 @@ type Match = {
 // WARNING For some reason prisma doesn't allow object fields to be initialized
 // TeleActions: [] as TeleActionData[],
 // AutoActions: [] as AutoActionData[],
-export async function preload(event_key: string) {
+//
+/// @returns if the event is now (or already was) in the database
+export async function preload(event_key: string): Promise<boolean> {
+    const event = await prisma.event.findUnique({
+        where: {
+            event_key,
+        },
+    })
+    if (event !== null) {
+        warn(`Event ${event_key} already in database (aborting preload)`)
+        return true
+    }
+
     const match_keys = await getMatchesInEvent(event_key)
-    if (!match_keys) return
+    if (!match_keys) return false
 
     const matches = await matchKeysToMatches(match_keys)
+    if (matches.length === 0) {
+        warn(`No matches for event ${event_key} (aborting preload)`)
+        return false
+    }
 
     const placeholder_team_matches = matches.flatMap(({ match_key, teams }) =>
         teams.map(team_key => {
@@ -57,21 +74,23 @@ export async function preload(event_key: string) {
     await prisma.teamMatch.createMany({
         data: placeholder_team_matches,
     })
+    info(
+        `Event ${event_key} loaded into database along with ${placeholder_team_matches.length} team_matches`
+    )
+    return true
 }
 
 async function matchKeysToMatches(match_keys: string[]): Promise<Match[]> {
-    const team_matches = (
-        await Promise.all(
-            match_keys.map(async match_key => {
-                return {
-                    match_key,
-                    teams: await getTeamsInMatch(match_key),
-                }
-            })
-        )
-    ).filter(({ match_key: _, teams }) => teams !== undefined) as Match[]
+    const matches = await Promise.all(
+        match_keys.map(async match_key => {
+            return {
+                match_key,
+                teams: await getTeamsInMatch(match_key),
+            }
+        })
+    )
 
-    return team_matches
+    return matches.filter(({ match_key: _, teams }) => teams !== undefined)
 }
 
 function parseTBATeam(team_key: string): number {
@@ -92,11 +111,10 @@ async function getMatchesInEvent(
     })
 
     if (!response.ok) {
-        console.error(`Failed getMatchesInEvent: ${response.status}`)
+        error(`Failed getMatchesInEvent: ${response.status}`)
         return
     }
-    const matches: string[] = await response.json()
-    return matches
+    return await response.json()
 }
 
 ///  @param: event_key - `2024orbb`
@@ -115,7 +133,7 @@ async function getTeamsInMatch(match_key: string): Promise<string[]> {
     })
 
     if (!response.ok) {
-        console.error(
+        error(
             `Failed get teams in match ${match_key}\n\tError ${response.status}`
         )
         return []
