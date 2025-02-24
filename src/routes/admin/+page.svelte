@@ -2,6 +2,11 @@
     import { X, Check } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
     import { localStore } from "@/localStore.svelte"
+    import EventManager from "./EventManager.svelte"
+    import type { PageProps } from "./$types"
+
+    let { data }: PageProps = $props()
+    const tba_event_keys = data.tba_event_keys
 
     let next_match_key = $state(localStore<string>("next_match_key", ""))
 
@@ -102,6 +107,8 @@
 
         socket.emit("approve_new_user", user)
     }
+
+    let event_selection = $state("Event Key")
 </script>
 
 <div
@@ -195,4 +202,5 @@
             {/each}
         </div>
     </div>
+    <EventManager {tba_event_keys} bind:selection={event_selection} />
 </div>

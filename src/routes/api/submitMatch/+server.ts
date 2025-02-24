@@ -1,13 +1,8 @@
 import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { submitTeamMatch } from "$lib/scripts/submit"
-import type { TeamMatch, Tag } from "@prisma/client"
-import type {
-    UncountedTeamMatch,
-    Timeline,
-    AutoAction,
-    TeleAction,
-} from "$lib/types"
+import type { TeamMatch, AutoAction, TeleAction } from "@prisma/client"
+import type { UncountedTeamMatch, Timeline } from "$lib/types"
 
 export const POST: RequestHandler = async ({ request }: any) => {
     const tm: UncountedTeamMatch = await request.json()
@@ -232,13 +227,13 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
         skill: match.skill,
         notes: match.notes,
         incap_time: match.incap_time,
-        scoutId: match.user_id,
+        scoutId: match.scout_id,
     }
 }
 
 function countActionAuto(tl: Timeline, succ: boolean, act: AutoAction) {
     return tl.auto.filter(a => a.action === act && a.success == succ).length
 }
-function countActionTele(tl: Timeline, succ: boolean, act: TeleActionState) {
+function countActionTele(tl: Timeline, succ: boolean, act: TeleAction) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
 }

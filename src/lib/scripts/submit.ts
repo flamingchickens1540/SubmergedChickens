@@ -32,6 +32,9 @@ export async function submitTeamMatch(
             },
         },
     })
+    console.info(
+        `Logged data for team_match ${tm.event_key}_${tm.match_key}:${tm.team_key}`
+    )
 }
 
 export async function submitPairwise(pw: Omit<Comparison, "id">) {

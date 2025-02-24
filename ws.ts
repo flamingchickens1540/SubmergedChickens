@@ -1,6 +1,7 @@
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
-const info = (s: string) => console.log(`\x1b[32m ${s} \x1b[0m`)
+
+const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
 let robot_queue: [string, "red" | "blue"][] = []
