@@ -42,24 +42,27 @@ async function seedEventState() {
 }
 
 async function seedUsers() {
-    const users: User[] = []
-    users.push({
-        id: 0,
-        username: "admin",
-        is_enabled: true,
-        is_admin: true,
-    })
-    for (let i = 1; i <= 9; i++) {
-        users.push({
-            id: i,
-            username: faker.person.firstName(),
-            is_enabled: faker.number.int(100) > 30,
-            is_admin: false,
-        })
-    }
-    await prisma.user.createMany({ data: users })
-
-    return await prisma.user.findMany()
+    // WARNING Seeding users causes unique key
+    // constrait bugs when creating new ones
+    //
+    // const users: User[] = []
+    // users.push({
+    //     id: 0,
+    //     username: "admin",
+    //     is_enabled: true,
+    //     is_admin: true,
+    // })
+    // for (let i = 1; i <= 9; i++) {
+    //     users.push({
+    //         id: i,
+    //         username: faker.person.firstName(),
+    //         is_enabled: faker.number.int(100) > 30,
+    //         is_admin: false,
+    //     })
+    // }
+    // await prisma.user.createMany({ data: users })
+    //
+    // return await prisma.user.findMany()
 }
 
 async function seedTags() {

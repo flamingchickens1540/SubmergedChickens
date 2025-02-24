@@ -93,7 +93,7 @@ async function matchKeysToMatches(match_keys: string[]): Promise<Match[]> {
     return matches.filter(({ match_key: _, teams }) => teams !== undefined)
 }
 
-function parseTBATeam(team_key: string): number {
+export function parseTBATeam(team_key: string): number {
     return Number.parseInt(team_key.slice(3))
 }
 

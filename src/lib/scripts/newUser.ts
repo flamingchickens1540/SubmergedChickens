@@ -1,13 +1,15 @@
 import { prisma } from "$lib/prisma"
 
-export async function makeUser(name: string, is_admin: boolean) {
-    await prisma.user.create({
+export async function makeUser(
+    username: string,
+    is_admin: boolean
+): Promise<number> {
+    const user = await prisma.user.create({
         data: {
-            username: name,
-            is_admin: is_admin,
-            is_enabled: true,
+            username,
+            is_admin,
         },
     })
 
-    return true
+    return user.id
 }

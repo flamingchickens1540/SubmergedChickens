@@ -1,4 +1,5 @@
 import { prisma } from "$lib/prisma"
+import { info } from "@/consoleUtils"
 import {
     type TeamMatch,
     type Comparison,
@@ -8,6 +9,7 @@ import {
 
 export async function submitTeamMatch(
     tm: Omit<TeamMatch, "id_num">,
+    verbose_match_key: string,
     tele_actions: Omit<Omit<TeleActionData, "id">, "team_match">[],
     auto_actions: Omit<Omit<AutoActionData, "id">, "team_match">[],
     tagNames: string[]
@@ -15,7 +17,7 @@ export async function submitTeamMatch(
     await prisma.teamMatch.update({
         where: {
             id_key: {
-                match_key: tm.match_key,
+                match_key: verbose_match_key,
                 team_key: tm.team_key,
             },
         },
@@ -32,7 +34,7 @@ export async function submitTeamMatch(
             },
         },
     })
-    console.info(
+    info(
         `Logged data for team_match ${tm.event_key}_${tm.match_key}:${tm.team_key}`
     )
 }

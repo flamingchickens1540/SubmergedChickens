@@ -34,7 +34,7 @@ export type UncountedTeamMatch = {
     skill: 1 | 2 | 3 | 4 | 5
     notes: string
     incap_time: number[]
-    scout_id: string
+    scout_id: number
     tagNames: string[]
 }
 
