@@ -1,4 +1,3 @@
-import { error } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
 
 export const load: PageLoad = async ({ params: _ }) => {
@@ -9,10 +8,8 @@ export const load: PageLoad = async ({ params: _ }) => {
         },
     })
 
-    const tba_event_keys = res.ok ? await res.json() : []
-    if (tba_event_keys.length === 0) {
-        console.error(`TBA EventKeys request failed: ${res.status}`)
-    }
+    // NOTE Error handling done on server side
+    const tba_event_keys = await res.json()
 
     return { tba_event_keys }
 }
