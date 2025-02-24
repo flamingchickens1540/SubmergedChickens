@@ -13,7 +13,7 @@ export async function getTeamsInMatch(match_key: string): Promise<
     const event_key = await getEventKey()
     if (!event_key) {
         error(
-            `Can't get get teams for match ${match_key} being current event isn't set`
+            `Can't get teams for match ${match_key} since current event isn't set`
         )
         return
     }
