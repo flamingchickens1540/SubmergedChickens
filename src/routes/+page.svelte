@@ -27,9 +27,23 @@
         },
     })
 
-    socket.on("allowed_user", () => {
+    socket.on("allowed_user", async () => {
         console.log("allowed")
         browser && window.localStorage.setItem("username", inputname)
+
+        const res = await fetch(`/api/newUser/`, {
+            method: "POST",
+            body: JSON.stringify({
+                username: inputname,
+                is_admin: false,
+            }),
+        })
+        if (!res.ok) return
+        const id = await res.json()
+        console.log(id)
+
+        browser && window.localStorage.setItem("scout_id", id)
+
         goto("/home")
     })
 </script>
