@@ -22,7 +22,7 @@
             skill: 3,
             notes: "",
             incap_time: [],
-            scout_id: "",
+            scout_id: 0,
             tagNames: [],
         })
     )
