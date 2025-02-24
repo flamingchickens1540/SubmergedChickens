@@ -9,6 +9,7 @@ import {
 
 export async function submitTeamMatch(
     tm: Omit<TeamMatch, "id_num">,
+    verbose_match_key: string,
     tele_actions: Omit<Omit<TeleActionData, "id">, "team_match">[],
     auto_actions: Omit<Omit<AutoActionData, "id">, "team_match">[],
     tagNames: string[]
@@ -16,7 +17,7 @@ export async function submitTeamMatch(
     await prisma.teamMatch.update({
         where: {
             id_key: {
-                match_key: tm.match_key,
+                match_key: verbose_match_key,
                 team_key: tm.team_key,
             },
         },

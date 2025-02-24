@@ -2,7 +2,6 @@ import { error } from "@/consoleUtils"
 import { getEventKey } from "./dbUtil"
 import { API_KEY } from "$env/static/private"
 
-// TOOD: implement data verification with TBA API
 export async function getTeamsInMatch(match_key: string): Promise<
     | {
           red: string[]
@@ -49,3 +48,5 @@ export async function getTeamsInMatch(match_key: string): Promise<
         blue,
     }
 }
+
+// TODO Implement data verification with TBA API
