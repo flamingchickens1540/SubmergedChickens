@@ -22,21 +22,16 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+    env:
+      DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
+      API_KEY: ${{ secrets.API_KEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v2
-      - name: "Create env file"
-        run: |
-          touch .env
-          echo API_KEY=${{ secrets.API_KEY }} >> .env
       - run: bun install
       - name: Generate Prisma Client
         run: bunx prisma generate
       - name: Prisma Migrate
         run: bunx prisma migrate deploy && bunx prisma db seed
-        env:
-          DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
       - name: Build
         run: bun run build
-        env:
-          DATABASE_URL: postgres://postgres:1234@postgres:5432/postgres_db?schema=public
