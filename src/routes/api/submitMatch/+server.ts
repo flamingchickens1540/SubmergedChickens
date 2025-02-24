@@ -17,6 +17,7 @@ export const POST: RequestHandler = async ({
         return new Response(null)
     }
     tm.event_key = event_key
+    tm.match_key = event_key + "_" + tm.match_key
 
     return json(
         await submitTeamMatch(
@@ -29,9 +30,6 @@ export const POST: RequestHandler = async ({
 }
 
 function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
-    console.log(
-        `match: ${match.match_key}\nteam: ${match.team_key}\nevent: ${match.event_key}\nscout: ${match.scout_id}`
-    )
     return {
         match_key: match.match_key,
         team_key: match.team_key,
