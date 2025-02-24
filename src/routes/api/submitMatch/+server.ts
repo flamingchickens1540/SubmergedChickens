@@ -236,9 +236,9 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
     }
 }
 
-function countActionAuto(tl: Timeline, succ: Boolean, act: AutoAction) {
+function countActionAuto(tl: Timeline, succ: boolean, act: AutoAction) {
     return tl.auto.filter(a => a.action === act && a.success == succ).length
 }
-function countActionTele(tl: Timeline, succ: Boolean, act: TeleActionState) {
+function countActionTele(tl: Timeline, succ: boolean, act: TeleActionState) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
 }
