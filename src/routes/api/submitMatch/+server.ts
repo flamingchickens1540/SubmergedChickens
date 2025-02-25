@@ -3,12 +3,26 @@ import type { RequestHandler } from "./$types"
 import { submitTeamMatch } from "$lib/scripts/submit"
 import type { TeamMatch, AutoAction, TeleAction } from "@prisma/client"
 import type { UncountedTeamMatch, Timeline } from "$lib/types"
+import { getEventKey } from "@/scripts/dbUtil"
+import { error } from "@/consoleUtils"
 
-export const POST: RequestHandler = async ({ request }: any) => {
+export const POST: RequestHandler = async ({
+    request,
+}: any): Promise<Response> => {
     const tm: UncountedTeamMatch = await request.json()
+
+    const event_key = await getEventKey()
+    if (event_key === undefined) {
+        error("No Event Key present")
+        return new Response(null)
+    }
+    tm.event_key = event_key
+    const verbose_match_key = event_key + "_" + tm.match_key
+
     return json(
         await submitTeamMatch(
             count(tm),
+            verbose_match_key,
             tm.timeline.tele,
             tm.timeline.auto,
             tm.tagNames
