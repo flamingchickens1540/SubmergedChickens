@@ -29,17 +29,22 @@
             skill: 3,
             notes: "",
             incap_time: [],
-            scout_id: "",
+            scout_id: 0,
             tagNames: [],
         })
     )
 
     onMount(() => {
         matchData.reset()
+
+        matchData.value.scout_id = Number.parseInt(
+            (browser && localStorage.getItem("scout_id")) || ""
+        )
         matchData.value.event_key =
             (browser && localStorage.getItem("event_key")) || ""
         matchData.value.team_key = Number.parseInt(data.team_key)
         matchData.value.match_key = data.match_key
+
         team_color.value = data.color
     })
 

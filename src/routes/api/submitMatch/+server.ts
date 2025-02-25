@@ -1,19 +1,28 @@
 import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { submitTeamMatch } from "$lib/scripts/submit"
-import type { TeamMatch, Tag } from "@prisma/client"
-import type {
-    UncountedTeamMatch,
-    Timeline,
-    AutoAction,
-    TeleAction,
-} from "$lib/types"
+import type { TeamMatch, AutoAction, TeleAction } from "@prisma/client"
+import type { UncountedTeamMatch, Timeline } from "$lib/types"
+import { getEventKey } from "@/scripts/dbUtil"
+import { error } from "@/consoleUtils"
 
-export const POST: RequestHandler = async ({ request }: any) => {
+export const POST: RequestHandler = async ({
+    request,
+}: any): Promise<Response> => {
     const tm: UncountedTeamMatch = await request.json()
+
+    const event_key = await getEventKey()
+    if (event_key === undefined) {
+        error("No Event Key present")
+        return new Response(null)
+    }
+    tm.event_key = event_key
+    const verbose_match_key = event_key + "_" + tm.match_key
+
     return json(
         await submitTeamMatch(
             count(tm),
+            verbose_match_key,
             tm.timeline.tele,
             tm.timeline.auto,
             tm.tagNames
@@ -232,13 +241,13 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
         skill: match.skill,
         notes: match.notes,
         incap_time: match.incap_time,
-        scoutId: match.user_id,
+        scoutId: match.scout_id,
     }
 }
 
-function countActionAuto(tl: Timeline, succ: Boolean, act: AutoAction) {
+function countActionAuto(tl: Timeline, succ: boolean, act: AutoAction) {
     return tl.auto.filter(a => a.action === act && a.success == succ).length
 }
-function countActionTele(tl: Timeline, succ: Boolean, act: TeleActionState) {
+function countActionTele(tl: Timeline, succ: boolean, act: TeleAction) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
 }

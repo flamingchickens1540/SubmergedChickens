@@ -2,6 +2,12 @@
     import { X, Check } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
     import { localStore } from "@/localStore.svelte"
+    import EventManager from "./EventManager.svelte"
+    import type { PageProps } from "./$types"
+    import { error } from "@/consoleUtils"
+
+    let { data }: PageProps = $props()
+    const tba_event_keys = data.tba_event_keys
 
     let next_match_key = $state(localStore<string>("next_match_key", ""))
 
@@ -93,8 +99,22 @@
     //     displayed_team_match = team_match
     //     show_modal = true
     // }
+    const auto_load_teams = async () => {
+        const res = await fetch(`/api/getMatch/${next_match_key.value}`, {
+            method: "GET",
+        })
+        if (!res.ok) {
+            error(
+                `Failed to get team matches for match ${next_match_key.value}`
+            )
+            return
+        }
 
-    const auto_load_teams = () => {}
+        const { red, blue }: { red: string[]; blue: string[] } =
+            await res.json()
+        next_red_robots.value = red
+        next_blue_robots.value = blue
+    }
     const approve_new_user = (user: string) => {
         const i = new_users.indexOf(user)
         if (i === -1) return
@@ -102,6 +122,8 @@
 
         socket.emit("approve_new_user", user)
     }
+
+    let event_selection = $state("Event Key")
 </script>
 
 <div
@@ -195,4 +217,5 @@
             {/each}
         </div>
     </div>
+    <EventManager {tba_event_keys} bind:selection={event_selection} />
 </div>

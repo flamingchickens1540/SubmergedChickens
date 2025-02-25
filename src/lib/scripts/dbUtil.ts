@@ -1,3 +1,4 @@
+import { error } from "@/consoleUtils"
 import { prisma } from "@/prisma"
 import type { TeamMatch } from "@prisma/client"
 
@@ -29,8 +30,19 @@ export async function getEventKey(): Promise<string | undefined> {
     return event_state?.event_key
 }
 
-export async function setEventKey(event_key: string) {
-    await prisma.eventState.updateMany({
-        data: { event_key },
+export async function setEventKey(event_key: string): Promise<boolean> {
+    const updated = await prisma.eventState.updateMany({
+        where: {
+            id: {
+                not: -1,
+            },
+        },
+        data: {
+            event_key,
+        },
     })
+    if (updated.count === 1) return true
+
+    error(`EventState broken, updated count: ${updated.count}`)
+    return false
 }

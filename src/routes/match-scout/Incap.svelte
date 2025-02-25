@@ -8,7 +8,7 @@
     }: {
         page_state: AutoPageState
         action_state: AutoAction
-        bg_color: String
+        bg_color: string
     } = $props()
 
     const recap = () => {

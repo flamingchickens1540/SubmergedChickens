@@ -6,7 +6,7 @@ const config: Config = {
     darkMode: ["class"],
     content: ["./src/**/*.{html,js,svelte,ts}"],
     safelist: ["dark"],
-    plugins: [colorMix()],
+    plugins: [colorMix(), require("tailwindcss-animate")],
     theme: {
         container: {
             center: true,
@@ -17,7 +17,6 @@ const config: Config = {
         },
         extend: {
             colors: {
-                // Inflated Chickens Colors
                 white: "#ffffff",
                 eerie_black: "#1C1C1C",
                 xanthous: "#F6B14B",
@@ -29,43 +28,45 @@ const config: Config = {
                 indigo_dye: "#294F6A",
                 eminence: "#6C3082",
                 jungle_green: "#49A078",
-
-                border: "hsl(var(--border) / <alpha-value>)",
-                input: "hsl(var(--input) / <alpha-value>)",
-                ring: "hsl(var(--ring) / <alpha-value>)",
-                background: "hsl(var(--background) / <alpha-value>)",
-                foreground: "hsl(var(--foreground) / <alpha-value>)",
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
                 primary: {
-                    DEFAULT: "hsl(var(--primary) / <alpha-value>)",
-                    foreground:
-                        "hsl(var(--primary-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
                 },
                 secondary: {
-                    DEFAULT: "hsl(var(--secondary) / <alpha-value>)",
-                    foreground:
-                        "hsl(var(--secondary-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
                 },
                 destructive: {
-                    DEFAULT: "hsl(var(--destructive) / <alpha-value>)",
-                    foreground:
-                        "hsl(var(--destructive-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
                 },
                 muted: {
-                    DEFAULT: "hsl(var(--muted) / <alpha-value>)",
-                    foreground: "hsl(var(--muted-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
                 },
                 accent: {
-                    DEFAULT: "hsl(var(--accent) / <alpha-value>)",
-                    foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
                 },
                 popover: {
-                    DEFAULT: "hsl(var(--popover) / <alpha-value>)",
-                    foreground:
-                        "hsl(var(--popover-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
                 },
                 card: {
-                    DEFAULT: "hsl(var(--card) / <alpha-value>)",
-                    foreground: "hsl(var(--card-foreground) / <alpha-value>)",
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
+                chart: {
+                    "1": "hsl(var(--chart-1))",
+                    "2": "hsl(var(--chart-2))",
+                    "3": "hsl(var(--chart-3))",
+                    "4": "hsl(var(--chart-4))",
+                    "5": "hsl(var(--chart-5))",
                 },
             },
             borderRadius: {

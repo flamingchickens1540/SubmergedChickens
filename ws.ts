@@ -1,6 +1,7 @@
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
-const info = (s: string) => console.log(`\x1b[32m ${s} \x1b[0m`)
+
+const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
 let robot_queue: [string, "red" | "blue"][] = []
@@ -18,7 +19,7 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            let old_entries = Object.entries(sid_to_username).find(
+            const old_entries = Object.entries(sid_to_username).find(
                 ([_key, value]) => value === username
             )
             if (old_entries) {
