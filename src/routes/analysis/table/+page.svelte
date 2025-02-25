@@ -4,7 +4,7 @@
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
-    let dialogData: any
+    let chartData: any = $state()
 
     type TeamAlliance = {
         alliance: string
@@ -51,22 +51,22 @@
     ])
 
     import Dialog from '@/components/ChartDialog.svelte'
-    let dialog = $state()
+    let dialog: any = $state()
 
-    function openCoral(teamData: TeamAlliance) {
-        let dialogData: any = teamData.coralData
+    function openCoral(coralData: any) {
+        chartData = coralData
+        dialog.showModal()
+    }
+
+    function openAlgae(algaeData: any) {
+        chartData = algaeData
         dialog.showModal()
     }
 </script>
 <Dialog bind:dialog>
-	<LineChart
+    <LineChart
         data={[
-            {
-                name: data.red1,
-                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                y: [17, 14, 16, 18, 21, 12, 14, 11, 13, 15,],
-                color: "#004777",
-            },
+                chartData
         ]}
         title={"Tele Points vs Match Number"}
         xLabel={"Match Number"}
@@ -75,8 +75,8 @@
         height={"300px"}
     />
 </Dialog>
-<div class="m-auto grid grid-cols-4 gap-2 w-full h-96 p-1 border-2 border-solid border-imperial_red mb-2">
-    <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
+<div class="m-auto grid grid-cols-4 gap-1 w-full h-96 p-1 border-2 border-solid border-imperial_red mb-2">
+    <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
         <div class="bg-imperial_red row-span-1 w-full text-center content-center">
             Team
         </div>
@@ -91,12 +91,12 @@
         </div>
     </div>
     {#each redTeams as team, i}
-        <div class="col-span-1 row-span-4 grid grid-rows-4 gap-2">
+        <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
             <div class="bg-imperial_red row-span-1 w-full text-center content-center">
                 {team.alliance}{team.allianceNumber} - {team.teamNumber}
             </div>
             <button class="bg-gunmetal row-span-1 w-full text-center" onclick={() => openCoral(team.coralData)}>{team.coral}</button>
-            <button class="bg-gunmetal row-span-1 w-full text-center" onclick={() => openCoral(team.algaeData)}>{team.algae}</button>
+            <button class="bg-gunmetal row-span-1 w-full text-center" onclick={() => openAlgae(team.algaeData)}>{team.algae}</button>
             <div class="bg-gunmetal row-span-1 w-full text-center content-center">{team.ability}</div>
         </div>
     {/each}

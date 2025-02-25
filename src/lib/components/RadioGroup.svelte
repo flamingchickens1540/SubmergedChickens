@@ -1,7 +1,7 @@
 <script lang="ts">
     type Props = {
         labels: string[]
-        value: string
+        value: string   
     }
 
     let { labels, value = $bindable() }: Props = $props()
