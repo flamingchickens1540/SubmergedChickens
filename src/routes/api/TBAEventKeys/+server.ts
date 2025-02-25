@@ -3,7 +3,7 @@ import { error } from "@/consoleUtils"
 import { json, type RequestHandler } from "@sveltejs/kit"
 
 export const GET: RequestHandler = async ({ request: _ }: any) => {
-    const year = "2025"
+    const year = "2022"
     const event_res = await fetch(
         `https://www.thebluealliance.com/api/v3/events/${year}`,
         {
