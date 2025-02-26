@@ -2,13 +2,11 @@ import { error } from "@/consoleUtils"
 import { prisma } from "@/prisma"
 import type { TeamMatch } from "@prisma/client"
 
-export async function lastTeamMatch(scout: string): Promise<TeamMatch> {
+export async function lastTeamMatch(scout_id: number): Promise<TeamMatch> {
     const team_matches = await prisma.teamMatch.findMany({
         where: {
-            scout: {
-                username: {
-                    equals: scout,
-                },
+            scoutId: {
+                equals: scout_id,
             },
         },
     })

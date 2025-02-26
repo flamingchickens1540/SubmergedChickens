@@ -40,8 +40,13 @@
             },
         })
 
+        const team_key = matchData.value.team_key
+        const match_key = matchData.value.match_key
+        const scout_id = matchData.value.scout_id
+
         matchData.reset()
-        goto("/home")
+
+        goto(`/pairwise?scout=${scout_id}&match=${match_key}&team=${team_key}`)
     }
 </script>
 
