@@ -51,6 +51,12 @@
         >
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
+            onclick={() => {
+                goto("manual")
+            }}>Manual Match Scout</button
+        >
+        <button
+            class="rounded bg-gunmetal p-2 disabled:opacity-30"
             disabled
             onclick={() => {
                 goto("analysis")
