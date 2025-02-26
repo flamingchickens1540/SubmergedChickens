@@ -21,7 +21,7 @@
 
     <textarea
         class="w-full rounded bg-gunmetal p-4"
-        placeholder="Tournament Key"
+        placeholder="Event Key"
         bind:value={match}
     ></textarea>
 
