@@ -1,9 +1,17 @@
 <script>
     import { goto } from "$app/navigation"
+    import { localStore } from "@/localStore.svelte"
 
     let team_key = $state("")
     let match = $state("")
+    let event = $state(localStore("event_key", ""))
     let color = $state("")
+
+    let disabled = $derived(
+        team_key === "" || match === "" || event.value === "" || color === ""
+            ? "pointer-events-none opacity-30"
+            : ""
+    )
 </script>
 
 <header
@@ -21,8 +29,14 @@
 
     <textarea
         class="w-full rounded bg-gunmetal p-4"
-        placeholder="Event Key"
+        placeholder="Match Key"
         bind:value={match}
+    ></textarea>
+
+    <textarea
+        class="w-full rounded bg-gunmetal p-4"
+        placeholder="Event Key"
+        bind:value={event.value}
     ></textarea>
 
     <select
@@ -36,7 +50,7 @@
     </select>
 
     <button
-        class="w-full rounded bg-gunmetal p-4 text-lg font-semibold"
+        class="w-full rounded bg-gunmetal p-4 text-lg font-semibold {disabled}"
         onclick={() =>
             goto(
                 `/match-scout/prematch?match=${match}&team=${team_key}&color=${color}`
