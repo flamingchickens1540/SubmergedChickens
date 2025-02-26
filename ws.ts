@@ -1,3 +1,4 @@
+import type { TeamMatch } from "@prisma/client"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
 
@@ -78,12 +79,7 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
-                console.log("team_dta: " + team_data)
                 io.to("admin_room").emit("robot_left_queue", team_data)
-
-                console.log("match: " + curr_match_key)
-                console.log("team: " + team_data[0])
-                console.log("color: " + team_data[1])
 
                 socket.emit("time_to_scout", [curr_match_key, ...team_data])
             })
@@ -127,7 +123,9 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    info(`${match_key}: ${teams}`)
+                    info(`Queued match ${match_key} with teams:`)
+                    printTeamMatch(teams)
+
                     robot_queue = []
 
                     const scout_queue = (
@@ -198,6 +196,22 @@ const webSocketServer = {
             })
         })
     },
+}
+
+function printTeamMatch(teams: [string, "blue" | "red"][]) {
+    teams
+        .slice(0, 3)
+        .map(team => team[0])
+        .forEach(key => {
+            console.log(`  \x1b[31m${key}\x1b[0m`)
+        })
+
+    teams
+        .slice(0, 3)
+        .map(team => team[0])
+        .forEach(key => {
+            console.log(`  \x1b[34m${key}\x1b[0m`)
+        })
 }
 
 export default webSocketServer
