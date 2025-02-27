@@ -22,13 +22,13 @@
     }
 </script>
 
-<div class="flex flex-col gap-4 p-2">
+<div class="flex h-dvh flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
         <button class="rounded p-1" onclick={logout}><LogOut /></button>
-        <span class="font-semibold">{name}</span>
+        <span class="text-xl font-semibold">{name}</span>
         <button class="rounded p-1"><Settings /></button>
     </div>
-    <div class="grid gap-2 text-xl font-semibold">
+    <div class="grid flex-grow gap-2 text-2xl font-semibold">
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
             disabled
@@ -48,6 +48,12 @@
             onclick={() => {
                 goto("queue")
             }}>Match Scout</button
+        >
+        <button
+            class="rounded bg-gunmetal p-2 disabled:opacity-30"
+            onclick={() => {
+                goto("manual")
+            }}>Manual Match Scout</button
         >
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
