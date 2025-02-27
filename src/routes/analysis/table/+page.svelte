@@ -91,13 +91,19 @@
         <div class="bg-imperial_red row-span-1 w-full text-center content-center">
             Team
         </div>
-        <div class="bg-gunmetal text-imperial_red row-span-1 w-full text-center content-center">
+        <div
+            class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
+        >
             Coral
         </div>
-        <div class="bg-gunmetal text-imperial_red row-span-1 w-full text-center content-center">
+        <div
+            class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
+        >
             Algae
         </div>
-        <div class="bg-gunmetal text-imperial_red row-span-1 w-full text-center content-center">
+        <div
+            class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
+        >
             Ability
         </div>
     </div>
