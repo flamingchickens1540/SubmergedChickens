@@ -48,6 +48,7 @@
         height = "400px",
     }: LineChartProps = $props()
 
+
     let chartDom: HTMLDivElement
 
     $effect(() => {

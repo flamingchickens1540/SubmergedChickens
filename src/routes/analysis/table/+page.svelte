@@ -66,13 +66,24 @@
 <Dialog bind:dialog>
     <LineChart
         data={[
-                chartData
+            {
+                name: "1540",
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
+                color: "#fbd50b",
+            },
+            {
+                name: "1844",
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [15, 20, 14, 19, 18, 23, 21, 22, 24, 25],
+                color: "#9440cf",
+            },
         ]}
         title={"Tele Points vs Match Number"}
         xLabel={"Match Number"}
         yLabel={"Tele Points"}
-        width={"300px"}
-        height={"300px"}
+        width={"600px"}
+        height={"400px"}
     />
 </Dialog>
 <div class="m-auto grid grid-cols-4 gap-1 w-full h-96 p-1 border-2 border-solid border-imperial_red mb-2">
