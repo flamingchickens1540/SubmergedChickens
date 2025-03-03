@@ -68,7 +68,12 @@
     />
     <div class="grid flex-grow place-items-center overflow-y-scroll">
         <div class="text-2xl">You're Scouting Team:</div>
-        <div style="{data.color === "blue" ? "color: #2196F3 !important" : "color: #F44336 !important"}" class="text-6xl font-semibold">
+        <div
+            style={data.color === "blue"
+                ? "color: #2196F3 !important"
+                : "color: #F44336 !important"}
+            class="text-6xl font-semibold"
+        >
             {data.team_key}
         </div>
         <div class="text-xl">In {data.match_key.toUpperCase()}</div>

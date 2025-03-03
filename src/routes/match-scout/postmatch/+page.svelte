@@ -72,14 +72,15 @@
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
-        
+
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
         {#each data.tagcategories as tagcategory, i}
             <span class="font-heading text-xl font-semibold"
                 >{tagcategory.category}</span
             >
             <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
-            <CheckGroup labels={tagcategory.tags} bind:selected={roles}></CheckGroup>
+            <CheckGroup labels={tagcategory.tags} bind:selected={roles}
+            ></CheckGroup>
         {/each}
     </div>
 

@@ -43,8 +43,9 @@ const webSocketServer = {
             // TODO Figure out how to handle dublicate usernames in approval process
             socket.on("new_user", (old_username: string, user: string) => {
                 // Sets the sid correctly so the new user can be found by their non-placeholder username
-                const [sid, _username] = Array.from(sid_to_username.entries())
-                    .find(([_sid, username]) => old_username === username) ?? [
+                const [sid, _username] = Array.from(
+                    sid_to_username.entries()
+                ).find(([_sid, username]) => old_username === username) ?? [
                     undefined,
                     undefined,
                 ]
@@ -58,8 +59,9 @@ const webSocketServer = {
             })
 
             socket.on("approve_new_user", (user: string) => {
-                const [sid, _username] = Array.from(sid_to_username.entries())
-                    .find(([_sid, username]) => user == username) ?? [
+                const [sid, _username] = Array.from(
+                    sid_to_username.entries()
+                ).find(([_sid, username]) => user == username) ?? [
                     undefined,
                     undefined,
                 ]
