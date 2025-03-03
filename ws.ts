@@ -1,3 +1,4 @@
+import { log } from "console"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
 
@@ -19,7 +20,7 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            const old_entries = Object.entries(sid_to_username).find(
+            const old_entries = Array.from(sid_to_username.entries()).find(
                 ([_key, value]) => value === username
             )
             if (old_entries) {
@@ -42,9 +43,9 @@ const webSocketServer = {
             // TODO Figure out how to handle dublicate usernames in approval process
             socket.on("new_user", (old_username: string, user: string) => {
                 // Sets the sid correctly so the new user can be found by their non-placeholder username
-                const [sid, _username] = sid_to_username
-                    .entries()
-                    .find(([_sid, username]) => old_username === username) ?? [
+                const [sid, _username] = Array.from(
+                    sid_to_username.entries()
+                ).find(([_sid, username]) => old_username === username) ?? [
                     undefined,
                     undefined,
                 ]
@@ -58,9 +59,9 @@ const webSocketServer = {
             })
 
             socket.on("approve_new_user", (user: string) => {
-                const [sid, _username] = sid_to_username
-                    .entries()
-                    .find(([_sid, username]) => user == username) ?? [
+                const [sid, _username] = Array.from(
+                    sid_to_username.entries()
+                ).find(([_sid, username]) => user == username) ?? [
                     undefined,
                     undefined,
                 ]
@@ -89,7 +90,7 @@ const webSocketServer = {
             })
 
             socket.on("leave_scout_queue", (scout_id: string) => {
-                const scout_sid = Object.entries(sid_to_username)
+                const scout_sid = Array.from(sid_to_username.entries())
                     .filter(([_sid, scout]) => scout === scout_id)
                     .map(([sid, _]) => sid)[0]
                 // NOTE This event handles the the case where the scout removed itself from the queue
