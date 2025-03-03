@@ -31,14 +31,6 @@
     <div class="grid flex-grow gap-2 text-2xl font-semibold">
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
-            disabled
-            onclick={() => {
-                goto("pit-view")
-            }}>Pit Display</button
-        >
-        <button
-            class="rounded bg-gunmetal p-2 disabled:opacity-30"
-            disabled
             onclick={() => {
                 goto("pit-scout/teamlist")
             }}>Pit Scout</button
