@@ -135,7 +135,7 @@
             : 'bg-gunmetal'} rounded"
         onclick={() => {
             lollipop = !lollipop
-        }}>Net</button
+        }}>Lollipop</button
     >
 </div>
 
@@ -201,7 +201,7 @@
 <div class="p-2">
     <textarea
         class="w-full flex-grow rounded bg-gunmetal p-2"
-        placeholder="notes here..."
+        placeholder="Single sentence summary here..."
         bind:value={summary}
     ></textarea>
 </div>
