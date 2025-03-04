@@ -46,18 +46,20 @@ export async function submitPairwise(pw: Omit<Comparison, "id">) {
     })
 }
 
-export async function submitTeamEvent(teamEvent: Omit<TeamEvent, "id" | "dataCollected" | "imageCollected">) {
+export async function submitTeamEvent(
+    teamEvent: Omit<TeamEvent, "id" | "dataCollected" | "imageCollected">
+) {
     await prisma.teamEvent.update({
         where: {
             team_key_event_key: {
                 team_key: teamEvent.team_key,
-                event_key: teamEvent.event_key
-            }
+                event_key: teamEvent.event_key,
+            },
         },
         data: {
             ...teamEvent,
             dataCollected: true,
-            imageCollected: true
-        }
+            imageCollected: true,
+        },
     })
 }
