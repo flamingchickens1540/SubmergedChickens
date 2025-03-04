@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { prisma } from "@/prisma"
 import type { TeamEvent, Image } from "@prisma/client"
 
@@ -15,6 +16,8 @@ export async function submitPitscout(
         },
     })
 =======
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 import { prisma } from "$lib/prisma"
 import { info } from "@/consoleUtils"
 import {
@@ -60,5 +63,8 @@ export async function submitPairwise(pw: Omit<Comparison, "id">) {
     await prisma.comparison.create({
         data: pw,
     })
+<<<<<<< HEAD
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
+=======
 >>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 }

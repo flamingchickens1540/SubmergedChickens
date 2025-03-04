@@ -1,5 +1,8 @@
 <script lang="ts">
+<<<<<<< HEAD
     import { base } from "$service-worker"
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     import RadioGroup from "@/components/RadioGroup.svelte"
     import type { PageProps } from "./$types"
     import { goto } from "$app/navigation"
@@ -27,6 +30,7 @@
 
     let team_key = $state(data.team_key)
 
+<<<<<<< HEAD
     let team_number = $state("3636") // TODO: make this changeable
     let event = "bb-2024" // TODO: get actual event
 
@@ -46,6 +50,8 @@
 
     function submit() {
         console.log("uwu owo uwu")
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     function submit() {
         // TODO Submit data to endpoint here
 
@@ -62,6 +68,7 @@
     <span class="text-left"> Data Collection </span>
 </header>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <div class="flex flex-col gap-4 p-4">
     <label
         class="w-full rounded bg-gunmetal p-4 text-center text-lg font-semibold"
@@ -70,6 +77,8 @@
         Upload Images
     </label>
 </div>
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 =======
 >>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 
@@ -236,16 +245,22 @@
         bind:value={summary}
     ></textarea>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     <button class="w-full rounded bg-gunmetal p-2 font-bold" onclick={submit}
         >Submit</button
 =======
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 </div>
 
 <div class="p-2">
     <button
         class="w-full rounded bg-gunmetal p-5 text-lg font-semibold"
         onclick={submit}>Submit</button
+<<<<<<< HEAD
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
+=======
 >>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     >
 </div>

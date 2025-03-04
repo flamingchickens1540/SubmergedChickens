@@ -5,10 +5,13 @@
       "name": "reefscapenchickens",
       "dependencies": {
 <<<<<<< HEAD
+<<<<<<< HEAD
         "@prisma/client": "6.1.0",
         "@tanstack/table-core": "^8.21.2",
         "echarts": "^5.6.0",
 =======
+=======
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
         "@prisma/adapter-pg": "^6.2.1",
         "@prisma/client": "^6.4.1",
         "@radix-ui/react-dialog": "^1.1.6",
@@ -771,7 +774,11 @@
     "supports-preserve-symlinks-flag": ["supports-preserve-symlinks-flag@1.0.0", "", {}, "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="],
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     "svelte": ["svelte@5.19.10", "", { "dependencies": { "@ampproject/remapping": "^2.3.0", "@jridgewell/sourcemap-codec": "^1.5.0", "@types/estree": "^1.0.5", "acorn": "^8.12.1", "acorn-typescript": "^1.4.13", "aria-query": "^5.3.1", "axobject-query": "^4.1.0", "clsx": "^2.1.1", "esm-env": "^1.2.1", "esrap": "^1.4.3", "is-reference": "^3.0.3", "locate-character": "^3.0.0", "magic-string": "^0.30.11", "zimmerframe": "^1.1.2" } }, "sha512-7lId+z36IZWzuo0N0oGOStEPi3/Wv1VQEnIzMmDaLDSlJSruKplhhVr+NaZ0Wh7ZILfOjbeU7PbTjqmQQYZF4A=="],
+=======
+    "svd-js": ["svd-js@1.1.1", "", {}, "sha512-3Mpd08lu7HPD/aDMnHvhLBKHLdoUv+w9411ZLGjZYIR51e05CFNAY+MYMXLs7leo6jljZ8PGkoCSI1I4lF1Z4Q=="],
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 =======
     "svd-js": ["svd-js@1.1.1", "", {}, "sha512-3Mpd08lu7HPD/aDMnHvhLBKHLdoUv+w9411ZLGjZYIR51e05CFNAY+MYMXLs7leo6jljZ8PGkoCSI1I4lF1Z4Q=="],
 >>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
