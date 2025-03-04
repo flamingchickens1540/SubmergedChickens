@@ -1,4 +1,5 @@
 model TeamEvent {
+<<<<<<< HEAD
   id          Int        @id @default(autoincrement())
   team        Team       @relation(fields: [team_number], references: [number])
   team_number Int
@@ -21,7 +22,39 @@ model TeamEvent {
   deep        Boolean
   user        User @relation(fields: [user_id], references: [id])
   user_id     Int
+=======
+  id                  Int         @id @default(autoincrement())
+  team                Team        @relation(fields: [team_key], references: [key])
+  team_key            Int
+  event_key           String
+  event               Event       @relation(fields: [event_key], references: [event_key])
+  image               Image[]
+  summary             String      @default("")
+  drivetrain          Drivetrain?
+  coralIntakeSource   Boolean?
+  coralIntakeGround   Boolean?
+  coralScoreL1        Boolean?
+  coralScoreL2        Boolean?
+  coralScoreL3        Boolean?
+  coralScoreL4        Boolean?
+  algaeIntakeL2       Boolean?
+  algaeIntakeL3       Boolean?
+  algaeIntakeGround   Boolean?
+  algaeIntakeLollipop Boolean?
+  algaeScoreProcessor Boolean?
+  algaeScoreNet       Boolean?
+  cleanScoreL2        Boolean?
+  cleanScoreL3        Boolean?
+  shallowClimb        Boolean?
+  deepClimb           Boolean?
+  dataCollected       Boolean     @default(false)
+  imageCollected      Boolean     @default(false)
+
+  @@unique([team_key, event_key])
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
 }
+
+// MAKE NECESSARY THINGS NULLABLE
 
 model Image {
   id            Int       @id @default(autoincrement())

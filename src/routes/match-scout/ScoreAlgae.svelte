@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type { AutoAction, AutoPageState } from "$lib/types"
+    import type { AutoPageState } from "$lib/types"
+    import type { AutoAction } from "@prisma/client"
 
     let {
         page_state = $bindable(),
@@ -7,8 +8,8 @@
         bg_color,
     }: {
         page_state: AutoPageState
-        action_state: AutoAction
-        bg_color: String
+        action_state: AutoAction | null
+        bg_color: string
     } = $props()
 
     const processor = () => {
@@ -20,7 +21,7 @@
         page_state = "Verify"
     }
     const cancel = () => {
-        action_state = "None"
+        action_state = null
         page_state = "None"
     }
 </script>

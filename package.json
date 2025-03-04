@@ -21,10 +21,11 @@
     "@sveltejs/kit": "^2.17.1",
     "@sveltejs/vite-plugin-svelte": "^4.0.4",
     "autoprefixer": "^10.4.20",
-    "bits-ui": "^0.22.0",
+    "bits-ui": "^1.3.2",
     "clsx": "^2.1.1",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^9.1.0",
+<<<<<<< HEAD
     "eslint-plugin-svelte": "^2.46.1",
     "globals": "^15.14.0",
     "prettier": "^3.5.0",
@@ -35,19 +36,48 @@
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.1",
     "tailwindcss": "^3.4.17",
+=======
+    "eslint-plugin-svelte": "^2.36.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-svelte": "^3.2.6",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "prisma": "^6.4.1",
+    "tailwind-merge": "^3.0.2",
+    "tailwind-variants": "^0.3.0",
+    "tailwindcss": "^3.4.9",
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.24.0",
     "vite": "^5.4.14"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@prisma/client": "6.1.0",
     "@tanstack/table-core": "^8.21.2",
     "echarts": "^5.6.0",
+=======
+    "@prisma/adapter-pg": "^6.2.1",
+    "@prisma/client": "^6.4.1",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-popover": "^1.1.6",
+    "@tanstack/table-core": "^8.20.5",
+    "@types/node": "^22.10.7",
+    "class-variance-authority": "^0.7.1",
+    "cmdk": "1.0.0",
+    "cmdk-sv": "^0.0.18",
+    "echarts": "^5.5.1",
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     "echarts-stat": "^1.2.0",
+    "lucide-react": "^0.475.0",
     "lucide-svelte": "^0.469.0",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
+<<<<<<< HEAD
+=======
+    "svd-js": "^1.1.1",
+>>>>>>> 64ea6caf12cd770d86f145ca67f53114f047fc8d
     "svelte-gestures": "^5.1.3",
     "tailwindcss-color-mix": "^0.0.9"
   },

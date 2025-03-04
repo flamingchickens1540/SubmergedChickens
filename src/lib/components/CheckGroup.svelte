@@ -4,25 +4,25 @@
         selected: string[]
     }
 
-    let { labels, selected = [] }: Props = $props()
-
-    function toggleLabel(label: string) {
-        if (selected.includes(label)) {
-            selected = selected.filter(item => item !== label)
-        } else {
-            selected = [...selected, label]
-        }
-    }
+    let { labels, selected = $bindable([]) }: Props = $props()
 </script>
 
-<div class="mt-0">
+<div class="mt-0 text-center">
     {#each labels as label}
-        <button
-            onclick={() => toggleLabel(label)}
-            class="m-2 ml-0 mt-auto block w-full rounded bg-gunmetal p-5 text-lg font-semibold"
-            class:bg-xanthous={selected.includes(label)}
+        <label
+            class="m-2 ml-0 mt-auto block w-full rounded p-5 text-lg font-semibold {selected.includes(
+                label
+            )
+                ? 'bg-xanthous'
+                : 'bg-gunmetal'}"
         >
+            <input
+                type="checkbox"
+                bind:group={selected}
+                value={label}
+                class="hidden"
+            />
             <span>{label}</span>
-        </button>
+        </label>
     {/each}
 </div>

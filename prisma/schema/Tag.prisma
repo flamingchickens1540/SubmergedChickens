@@ -1,6 +1,6 @@
 model Tag {
-  id       Int    @id @default(autoincrement())
-  name     String
-  category String
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  category   String
   team_match TeamMatch[]
 }
