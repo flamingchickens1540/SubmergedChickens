@@ -5,6 +5,7 @@ import {
     type Comparison,
     type TeleActionData,
     type AutoActionData,
+    type TeamEvent,
 } from "@prisma/client"
 
 export async function submitTeamMatch(
@@ -42,5 +43,21 @@ export async function submitTeamMatch(
 export async function submitPairwise(pw: Omit<Comparison, "id">) {
     await prisma.comparison.create({
         data: pw,
+    })
+}
+
+export async function submitTeamEvent(teamEvent: Omit<TeamEvent, "id" | "dataCollected" | "imageCollected">) {
+    await prisma.teamEvent.update({
+        where: {
+            team_key_event_key: {
+                team_key: teamEvent.team_key,
+                event_key: teamEvent.event_key
+            }
+        },
+        data: {
+            ...teamEvent,
+            dataCollected: true,
+            imageCollected: true
+        }
     })
 }
