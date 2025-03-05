@@ -27,17 +27,14 @@
         notes: "",
         incap_time: [],
         scout_id: 0,
-        tagNames: [],
+        tags: [],
     })
 
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
 
-    //TODO ADD TAGS TO THE MATCHDATA
-    let roles: string[] = $state([])
-    let matchplay: string[] = $state([])
-    let damage: string[] = $state([])
+    let labels = data.tagcategories.map(tagcategory => `${tagcategory.name} (${tagcategory.category})`)
 </script>
 
 <div
@@ -72,15 +69,16 @@
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
+        <CheckGroup {labels} bind:selected={matchData.value.tags}></CheckGroup>
 
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each data.tagcategories as tagcategory, i}
-            <span class="font-heading text-xl font-semibold"
-                >{tagcategory.category}</span
-            >
+        {#each labels as label}
+            <!-- <span class="font-heading text-xl font-semibold"
+                >{label.category}</span -->
+            <!-- > -->
             <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
-            <CheckGroup labels={tagcategory.tags} bind:selected={roles}
-            ></CheckGroup>
+            <!-- <CheckGroup labels={tagcategory.tags} bind:selected={roles} -->
+            <!-- ></CheckGroup> -->
         {/each}
     </div>
 
