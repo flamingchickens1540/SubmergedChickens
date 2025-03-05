@@ -43,12 +43,11 @@ const webSocketServer = {
 
             socket.on("new_user", (user: string) => {
                 sid_to_username.set(socket.id, user)
-                info(`Logged ${user}'s socket id: ${socket.id}`)
+                info(`New user ${user} on socket ${socket.id}`)
             })
 
             socket.on("join_queue", () => {
                 const username = sid_to_username.get(socket.id)
-                info(`${socket.id} is the sid for ${username}`)
 
                 const team_data = robot_queue.pop()
                 if (!team_data) {
@@ -100,7 +99,7 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    info(`${match_key}: ${teams}`)
+                    info(`New Match: ${match_key}: ${teams}`)
                     robot_queue = []
 
                     const scout_queue = (
