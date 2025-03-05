@@ -20,7 +20,7 @@
     ]
 
     let averagePoints: number = 30
-    let selectedChart: string = "PointsPerMatch"
+    let selectedChart: string = $state("PointsPerMatch")
 </script>
 
 <h1 class="text-center text-3xl">Analysis</h1>
