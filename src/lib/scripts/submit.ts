@@ -12,9 +12,9 @@ export async function submitTeamMatch(
     verbose_match_key: string,
     tele_actions: Omit<TeleActionData, "id" | "team_match">[],
     auto_actions: Omit<AutoActionData, "id" | "team_match">[],
-    tags: {name: string, category: string}[]
+    tags: { name: string; category: string }[]
 ) {
-    const {id_num: id} = await prisma.teamMatch.update({
+    const { id_num: id } = await prisma.teamMatch.update({
         where: {
             id_key: {
                 match_key: verbose_match_key,
@@ -31,24 +31,24 @@ export async function submitTeamMatch(
             },
         },
         select: {
-            id_num: true
-        }
+            id_num: true,
+        },
     })
 
     // ugly solution b/c Prisma doesn't allow connectOrCreate for multiple tags
     for (let tag of tags) {
         await prisma.teamMatch.update({
             where: {
-                id_num: id
+                id_num: id,
             },
             data: {
                 tags: {
                     connectOrCreate: {
-                        where: {name: tag.name},
-                        create: tag
-                    }
-                }
-            }
+                        where: { name: tag.name },
+                        create: tag,
+                    },
+                },
+            },
         })
     }
 
