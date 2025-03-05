@@ -1,18 +1,15 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import { FlaskRound, LogOut, Settings } from "lucide-svelte"
+    import { LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
+    import { localStore } from "@/localStore.svelte"
     import { browser } from "$app/environment"
-    import { onMount } from "svelte"
 
-    let name = $state("Hello")
+    let username = $state(localStore("username", ""))
 
-    onMount(() => {
-        let username = ((browser && localStorage.getItem("username")) ??
-            "scout") as string
-        const first = username.charAt(0).toUpperCase()
-        name = "Hello " + first + username.slice(1)
-    })
+    if (username.value === "" && browser) {
+        goto("/")
+    }
 
     let bugReportVisible = $state(false)
 
@@ -25,7 +22,7 @@
 <div class="flex h-dvh flex-col gap-4 p-2">
     <div class="flex w-full items-center justify-between gap-2">
         <button class="rounded p-1" onclick={logout}><LogOut /></button>
-        <span class="text-xl font-semibold">{name}</span>
+        <span class="text-xl font-semibold">Hello {username.value}</span>
         <button class="rounded p-1"><Settings /></button>
     </div>
     <div class="grid flex-grow gap-2 text-2xl font-semibold">
