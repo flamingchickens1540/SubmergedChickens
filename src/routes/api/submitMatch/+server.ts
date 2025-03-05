@@ -25,7 +25,7 @@ export const POST: RequestHandler = async ({
             verbose_match_key,
             tm.timeline.tele,
             tm.timeline.auto,
-            tm.tagNames
+            tm.tags.map(parseTag)
         )
     )
 }
@@ -250,4 +250,12 @@ function countActionAuto(tl: Timeline, succ: boolean, act: AutoAction) {
 }
 function countActionTele(tl: Timeline, succ: boolean, act: TeleAction) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
+}
+
+function parseTag(tag: String): {name: string, category: string} {
+    const parsed = tag.split(" ").map((a) => a.replace("(", "").replace(")", ""))
+    return {
+        name: parsed[0],
+        category: parsed[1]
+    }
 }
