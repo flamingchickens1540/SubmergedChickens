@@ -34,7 +34,9 @@
 
     let displaying_timeline = $state(false)
 
-    let labels = data.tagcategories.map(tagcategory => `${tagcategory.name} (${tagcategory.category})`)
+    let labels = data.tagcategories.map(
+        tagcategory => `${tagcategory.name} (${tagcategory.category})`
+    )
 </script>
 
 <div
