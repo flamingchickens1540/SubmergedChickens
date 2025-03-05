@@ -1,6 +1,5 @@
 <script lang="ts">
     let { value = $bindable() }: { name: string; value: number } = $props()
-    console.log(value)
 </script>
 
 <span class="font-heading text-xl font-semibold">Driver Skill</span>

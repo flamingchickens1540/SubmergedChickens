@@ -23,7 +23,6 @@
                 "Content-Type": "application/json",
             },
         }).then(async res => await res.json())
-        console.log(verify)
     }
 
     let search = $state("")
