@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { X, Check } from "lucide-svelte"
+    import { X } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
     import { localStore } from "@/localStore.svelte"
     import EventManager from "./EventManager.svelte"
@@ -25,7 +25,6 @@
         localStore<string[]>("curr_blue_robots", ["", "", ""])
     )
 
-    let new_users: string[] = $state([])
     let scout_queue: string[] = $state([])
     // TODO Change to actual type
     // TODO Pull from backend
@@ -42,10 +41,6 @@
         scout_queue = response.scouts
     })
 
-    socket.emit("get_new_user_queue", (response: { users: string[] }) => {
-        new_users = response.users
-    })
-
     socket.on("scout_joined_queue", (scout: string) => {
         scout_queue.push(scout)
     })
@@ -55,10 +50,6 @@
         if (index === -1) return
 
         scout_queue.splice(index, 1)
-    })
-
-    socket.on("new_user_request", (user: string) => {
-        new_users.push(user)
     })
 
     const queue_match = async () => {
@@ -115,13 +106,6 @@
         next_red_robots.value = red
         next_blue_robots.value = blue
     }
-    const approve_new_user = (user: string) => {
-        const i = new_users.indexOf(user)
-        if (i === -1) return
-        new_users.splice(i, 1)
-
-        socket.emit("approve_new_user", user)
-    }
 
     let event_selection = $state("Event Key")
 </script>
@@ -167,24 +151,24 @@
             </div>
         </div>
     </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
-        <span class="text-center">New Users</span>
-        <div class="flex flex-col gap-2 overflow-auto">
-            {#each new_users as user}
-                <div
-                    class="flex items-center justify-between rounded bg-eerie_black p-1"
-                >
-                    {user}
-                    <button
-                        class="rounded bg-gunmetal p-1"
-                        onclick={() => approve_new_user(user)}><Check /></button
-                    >
-                </div>
-            {/each}
-        </div>
-    </div>
+    <!-- <div -->
+    <!--     class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2" -->
+    <!-- > -->
+    <!--     <span class="text-center">New Users</span> -->
+    <!--     <div class="flex flex-col gap-2 overflow-auto"> -->
+    <!--         {#each new_users as user} -->
+    <!--             <div -->
+    <!--                 class="flex items-center justify-between rounded bg-eerie_black p-1" -->
+    <!--             > -->
+    <!--                 {user} -->
+    <!--                 <button -->
+    <!--                     class="rounded bg-gunmetal p-1" -->
+    <!--                     onclick={() => approve_new_user(user)}><Check /></button -->
+    <!--                 > -->
+    <!--             </div> -->
+    <!--         {/each} -->
+    <!--     </div> -->
+    <!-- </div> -->
     <div
         class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
     >

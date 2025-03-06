@@ -1,9 +1,12 @@
-import type {
-    AutoStart,
-    Endgame,
-    AutoActionData,
-    TeleActionData,
+import {
+    type AutoStart,
+    type Endgame,
+    type AutoActionData,
+    type TeleActionData,
+    AutoAction,
 } from "@prisma/client"
+
+export type { AutoActionData, TeleActionData } from "@prisma/client"
 
 // Match Scout Page State Enums
 export type TelePageState =

@@ -17,10 +17,6 @@
     socket.on(
         "time_to_scout",
         ([match_key, team_key, color]: [string, string, "red" | "blue"]) => {
-            console.log("match: " + match_key)
-            console.log("team: " + team_key)
-            console.log("color: " + color)
-
             goto(
                 `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
             )

@@ -9,7 +9,7 @@
 
 <div class="mt-0 text-center">
     {#each labels as label}
-        <labeli
+        <label
             class="m-2 ml-0 mt-auto block w-full rounded p-5 text-lg font-semibold {selected.includes(
                 label
             )
@@ -23,6 +23,6 @@
                 class="hidden"
             />
             <span>{label}</span>
-        </labeli>
+        </label>
     {/each}
 </div>

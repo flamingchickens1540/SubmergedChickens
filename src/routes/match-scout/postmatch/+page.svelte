@@ -35,7 +35,9 @@
     let displaying_timeline = $state(false)
 
     //TODO ADD TAGS TO THE MATCHDATA
-    let selected: string[] = $state([])
+    let roles: string[] = $state([])
+    let matchplay: string[] = $state([])
+    let damage: string[] = $state([])
 </script>
 
 <div
@@ -70,12 +72,15 @@
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
+
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each data.tagcategories as tagcategory}
+        {#each data.tagcategories as tagcategory, i}
             <span class="font-heading text-xl font-semibold"
                 >{tagcategory.category}</span
             >
-            <CheckGroup labels={tagcategory.tags} bind:selected></CheckGroup>
+            <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
+            <CheckGroup labels={tagcategory.tags} bind:selected={roles}
+            ></CheckGroup>
         {/each}
     </div>
 

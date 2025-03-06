@@ -30,7 +30,11 @@
 <header
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
-    <span class="text-{team_color.value}-400">
+    <span
+        style={team_color.value === "blue"
+            ? "color: #2196F3 !important"
+            : "color: #F44336 !important"}
+    >
         {team_key}
     </span>
     {#if timeline}

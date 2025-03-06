@@ -3,49 +3,39 @@
     import { goto } from "$app/navigation"
     import { onMount } from "svelte"
     import { io, Socket } from "socket.io-client"
+    import { LocalStore, localStore } from "@/localStore.svelte"
 
-    let inputname: string = $state("")
+    let username: LocalStore<string> = $state(localStore("username", ""))
     let waiting = $state(false)
 
-    const placeholder_username = `new_user_${Math.random()}`
-
     onMount(() => {
-        const isLoggedIn = browser && window.localStorage.getItem("username")
+        const isLoggedIn = username.value != ""
+
         if (isLoggedIn) {
+            socket.emit("new_user", username.value)
             goto("/home")
         }
     })
 
-    function login() {
-        socket.emit("new_user", placeholder_username, inputname)
-        waiting = true
-    }
-
-    let socket: Socket = io({
-        auth: {
-            username: placeholder_username,
-        },
-    })
-
-    socket.on("allowed_user", async () => {
-        console.log("allowed")
-        browser && window.localStorage.setItem("username", inputname)
+    async function login() {
+        socket.emit("new_user", username.value)
 
         const res = await fetch(`/api/newUser/`, {
             method: "POST",
             body: JSON.stringify({
-                username: inputname,
+                username: username.value,
                 is_admin: false,
             }),
         })
         if (!res.ok) return
-        const id = await res.json()
-        console.log(id)
 
+        const id = await res.json()
         browser && window.localStorage.setItem("scout_id", id)
 
         goto("/home")
-    })
+    }
+
+    let socket: Socket = io({ auth: { username: "" } })
 </script>
 
 <div class="flex flex-col justify-center gap-8 p-6">
@@ -58,12 +48,12 @@
                 class="rounded border-gunmetal bg-gunmetal p-2 shadow-inner"
                 type="text"
                 placeholder="Please enter your name here"
-                bind:value={inputname}
+                bind:value={username.value}
             />
             <button
                 class="text-l rounded bg-gunmetal px-4 py-2 text-center disabled:text-white/50"
                 onclick={login}
-                disabled={inputname === ""}
+                disabled={username.value === ""}
             >
                 Login
             </button>

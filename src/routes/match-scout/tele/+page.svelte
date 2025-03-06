@@ -91,8 +91,6 @@
                 onswipe={swipeHandler}
                 class="grid flex-grow grid-cols-2 gap-2"
             >
-                <button class="rounded {bg_color}" onclick={incap}>Incap</button
-                >
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
@@ -101,6 +99,8 @@
                 >
                 <button class="rounded {bg_color}" onclick={score_coral}
                     >Score Coral</button
+                >
+                <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
