@@ -47,12 +47,12 @@ export type TimeSlot = {
 }
 
 export type Task = {
-    taskName: String,
+    taskName: String
     people: CompPerson[]
 }
 
 export type CompPerson = {
-    name: String,
+    name: String
     assignments: TimeSlot[]
 }
 
