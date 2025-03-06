@@ -1,7 +1,7 @@
 <script lang="ts">
-    import LineChart from '@/components/charts/LineChart.svelte'
+    import LineChart from "@/components/charts/LineChart.svelte"
 
-    import type { PageData } from './$types';
+    import type { PageData } from "./$types"
 
     let { data }: { data: PageData } = $props();
 
@@ -81,10 +81,12 @@
         },
     ])
 
-    import * as Dialog from "$lib/components/ui/dialog/index.js";
+    import * as Dialog from "$lib/components/ui/dialog/index.js"
 </script>
 
-<div class="m-auto grid grid-cols-4 gap-1 w-full h-96 p-1 border-2 border-solid border-imperial_red mb-2">
+<div
+    class="m-auto mb-2 grid h-96 w-full grid-cols-4 gap-1 border-2 border-solid border-imperial_red p-1"
+>
     <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
         <div class="bg-imperial_red row-span-1 w-full text-center content-center">
             Team

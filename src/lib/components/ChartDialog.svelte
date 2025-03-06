@@ -1,6 +1,12 @@
 <script lang="ts">
-    let { dialog = $bindable(), children}: { dialog:any, children: any} = $props()
+    let { dialog = $bindable(), children }: { dialog: any; children: any } =
+        $props()
 </script>
-<dialog class="bg-gunmetal border border-solid border-white p-2 drop-shadow-xl content-center justify-center" bind:this={dialog} onclose={()=>{}}>
+
+<dialog
+    class="content-center justify-center border border-solid border-white bg-gunmetal p-2 drop-shadow-xl"
+    bind:this={dialog}
+    onclose={() => {}}
+>
     {@render children?.()}
 </dialog>

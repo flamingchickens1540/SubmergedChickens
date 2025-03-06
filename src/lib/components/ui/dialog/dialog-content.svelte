@@ -5,16 +5,16 @@
 	import * as Dialog from "./index.js";
     import { cn } from "$lib/utils.js"
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		portalProps,
-		children,
-		...restProps
-	}: WithoutChildrenOrChild<DialogPrimitive.ContentProps> & {
-		portalProps?: DialogPrimitive.PortalProps;
-		children: Snippet;
-	} = $props();
+    let {
+        ref = $bindable(null),
+        class: className,
+        portalProps,
+        children,
+        ...restProps
+    }: WithoutChildrenOrChild<DialogPrimitive.ContentProps> & {
+        portalProps?: DialogPrimitive.PortalProps
+        children: Snippet
+    } = $props()
 </script>
 
 <Dialog.Portal {...portalProps}>
