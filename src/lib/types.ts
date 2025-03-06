@@ -38,6 +38,21 @@ export type UncountedTeamMatch = {
     tagNames: string[]
 }
 
+export type TimeSlot = {
+    time: String
+    tasks: Task[]
+}
+
+export type Task = {
+    taskName: String,
+    people: CompPerson[]
+}
+
+export type CompPerson = {
+    name: String,
+    assignments: TimeSlot[]
+}
+
 type TagCategory = {
     category: string
     tags: string[]
