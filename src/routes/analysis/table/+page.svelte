@@ -4,11 +4,10 @@
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
-    let chartData: any = $state()
 
     type TeamAlliance = {
-        alliance: string
-        allianceNumber: number
+        teamColor: string
+        allianceNumber: string
         teamNumber: number
         coral: number
         algae: number
@@ -18,35 +17,67 @@
     }
 
     let redTeams: TeamAlliance[] = $state([
-        { alliance: "red", allianceNumber: 1, teamNumber: data.red1, coral: 11, algae: 12, ability: "ability1", 
+        { teamColor: "jungle_green", allianceNumber: "red1", teamNumber: data.red1, coral: 11, algae: 12, ability: "ability1", 
             algaeData: {name: data.red1,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
-                color: "#004777",},
+                color: "#49A078",},
             coralData: {name: data.red1,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [17, 14, 16, 18, 21, 12, 14, 11, 13, 15,],
-                color: "#004777",}
+                color: "#49A078",}
         },
-        { alliance: "red", allianceNumber: 2, teamNumber: data.red2, coral: 21, algae: 22, ability: "ability2", 
+        { teamColor: "steel_blue", allianceNumber: "red2", teamNumber: data.red2, coral: 21, algae: 22, ability: "ability2", 
             algaeData: {name: data.red2,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [12, 14, 16, 18, 21, 11, 13, 15, 17, 14],
-                color: "#A30000",},
+                color: "#3581B8",},
             coralData: {name: data.red2,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [15, 17, 14, 16, 18, 21, 12, 14, 11, 13, ],
-                color: "#A30000",}
+                color: "#3581B8",}
         },
-        { alliance: "red", allianceNumber: 3, teamNumber: data.red3, coral: 31, algae: 32, ability: "ability3", 
+        { teamColor: "eminence", allianceNumber: "red3", teamNumber: data.red3, coral: 31, algae: 32, ability: "ability3", 
             algaeData: {name: data.red3,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [12, 15, 17, 14, 14, 16, 18, 21, 11, 13],
-                color: "#FF7700",},
+                color: "#6C3082",},
             coralData: {name: data.red3,
                 x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 y: [11, 13, 15, 17, 14, 18, 21, 12, 14, 16,],
-                color: "#FF7700",}
+                color: "#6C3082",}
+        },
+    ])
+    let blueTeams: TeamAlliance[] = $state([
+        { teamColor: "bittersweet", allianceNumber: "blue1", teamNumber: data.blue1, coral: 11, algae: 12, ability: "ability1", 
+            algaeData: {name: data.blue1,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
+                color: "#FF6663",},
+            coralData: {name: data.blue1,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [17, 14, 16, 18, 21, 12, 14, 11, 13, 15,],
+                color: "#FF6663",}
+        },
+        { teamColor: "crayola_orange", allianceNumber: "blue2", teamNumber: data.blue2, coral: 21, algae: 22, ability: "ability2", 
+            algaeData: {name: data.blue2,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 14, 16, 18, 21, 11, 13, 15, 17, 14],
+                color: "#FF8547",},
+            coralData: {name: data.blue2,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [15, 17, 14, 16, 18, 21, 12, 14, 11, 13, ],
+                color: "#FF8547",}
+        },
+        { teamColor: "imperial_red", allianceNumber: "blue3", teamNumber: data.blue3, coral: 31, algae: 32, ability: "ability3", 
+            algaeData: {name: data.blue3,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [12, 15, 17, 14, 14, 16, 18, 21, 11, 13],
+                color: "#FF4848",},
+            coralData: {name: data.blue3,
+                x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                y: [11, 13, 15, 17, 14, 18, 21, 12, 14, 16,],
+                color: "#FF4848",}
         },
     ])
 
@@ -58,16 +89,40 @@
         <div class="bg-imperial_red row-span-1 w-full text-center content-center">
             Team
         </div>
-        <div
-            class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
-        >
-            Coral
-        </div>
-        <div
-            class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
-        >
-            Algae
-        </div>
+        <Dialog.Root>
+            <Dialog.Trigger class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red">Coral</Dialog.Trigger>
+            <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-imperial_red">
+                <LineChart
+                    data={[
+                        redTeams[0].coralData,
+                        redTeams[1].coralData,
+                        redTeams[2].coralData
+                    ]}
+                    title={"Red Alliance Coral per Match"}
+                    xLabel={"Match Number"}
+                    yLabel={"Tele Points"}
+                    width={"100%"}
+                    height={"100%"}
+                />
+            </Dialog.Content>
+        </Dialog.Root>
+        <Dialog.Root>
+            <Dialog.Trigger class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red">Algae</Dialog.Trigger>
+            <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-imperial_red">
+                <LineChart
+                    data={[
+                        redTeams[0].algaeData,
+                        redTeams[1].algaeData,
+                        redTeams[2].algaeData
+                    ]}
+                    title={"Red Alliance Algae per Match"}
+                    xLabel={"Match Number"}
+                    yLabel={"Tele Points"}
+                    width={"100%"}
+                    height={"100%"}
+                />
+            </Dialog.Content>
+        </Dialog.Root>
         <div
             class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
         >
@@ -76,16 +131,125 @@
     </div>
     {#each redTeams as team}
         <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
-            <div class="bg-imperial_red row-span-1 w-full text-center content-center">
-                {team.alliance}{team.allianceNumber} - {team.teamNumber}
+            <div class="bg-imperial_red row-span-1 w-full p-2 text-center content-center border-solid border-2 border-{team.teamColor}">
+                {team.allianceNumber} - {team.teamNumber}
             </div>
                 <Dialog.Root>
-                    <Dialog.Trigger class="bg-gunmetal row-span-1 w-full text-center content-center">{team.coral}</Dialog.Trigger>
-                    <Dialog.Content>
-                        <h1>Chart goes here</h1>
+                    <Dialog.Trigger class="bg-gunmetal row-span-1 w-full text-center content-center text-{team.teamColor}">{team.coral}</Dialog.Trigger>
+                    <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-{team.teamColor}">
+                        <LineChart
+                            data={[
+                                team.coralData
+                            ]}
+                            title={"Coral per Match"}
+                            xLabel={"Match Number"}
+                            yLabel={"Tele Points"}
+                            width={"100%"}
+                            height={"100%"}
+                        />
                     </Dialog.Content>
-              </Dialog.Root>
-            <div class="bg-gunmetal row-span-1 w-full text-center content-center">{team.ability}</div>
+                </Dialog.Root>
+                <Dialog.Root>
+                    <Dialog.Trigger class="bg-gunmetal row-span-1 w-full text-center content-center text-{team.teamColor}">{team.algae}</Dialog.Trigger>
+                    <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-{team.teamColor}">
+                        <LineChart
+                            data={[
+                                team.algaeData
+                            ]}
+                            title={"Algae per Match"}
+                            xLabel={"Match Number"}
+                            yLabel={"Tele Points"}
+                            width={"100%"}
+                            height={"100%"}
+                        />
+                    </Dialog.Content>
+                </Dialog.Root>
+            <div class="bg-gunmetal row-span-1 w-full text-center content-center text-{team.teamColor}">{team.ability}</div>
+        </div>
+    {/each}
+</div>
+
+<div class="m-auto grid grid-cols-4 gap-1 w-full h-96 p-1 border-2 border-solid border-steel_blue mb-2">
+    <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
+        <div class="bg-steel_blue row-span-1 w-full text-center content-center">
+            Team
+        </div>
+        <Dialog.Root>
+            <Dialog.Trigger class="row-span-1 w-full content-center bg-gunmetal text-center text-steel_blue">Coral</Dialog.Trigger>
+            <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-steel_blue">
+                <LineChart
+                    data={[
+                        blueTeams[0].coralData,
+                        blueTeams[1].coralData,
+                        blueTeams[2].coralData
+                    ]}
+                    title={"Blue Alliance Coral per Match"}
+                    xLabel={"Match Number"}
+                    yLabel={"Tele Points"}
+                    width={"100%"}
+                    height={"100%"}
+                />
+            </Dialog.Content>
+        </Dialog.Root>
+        <Dialog.Root>
+            <Dialog.Trigger class="row-span-1 w-full content-center bg-gunmetal text-center text-steel_blue">Algae</Dialog.Trigger>
+            <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-steel_blue">
+                <LineChart
+                    data={[
+                        blueTeams[0].algaeData,
+                        blueTeams[1].algaeData,
+                        blueTeams[2].algaeData
+                    ]}
+                    title={"Blue Alliance Algae per Match"}
+                    xLabel={"Match Number"}
+                    yLabel={"Tele Points"}
+                    width={"100%"}
+                    height={"100%"}
+                />
+            </Dialog.Content>
+        </Dialog.Root>
+        <div
+            class="row-span-1 w-full content-center bg-gunmetal text-center text-steel_blue"
+        >
+            Ability
+        </div>
+    </div>
+    {#each blueTeams as team}
+        <div class="col-span-1 row-span-4 grid grid-rows-4 gap-1">
+            <div class="bg-steel_blue row-span-1 p-2 w-full text-center content-center border-2 border-solid border-{team.teamColor}">
+                {team.allianceNumber} - {team.teamNumber}
+            </div>
+                <Dialog.Root>
+                    <Dialog.Trigger class="bg-gunmetal row-span-1 w-full text-center content-center text-{team.teamColor}">{team.coral}</Dialog.Trigger>
+                    <Dialog.Content class="h-96 w-96 bg-gunmetal border-2 border-solid border-{team.teamColor}">
+                        <LineChart
+                            data={[
+                                team.coralData
+                            ]}
+                            title={"Coral per Match"}
+                            xLabel={"Match Number"}
+                            yLabel={"Tele Points"}
+                            width={"100%"}
+                            height={"100%"}
+                        />
+                    </Dialog.Content>
+                </Dialog.Root>
+                <Dialog.Root>
+                    <Dialog.Trigger class="bg-gunmetal row-span-1 w-full content-center text-{team.teamColor}">{team.algae}</Dialog.Trigger>
+                    <Dialog.Content class="h-96 w-96 bg-gunmetal border-solid border-2 border-{team.teamColor} text-white">
+                        <LineChart
+                            data={[
+                                team.algaeData
+                            ]}
+                            title={"Algae per Match"}
+                            xLabel={"Match Number"}
+                            yLabel={"Tele Points"}
+                            width={"100%"}
+                            height={"100%"}
+                        />
+                    </Dialog.Content>
+                </Dialog.Root>
+            <div class="bg-gunmetal row-span-1 w-full text-center content-center text-{team.teamColor}">{team.ability}</div>
         </div>
     {/each}
 </div>
