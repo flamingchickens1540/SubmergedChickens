@@ -53,3 +53,18 @@ type BugReport = {
     report_text: string
     report_title: string
 }
+
+export type SuperscoutResult = {
+    scout_id: number;
+    match_key: string;
+    results: {
+        team_key: string;
+        notes: string; 
+        tags: string[]
+    }[],
+    ratings: {
+        bot_team_keys: string[],
+        mid_team_keys: string[],
+        top_team_keys: string[]
+    }
+}
