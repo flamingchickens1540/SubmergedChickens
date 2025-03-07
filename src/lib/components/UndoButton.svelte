@@ -1,9 +1,13 @@
 <script lang="ts">
-    import type { AutoActionData, TeleActionData } from "@/types"
+    import type {
+        FrontendAutoActionData,
+        FrontendTeleActionData,
+    } from "@/types"
 
     let {
         timeline = $bindable(),
-    }: { timeline: AutoActionData[] | TeleActionData[] } = $props()
+    }: { timeline: FrontendAutoActionData[] | FrontendTeleActionData[] } =
+        $props()
 </script>
 
 {#if timeline.length > 0}

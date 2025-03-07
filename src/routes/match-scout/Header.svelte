@@ -1,8 +1,8 @@
 <script lang="ts">
     import type {
         AutoPageState,
-        TeleActionData,
-        AutoActionData,
+        FrontendTeleActionData,
+        FrontendAutoActionData,
     } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
     import { localStore } from "@/localStore.svelte"
@@ -23,7 +23,7 @@
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
-        timeline?: AutoActionData[] | TeleActionData[]
+        timeline?: FrontendAutoActionData[] | FrontendTeleActionData[]
     } = $props()
 </script>
 

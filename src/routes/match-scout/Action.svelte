@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { AutoActionData } from "$lib/types"
+    import type { FrontendAutoActionData } from "$lib/types"
     import { MoveUp, MoveDown, X } from "lucide-svelte"
 
     let {
@@ -9,7 +9,7 @@
         shift,
         remove,
     }: {
-        action_data: AutoActionData
+        action_data: FrontendAutoActionData
         index: number
         sub_timeline_len: number
         shift: (index: number, change: -1 | 1) => void
