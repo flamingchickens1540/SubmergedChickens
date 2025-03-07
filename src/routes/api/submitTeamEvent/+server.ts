@@ -10,8 +10,6 @@ export const POST: RequestHandler = async ({ request }: any): Promise<Response> 
   const summary = json.summary;
   const drivetrain = json.drivetrain as Drivetrain;
 
-  console.log("TEAMKEYFIND" + team_key)
-
   const data = {
     coralScoreL1: json.l1 === true,
     coralScoreL2: json.l2 === true,
