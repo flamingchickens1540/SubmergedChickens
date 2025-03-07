@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type { AutoActionData, AutoAction, AutoPageState } from "$lib/types"
+    import type { AutoPageState, FrontendAutoActionData } from "$lib/types"
+    import type { AutoAction } from "@prisma/client"
 
     let {
         page_state = $bindable(),
@@ -7,30 +8,30 @@
         action_state = $bindable(),
     }: {
         page_state: AutoPageState
-        actions: AutoActionData[]
-        action_state: AutoAction
+        actions: FrontendAutoActionData[]
+        action_state: AutoAction | null
     } = $props()
 
     const succeed = () => {
         const action = {
-            action: action_state,
+            action: action_state!,
             success: true,
         }
         actions.push(action)
-        action_state = "None"
+        action_state = null
         page_state = "None"
     }
     const fail = () => {
         const action = {
-            action: action_state,
+            action: action_state!,
             success: false,
         }
         actions.push(action)
-        action_state = "None"
+        action_state = null
         page_state = "None"
     }
     const cancel = () => {
-        action_state = "None"
+        action_state = null
         page_state = "None"
     }
 </script>
