@@ -1,10 +1,10 @@
-import { json, type RequestHandler } from "@sveltejs/kit";
-import { prisma } from "@/prisma";
-import { getEventKey } from "@/scripts/dbUtil";
+import { json, type RequestHandler } from "@sveltejs/kit"
+import { prisma } from "@/prisma"
+import { getEventKey } from "@/scripts/dbUtil"
 
 export const POST: RequestHandler = async ({ request }) => {
-  try {
-    const { images, team_key } = await request.json();
+    try {
+        const { images, team_key } = await request.json()
 
     if (!images || !team_key) {
       return json({ error: "Invalid request data" }, { status: 400 });
