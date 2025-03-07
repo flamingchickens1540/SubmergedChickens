@@ -5,29 +5,68 @@
 
     let { data }: PageProps = $props()
 
-    let l1 = $state(false)
-    let l2 = $state(false)
-    let l3 = $state(false)
-    let l4 = $state(false)
-    let cleanl2 = $state(false)
-    let cleanl3 = $state(false)
-    let processor = $state(false)
-    let net = $state(false)
-    let source = $state(false)
-    let ground = $state(false)
-    let lollipop = $state(false)
-    let algaeground = $state(false)
-    let algaereefl3 = $state(false)
-    let algaereefl2 = $state(false)
-    let shallow = $state(false)
-    let deep = $state(false)
-    let drivetrain = $state("Swerve")
-    let summary = $state("")
+    let l1 = $state(data.coralScoreL1 || false)
+    let l2 = $state(data.coralScoreL2 || false)
+    let l3 = $state(data.coralScoreL3 || false)
+    let l4 = $state(data.coralScoreL4 || false)
+    let cleanl2 = $state(data.cleanScoreL2 || false)
+    let cleanl3 = $state(data.cleanScoreL3 || false)
+    let processor = $state(data.algaeScoreProcessor || false)
+    let net = $state(data.algaeScoreNet || false)
+    let source = $state(data.coralIntakeSource || false)
+    let ground = $state(data.coralIntakeGround || false)
+    let lollipop = $state(data.algaeIntakeLollipop || false)
+    let algaeground = $state(data.algaeIntakeGround || false)
+    let algaereefl3 = $state(data.algaeIntakeL3 || false)
+    let algaereefl2 = $state(data.algaeIntakeL2 || false)
+    let shallow = $state(data.shallowClimb || false)
+    let deep = $state(data.deepClimb || false)
+    let drivetrain = $state(data.drivetrain || "Swerve")
+    let summary = $state(data.summary || "")
 
     let team_key = $state(data.team_key)
 
     function submit() {
         // TODO Submit data to endpoint here
+        fetch("/api/submitTeamEvent", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                team_key,
+                event_key: data.event_key,
+                l1,
+                l2,
+                l3,
+                l4,
+                cleanl2,
+                cleanl3,
+                processor,
+                net,
+                source,
+                ground,
+                lollipop,
+                algaeground,
+                algaereefl3,
+                algaereefl2,
+                shallow,
+                deep,
+                drivetrain,
+                summary,
+            }),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                if (result.success) {
+                    goto("/pit-scout/teamlist");
+                } else {
+                    console.error("Submission failed");
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
 
         goto("/pit-scout/teamlist")
     }
