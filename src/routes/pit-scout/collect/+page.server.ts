@@ -31,4 +31,3 @@ export const load: PageServerLoad = async ({ url }) => {
     if (!result?.dataCollected) return { team_key, event_key }
     return result
 }
-
