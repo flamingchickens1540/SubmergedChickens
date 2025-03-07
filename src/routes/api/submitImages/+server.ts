@@ -45,6 +45,15 @@ export const POST: RequestHandler = async ({ request }) => {
             data: imageRecords,
         })
 
+        await prisma.teamEvent.update({
+            where: {
+                id: teamEvent.id,
+            },
+            data: {
+                imageCollected: true,
+            },
+        })
+
         return json({ success: true })
     } catch (error) {
         console.error("Error submitting images:", error)

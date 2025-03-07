@@ -2,7 +2,6 @@ import { error } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import { getEventKey } from "@/scripts/dbUtil"
 import { prisma } from "@/prisma"
-import type { Drivetrain } from "@prisma/client"
 
 export const load: PageServerLoad = async ({ url }) => {
     const team_key_string = url.searchParams.get("team")
