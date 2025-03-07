@@ -33,10 +33,6 @@
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
-
-    let labels = data.tagcategories.map(
-        tagcategory => `${tagcategory.name} (${tagcategory.category})`
-    )
 </script>
 
 <div

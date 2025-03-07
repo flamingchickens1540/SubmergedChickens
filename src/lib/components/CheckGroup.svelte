@@ -19,7 +19,7 @@
         {#each tags as tag}
             <label
                 class="m-2 ml-0 mt-auto block w-full rounded p-5 text-lg font-semibold {selected.includes(
-                    tag
+                    tag + ' (' + category + ')'
                 )
                     ? 'bg-xanthous'
                     : 'bg-gunmetal'}"
@@ -27,7 +27,7 @@
                 <input
                     type="checkbox"
                     bind:group={selected}
-                    value={tag}
+                    value={tag + " (" + category + ")"}
                     class="hidden"
                 />
                 <span>{tag}</span>
