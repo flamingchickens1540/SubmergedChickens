@@ -56,17 +56,17 @@
                 summary,
             }),
         })
-            .then((response) => response.json())
-            .then((result) => {
+            .then(response => response.json())
+            .then(result => {
                 if (result.success) {
-                    goto("/pit-scout/teamlist");
+                    goto("/pit-scout/teamlist")
                 } else {
-                    console.error("Submission failed");
+                    console.error("Submission failed")
                 }
             })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+            .catch(error => {
+                console.error("Error:", error)
+            })
 
         goto("/pit-scout/teamlist")
     }
