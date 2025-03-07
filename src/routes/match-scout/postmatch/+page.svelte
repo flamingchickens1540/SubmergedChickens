@@ -71,7 +71,10 @@
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
-        <CheckGroup {labels} bind:selected={matchData.value.tags}></CheckGroup>
+        <CheckGroup
+            labels={data.tagcategories}
+            bind:selected={matchData.value.tags}
+        ></CheckGroup>
 
         <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
         {#each labels as label}
