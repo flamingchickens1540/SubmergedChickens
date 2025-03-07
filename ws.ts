@@ -1,3 +1,4 @@
+import type { TeamMatch } from "@prisma/client"
 import { log } from "console"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
@@ -40,34 +41,9 @@ const webSocketServer = {
                 socket.join("admin_room")
             }
 
-            // TODO Figure out how to handle dublicate usernames in approval process
-            socket.on("new_user", (old_username: string, user: string) => {
-                // Sets the sid correctly so the new user can be found by their non-placeholder username
-                const [sid, _username] = Array.from(
-                    sid_to_username.entries()
-                ).find(([_sid, username]) => old_username === username) ?? [
-                    undefined,
-                    undefined,
-                ]
-                if (!sid)
-                    console.error(
-                        `New User (${user}) Not Given Placeholder Name in Map`
-                    )
-                socket.join("new_user_queue")
-                sid_to_username.set(sid!, user)
-                io.to("admin_room").emit("new_user_request", user)
-            })
-
-            socket.on("approve_new_user", (user: string) => {
-                const [sid, _username] = Array.from(
-                    sid_to_username.entries()
-                ).find(([_sid, username]) => user == username) ?? [
-                    undefined,
-                    undefined,
-                ]
-                if (!sid) console.error(`New User (${user}) Not Set in Map`)
-                io.to(sid!).socketsLeave("new_user_queue")
-                io.to(sid!).emit("allowed_user")
+            socket.on("new_user", (user: string) => {
+                sid_to_username.set(socket.id, user)
+                info(`New user ${user} on socket ${socket.id}`)
             })
 
             socket.on("join_queue", () => {
@@ -79,13 +55,8 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
-                console.log("team_dta: " + team_data)
+
                 io.to("admin_room").emit("robot_left_queue", team_data)
-
-                console.log("match: " + curr_match_key)
-                console.log("team: " + team_data[0])
-                console.log("color: " + team_data[1])
-
                 socket.emit("time_to_scout", [curr_match_key, ...team_data])
             })
 
@@ -128,7 +99,7 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    info(`${match_key}: ${teams}`)
+                    info(`New Match: ${match_key}: ${teams}`)
                     robot_queue = []
 
                     const scout_queue = (
@@ -171,7 +142,6 @@ const webSocketServer = {
                 })
             })
 
-            // Problem
             socket.on("get_scout_queue", async callback => {
                 const scouts = (
                     (await io.in("scout_queue").fetchSockets()) ?? []

@@ -51,8 +51,6 @@
     const swipeHandler = (event: SwipeCustomEvent) => {
         if ((event.detail.direction = "left")) goto("/match-scout/auto")
     }
-
-    console.log(data.color)
 </script>
 
 <div

@@ -30,8 +30,6 @@
     let displaying_timeline = $state(false)
 
     const submit = async () => {
-        console.log(matchData.value)
-
         await fetch("/api/submitMatch", {
             method: "POST",
             body: JSON.stringify(matchData.value),

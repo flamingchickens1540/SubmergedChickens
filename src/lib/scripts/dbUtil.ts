@@ -20,8 +20,6 @@ export async function lastTeamMatch(scout: string): Promise<TeamMatch> {
         (a, b) =>
             match_key_to_number(a.match_key) - match_key_to_number(b.match_key)
     )
-    console.log(team_matches.map(a => a.match_key))
-
     return team_matches[0]
 }
 

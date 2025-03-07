@@ -116,7 +116,12 @@
                 bind:actions={matchData.value.timeline.tele}
             />
         {:else if page_state == "Incap"}
-            <Incap bind:page_state bind:action_state {bg_color} />
+            <Incap
+                bind:page_state
+                bind:action_state
+                bind:incap_times={matchData.value.incap_time}
+                {bg_color}
+            />
         {/if}
     </div>
 

@@ -1,6 +1,6 @@
 import type { PageLoad } from "./$types"
 
-export const load: PageLoad = async ({ params: _ }) => {
+export const load: PageLoad = async ({ fetch, params: _ }) => {
     const res = await fetch("/api/TBAEventKeys", {
         method: "GET",
         headers: {
