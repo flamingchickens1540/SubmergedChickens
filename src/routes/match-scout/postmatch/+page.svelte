@@ -62,26 +62,28 @@
         next_page={() => goto("/match-scout/notes")}
         bind:timeline={matchData.value.timeline.tele}
     />
-    <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
-        <span class="font-heading text-xl font-semibold">End State</span>
+    <div class="flex flex-grow flex-col gap-8 overflow-y-scroll p-4">
         <RadioGroup
+            title={"End State"}
             bind:value={matchData.value.endgame}
             labels={Object.keys(Endgame)}
         ></RadioGroup>
         <Rating name="Driver Skill" bind:value={matchData.value.skill} />
-        <span class="font-heading p-2 text-center text-3xl font-semibold"
-            >Tags</span
-        >
-
-        <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each data.tagcategories as tagcategory, i}
-            <span class="font-heading text-xl font-semibold"
-                >{tagcategory.category}</span
+        <div class="flex flex-col gap-4">
+            <span class="font-heading px-2 text-center text-3xl font-semibold"
+                >Tags</span
             >
-            <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
-            <CheckGroup labels={tagcategory.tags} bind:selected={roles}
-            ></CheckGroup>
-        {/each}
+
+            <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
+            {#each data.tagcategories as tagcategory, i}
+                <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
+                <CheckGroup
+                    title={tagcategory.category}
+                    labels={tagcategory.tags}
+                    bind:selected={roles}
+                ></CheckGroup>
+            {/each}
+        </div>
     </div>
 
     <button

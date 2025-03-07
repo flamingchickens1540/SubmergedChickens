@@ -2,25 +2,24 @@
     type Props = {
         labels: string[]
         selected: string[]
+        title?: string
     }
 
-    let { labels, selected = $bindable([]) }: Props = $props()
+    let { title, labels, selected = $bindable([]) }: Props = $props()
 </script>
 
-<div class="mt-0 text-center">
+<div class="flex flex-col gap-2">
+    {#if title}
+        <span class="font-heading text-xl font-semibold">{title}</span>
+    {/if}
     {#each labels as label}
-        <label
-            class="m-2 ml-0 mt-auto block w-full rounded p-5 text-lg font-semibold {selected.includes(
-                label
-            )
-                ? 'bg-xanthous'
-                : 'bg-gunmetal'}"
-        >
+        <label class="block w-full text-lg font-medium">
             <input
                 type="checkbox"
                 bind:group={selected}
+                id={label}
+                name={label}
                 value={label}
-                class="hidden"
             />
             <span>{label}</span>
         </label>
