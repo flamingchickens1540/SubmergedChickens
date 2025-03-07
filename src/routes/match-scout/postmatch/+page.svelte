@@ -75,16 +75,6 @@
             labels={data.tagcategories}
             bind:selected={matchData.value.tags}
         ></CheckGroup>
-
-        <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each labels as label}
-            <!-- <span class="font-heading text-xl font-semibold"
-                >{label.category}</span -->
-            <!-- > -->
-            <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
-            <!-- <CheckGroup labels={tagcategory.tags} bind:selected={roles} -->
-            <!-- ></CheckGroup> -->
-        {/each}
     </div>
 
     <button
