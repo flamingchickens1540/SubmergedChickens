@@ -1,9 +1,5 @@
 <script lang="ts">
-    import type {
-        AutoPageState,
-        FrontendTeleActionData,
-        FrontendAutoActionData,
-    } from "$lib/types"
+    import type { AutoPageState, Timeline } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
     import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
@@ -23,7 +19,7 @@
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
-        timeline?: FrontendAutoActionData[] | FrontendTeleActionData[]
+        timeline: Timeline
     } = $props()
 </script>
 
@@ -37,7 +33,7 @@
     >
         {team_key}
     </span>
-    {#if timeline}
+    {#if timeline?.auto || timeline?.tele}
         <UndoButton {timeline} />
     {/if}
     <div class="align-item-center flex gap-2">
