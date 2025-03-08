@@ -36,7 +36,7 @@
         if (index < auto_len) {
             matchData.value.timeline.auto.splice(index, 1)
         } else {
-            matchData.value.timeline.tele.splice(index - auto_len)
+            matchData.value.timeline.tele.splice(index - auto_len, 1)
         }
     }
 
