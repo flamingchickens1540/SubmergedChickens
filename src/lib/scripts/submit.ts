@@ -44,7 +44,7 @@ export async function submitTeamMatch(
             data: {
                 tags: {
                     connectOrCreate: {
-                        where: { name: tag.name },
+                        where: { name: tag.name, category: tag.category },
                         create: tag,
                     },
                 },
