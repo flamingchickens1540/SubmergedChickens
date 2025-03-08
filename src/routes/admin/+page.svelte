@@ -107,6 +107,10 @@
         next_blue_robots.value = blue
     }
 
+    const clear_robot_queue = async () => {
+        socket.emit("clear_robot_queue")
+    }
+
     let event_selection = $state("Event Key")
 </script>
 
@@ -151,24 +155,6 @@
             </div>
         </div>
     </div>
-    <!-- <div -->
-    <!--     class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2" -->
-    <!-- > -->
-    <!--     <span class="text-center">New Users</span> -->
-    <!--     <div class="flex flex-col gap-2 overflow-auto"> -->
-    <!--         {#each new_users as user} -->
-    <!--             <div -->
-    <!--                 class="flex items-center justify-between rounded bg-eerie_black p-1" -->
-    <!--             > -->
-    <!--                 {user} -->
-    <!--                 <button -->
-    <!--                     class="rounded bg-gunmetal p-1" -->
-    <!--                     onclick={() => approve_new_user(user)}><Check /></button -->
-    <!--                 > -->
-    <!--             </div> -->
-    <!--         {/each} -->
-    <!--     </div> -->
-    <!-- </div> -->
     <div
         class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
     >
@@ -202,4 +188,7 @@
         </div>
     </div>
     <EventManager {tba_event_keys} bind:selection={event_selection} />
+    <button class="rounded bg-gunmetal" onclick={clear_robot_queue}
+        >Clear Robot Queue</button
+    >
 </div>
