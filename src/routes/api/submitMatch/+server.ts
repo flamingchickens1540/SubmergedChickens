@@ -253,7 +253,7 @@ function countActionTele(tl: Timeline, succ: boolean, act: TeleAction) {
     return tl.tele.filter(a => a.action === act && a.success === succ).length
 }
 
-function parseTag(tag: String): { name: string; category: string } {
+function parseTag(tag: string): { name: string; category: string } {
     const parsed = tag.split(" ").map(a => a.replace("(", "").replace(")", ""))
     return {
         name: parsed[0],
