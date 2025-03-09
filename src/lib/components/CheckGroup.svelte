@@ -5,8 +5,10 @@
     }
 
     let { labels, selected = $bindable([]) }: Props = $props()
+
+    // NOTE Categories are the keys, the values are the list of tag names in that category
     let categories: Map<string, string[]> = new Map()
-    labels.map(({ name, category }) =>
+    labels.forEach(({ name, category }) =>
         categories.set(category, [...(categories.get(category) ?? []), name])
     )
 </script>
