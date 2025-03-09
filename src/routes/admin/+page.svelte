@@ -198,10 +198,10 @@
                     }}>Clear (not db)</button
                 ></span
             >
-            <div class="grid h-28 grid-cols-3 gap-2 overflow-y-scroll">
+            <div class="grid max-h-28 grid-cols-3 gap-2 overflow-y-scroll">
                 {#each robot_queue as { key, color }}
                     <div
-                        class="grid h-12 grid-cols-2 place-items-center rounded bg-gray-400 p-2"
+                        class="grid h-12 grid-cols-2 place-items-center rounded bg-eerie_black p-2"
                     >
                         <div>{key}</div>
                         <div
