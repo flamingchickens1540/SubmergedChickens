@@ -12,7 +12,7 @@
         action_data: FrontendAutoActionData
         period: "auto" | "tele"
         index: number
-        move: (index: number, change: -1 | 1) => void
+        move: (index: number) => void
         remove: (index: number) => void
     } = $props()
 
