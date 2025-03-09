@@ -12,7 +12,7 @@
         action_data: FrontendAutoActionData
         period: "auto" | "tele"
         index: number
-        move: (index: number, change: -1 | 1) => void
+        move: (index: number) => void
         remove: (index: number) => void
     } = $props()
 
@@ -35,14 +35,14 @@
         <button
             class="disabled:opacity-30 group-first:pointer-events-none group-first:opacity-30"
             onclick={() => move(index)}
-            disabled={period == "tele"}
+            disabled={period == "tele" || action_data.action.includes("Intake")}
         >
             <MoveUp />
         </button>
         <button
             class="disabled:opacity-30 group-last:pointer-events-none group-last:opacity-30"
             onclick={() => move(index)}
-            disabled={period == "auto"}
+            disabled={period == "auto" || action_data.action == "Incap"}
         >
             <MoveDown />
         </button>

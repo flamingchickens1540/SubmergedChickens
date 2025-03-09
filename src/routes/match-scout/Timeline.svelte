@@ -1,6 +1,11 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type { UncountedTeamMatch } from "$lib/types"
+    import type {
+        FrontendAutoActionData,
+        FrontendTeleActionData,
+        TeleActionData,
+        UncountedTeamMatch,
+    } from "$lib/types"
     import { localStore } from "@/localStore.svelte"
     import Action from "./Action.svelte"
 
@@ -20,7 +25,7 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
     let {
@@ -46,8 +51,13 @@
                 matchData.value.timeline.tele.splice(index - auto_len, 1)[0]
             )
         } else {
+            // WARNING This will panic in the case of Intakes being shifted over
+            const action = matchData.value.timeline.auto.splice(index, 1)[0]
+            console.warn(
+                `Invalid movement, ${action.action} isn't a valid tele action`
+            )
             matchData.value.timeline.tele.unshift(
-                matchData.value.timeline.auto.splice(index, 1)[0]
+                action as FrontendTeleActionData
             )
         }
     }
