@@ -14,7 +14,7 @@
     let bugReportVisible = $state(false)
 
     const logout = () => {
-        localStorage.removeItem("username")
+        username.reset()
         goto("/")
     }
 </script>
