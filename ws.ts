@@ -1,4 +1,4 @@
-import type { TeamMatch } from "@prisma/client"
+import type { UncountedTeamMatch } from "@/types"
 import assert from "assert"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
@@ -7,7 +7,7 @@ const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
 const warn = (s: string) => console.log(`\x1b[33m${s}\x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
-let robot_queue: [string, "red" | "blue"][] = []
+let robot_queue: { key: string; color: "red" | "blue" }[] = []
 let curr_match_key: string = ""
 
 const webSocketServer = {
@@ -58,7 +58,7 @@ const webSocketServer = {
                 }
 
                 io.to("admin_room").emit("robot_left_queue", team_data)
-                socket.emit("time_to_scout", [curr_match_key, ...team_data])
+                socket.emit("time_to_scout", [curr_match_key, team_data])
             })
 
             async function leave_scout_queue(scout_id: string) {
@@ -94,13 +94,14 @@ const webSocketServer = {
 
             socket.on(
                 "leave_robot_queue",
-                (robot: [string, "red" | "blue"]) => {
+                (robot: { key: string; color: "red" | "blue" }) => {
                     const robotsEqual = (
-                        robot1: [string, "red" | "blue"],
-                        robot2: [string, "red" | "blue"]
+                        robot1: { key: string; color: "red" | "blue" },
+                        robot2: { key: string; color: "red" | "blue" }
                     ): boolean => {
                         return (
-                            robot1[0] === robot2[0] && robot1[1] === robot2[1]
+                            robot1.key === robot2.key &&
+                            robot1.color === robot2.color
                         )
                     }
                     const index = robot_queue.findIndex(robot_t =>
@@ -116,7 +117,7 @@ const webSocketServer = {
                 "send_match",
                 async ([match_key, teams]: [
                     string,
-                    [string, "red" | "blue"][],
+                    { key: string; color: "red" | "blue" }[],
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
@@ -137,7 +138,7 @@ const webSocketServer = {
                         }
 
                         scout.leave("scout_queue")
-                        scout.emit("time_to_scout", [match_key, ...team_data])
+                        scout.emit("time_to_scout", [match_key, team_data])
                         io.to("admin_room").emit("scout_left_queue", username)
                     }
 
@@ -180,13 +181,16 @@ const webSocketServer = {
 
             // NOTE For these next two, the team match has already been sent
             // or removed by the client sending a request to the server
-            socket.on("submit_team_match", (team_match: TeamMatch) => {
+            socket.on("submit_team_match", (team_match: UncountedTeamMatch) => {
                 io.to("admin_room").emit("new_team_match", team_match)
             })
 
-            socket.on("failed_submit_team_match", (team_match: TeamMatch) => {
-                io.to("admin_room").emit("failed_team_match", team_match)
-            })
+            socket.on(
+                "failed_submit_team_match",
+                (team_match: UncountedTeamMatch) => {
+                    io.to("admin_room").emit("failed_team_match", team_match)
+                }
+            )
 
             socket.on("disconnect", async _reason => {
                 const scout_id = sid_to_username.get(socket.id)

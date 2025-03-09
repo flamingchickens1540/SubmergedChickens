@@ -18,9 +18,12 @@
 
     socket.on(
         "time_to_scout",
-        ([match_key, team_key, color]: [string, string, "red" | "blue"]) => {
+        ([match_key, { key, color }]: [
+            string,
+            { key: string; color: "red" | "blue" },
+        ]) => {
             goto(
-                `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
+                `/match-scout/prematch?match=${match_key}&team=${key}&color=${color}`
             )
         }
     )
