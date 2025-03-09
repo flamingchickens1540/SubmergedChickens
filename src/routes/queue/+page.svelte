@@ -17,6 +17,23 @@
     socket.on(
         "time_to_scout",
         ([match_key, team_key, color]: [string, string, "red" | "blue"]) => {
+            localStore<UncountedTeamMatch>("matchData", {
+                event_key: "",
+                match_key: "",
+                team_key: 0,
+                auto_start_location: AutoStart.Far,
+                auto_leave_start: false,
+                timelne: {
+                    auto: [],
+                    tele: [],
+                },
+                endgame: Endgame.None,
+                skill: 3,
+                notes: "",
+                incap_time: [],
+                scout_id: 0,
+                tags: [],
+            }).reset()
             goto(
                 `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
             )

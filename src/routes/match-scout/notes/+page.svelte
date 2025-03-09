@@ -38,7 +38,6 @@
             },
         })
 
-        matchData.reset()
         goto("/home")
     }
 </script>

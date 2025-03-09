@@ -40,17 +40,16 @@
         }
     }
 
-    function shift(index: number, change: -1 | 1) {
-        const [actions, new_index] =
-            index < auto_len
-                ? [matchData.value.timeline.auto, index]
-                : [matchData.value.timeline.tele, index - auto_len]
-
-        if (new_index == 0 && change == -1) return
-        ;[actions[new_index], actions[new_index + change]] = [
-            actions[new_index + change],
-            actions[new_index],
-        ]
+    function move(index: number) {
+        if (index > auto_len) {
+            matchData.value.timeline.auto.push(
+                matchData.value.timeline.tele.splice(index - auto_len, 1)
+            )
+        } else {
+            matchData.value.timeline.tele.unshift(
+                matchData.value.timeline.tele.splice(index, 1)
+            )
+        }
     }
 
     const auto_len = $derived(matchData.value.timeline.auto.length)
@@ -61,20 +60,18 @@
     {#each matchData.value.timeline.tele as _, i}
         <Action
             action_data={matchData.value.timeline.tele[tele_len - i - 1]}
-            index={tele_len - i - 1}
-            sub_timeline_len={tele_len}
+            period={"tele"}
             {remove}
-            {shift}
+            {move}
         />
     {/each}
     <hr />
     {#each matchData.value.timeline.auto as _, i}
         <Action
             action_data={matchData.value.timeline.auto[auto_len - i - 1]}
-            index={auto_len - i - 1}
-            sub_timeline_len={auto_len}
+            period={"auto"}
             {remove}
-            {shift}
+            {move}
         />
     {/each}
     {#if auto_len + tele_len === 0}

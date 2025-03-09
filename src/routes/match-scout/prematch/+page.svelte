@@ -35,8 +35,6 @@
     )
 
     onMount(() => {
-        matchData.reset()
-
         matchData.value.scout_id = Number.parseInt(
             (browser && localStorage.getItem("scout_id")) || ""
         )
