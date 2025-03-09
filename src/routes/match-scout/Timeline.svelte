@@ -41,13 +41,13 @@
     }
 
     function move(index: number) {
-        if (index > auto_len) {
+        if (index >= auto_len) {
             matchData.value.timeline.auto.push(
-                matchData.value.timeline.tele.splice(index - auto_len, 1)
+                matchData.value.timeline.tele.splice(index - auto_len, 1)[0]
             )
         } else {
             matchData.value.timeline.tele.unshift(
-                matchData.value.timeline.tele.splice(index, 1)
+                matchData.value.timeline.auto.splice(index, 1)[0]
             )
         }
     }
@@ -61,6 +61,7 @@
         <Action
             action_data={matchData.value.timeline.tele[tele_len - i - 1]}
             period={"tele"}
+            index={tele_len + auto_len - i - 1}
             {remove}
             {move}
         />
@@ -70,6 +71,7 @@
         <Action
             action_data={matchData.value.timeline.auto[auto_len - i - 1]}
             period={"auto"}
+            index={auto_len - i - 1}
             {remove}
             {move}
         />
