@@ -205,7 +205,7 @@
                     >
                         <div>{key}</div>
                         <div
-                            class="h-6 w-6 rounded-full bg-{color === 'red'
+                            class="size-6 rounded-full bg-{color === 'red'
                                 ? 'bittersweet'
                                 : 'steel_blue'}"
                         ></div>
