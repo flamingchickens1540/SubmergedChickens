@@ -10,9 +10,9 @@
         }
     }
     const get_next = (timeline: Timeline) => {
-        if (timeline.tele?.length > 0) {
+        if (timeline.tele.length > 0) {
             return timeline.tele[timeline.tele.length - 1]
-        } else if (timeline.auto?.length > 0) {
+        } else if (timeline.auto.length > 0) {
             return timeline.auto[timeline.auto.length - 1]
         }
     }

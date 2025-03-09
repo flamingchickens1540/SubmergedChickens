@@ -5,11 +5,13 @@
     let {
         action_data = $bindable(),
         period,
+        index,
         move,
         remove,
     }: {
         action_data: FrontendAutoActionData
         period: "auto" | "tele"
+        index: number
         move: (index: number, change: -1 | 1) => void
         remove: (index: number) => void
     } = $props()
@@ -33,7 +35,7 @@
         <button
             class="disabled:opacity-30 group-first:pointer-events-none group-first:opacity-30"
             onclick={() => move(index)}
-            disabled={(period = "tele")}
+            disabled={period == "tele"}
         >
             <MoveUp />
         </button>
