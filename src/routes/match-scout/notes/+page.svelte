@@ -66,7 +66,7 @@
         team_key={matchData.value.team_key}
         page_state="None"
         prev_page={() => goto("/match-scout/postmatch")}
-        bind:timeline={matchData.value.timeline.tele}
+        bind:timeline={matchData.value.timeline}
     />
     <div class="m-2 flex flex-grow flex-col gap-2 rounded p-2">
         <span class="font-heading text-xl font-semibold">Notes</span>

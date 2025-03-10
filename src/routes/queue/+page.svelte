@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { browser } from "$app/environment"
     import { goto } from "$app/navigation"
     import { localStore } from "@/localStore.svelte"
     import { io, Socket } from "socket.io-client"
@@ -22,6 +23,7 @@
             string,
             { key: string; color: "red" | "blue" },
         ]) => {
+            browser && localStorage.setItem("matchData", "")
             goto(
                 `/match-scout/prematch?match=${match_key}&team=${key}&color=${color}`
             )
