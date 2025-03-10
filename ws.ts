@@ -1,12 +1,13 @@
-import type { TeamMatch } from "@prisma/client"
-import { log } from "console"
+import type { UncountedTeamMatch } from "@/types"
+import assert from "assert"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
 
 const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
+const warn = (s: string) => console.log(`\x1b[33m${s}\x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
-let robot_queue: [string, "red" | "blue"][] = []
+let robot_queue: { key: string; color: "red" | "blue" }[] = []
 let curr_match_key: string = ""
 
 const webSocketServer = {
@@ -21,14 +22,13 @@ const webSocketServer = {
                 return next(new Error("No username provided"))
             }
 
-            const old_entries = Array.from(sid_to_username.entries()).find(
-                ([_key, value]) => value === username
-            )
-            if (old_entries) {
-                old_entries
-                    .map(([key, _value]) => key)
-                    .forEach(key => sid_to_username.delete(key))
-            }
+            Array.from(sid_to_username.entries())
+                .filter(([_key, value]) => value === username)
+                .map(([key, _value]) => key)
+                .forEach(key => {
+                    // DEBUG warn(`deleted old key: ${key}`)
+                    sid_to_username.delete(key)
+                })
 
             sid_to_username.set(socket.id, username)
 
@@ -52,34 +52,56 @@ const webSocketServer = {
                 const team_data = robot_queue.pop()
                 if (!team_data) {
                     io.to("admin_room").emit("scout_joined_queue", username)
+                    info(`Scout ${socket.id} joined queue`)
                     socket.join("scout_queue")
                     return
                 }
 
                 io.to("admin_room").emit("robot_left_queue", team_data)
-                socket.emit("time_to_scout", [curr_match_key, ...team_data])
+                socket.emit("time_to_scout", [curr_match_key, team_data])
             })
 
-            socket.on("leave_scout_queue", (scout_id: string) => {
+            async function leave_scout_queue(scout_id: string) {
                 const scout_sid = Array.from(sid_to_username.entries())
-                    .filter(([_sid, scout]) => scout === scout_id)
+                    .filter(([_, scout]) => scout === scout_id)
                     .map(([sid, _]) => sid)[0]
-                // NOTE This event handles the the case where the scout removed itself from the queue
+
+                // Tells both the scout and admin that the scout left (either could have removed the scout)
                 io.emit("scout_left_queue", scout_id)
-                // NOTE This event handles the case where the admin removed the scout from the queue
-                // FIXME
-                io.sockets.sockets.get(scout_sid)?.leave("scout_queue")
-            })
+
+                // NOTE Duplicates shouldn't exist, since middleware filters it
+                const socket = (await io.in("scout_queue").fetchSockets()).find(
+                    socket => socket.id === scout_sid
+                )
+                if (!socket) {
+                    warn(`Cannot remove ${scout_id}, not in queue`)
+                    return
+                }
+                socket.leave("scout_queue")
+
+                // Grab and log the new queue (might remove)
+                const scout_queue = (
+                    await io.in("scout_queue").fetchSockets()
+                ).map(t => t.id)
+                if (scout_queue.length === 0) {
+                    info("Scout left queue: scout queue now empty")
+                } else {
+                    info(`Scout left queue: scout queue: ${scout_queue}`)
+                }
+            }
+
+            socket.on("leave_scout_queue", leave_scout_queue)
 
             socket.on(
                 "leave_robot_queue",
-                (robot: [string, "red" | "blue"]) => {
+                (robot: { key: string; color: "red" | "blue" }) => {
                     const robotsEqual = (
-                        robot1: [string, "red" | "blue"],
-                        robot2: [string, "red" | "blue"]
+                        robot1: { key: string; color: "red" | "blue" },
+                        robot2: { key: string; color: "red" | "blue" }
                     ): boolean => {
                         return (
-                            robot1[0] === robot2[0] && robot1[1] === robot2[1]
+                            robot1.key === robot2.key &&
+                            robot1.color === robot2.color
                         )
                     }
                     const index = robot_queue.findIndex(robot_t =>
@@ -95,11 +117,20 @@ const webSocketServer = {
                 "send_match",
                 async ([match_key, teams]: [
                     string,
-                    [string, "red" | "blue"][],
+                    { key: string; color: "red" | "blue" }[],
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-                    info(`New Match: ${match_key}: ${teams}`)
+                    const teams_print: string = teams
+                        .map(team => {
+                            if (team.color == "red") {
+                                return ` \x1b[31m${team.key}\x1b[0m`
+                            } else {
+                                return ` \x1b[34m${team.key}\x1b[0m`
+                            }
+                        })
+                        .join()
+                    info(`New Match (${match_key}):${teams_print}`)
                     robot_queue = []
 
                     const scout_queue = (
@@ -116,18 +147,22 @@ const webSocketServer = {
                         }
 
                         scout.leave("scout_queue")
-                        scout.emit("time_to_scout", [match_key, ...team_data])
+                        scout.emit("time_to_scout", [match_key, team_data])
                         io.to("admin_room").emit("scout_left_queue", username)
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
                     robot_queue.push(...teams)
 
-                    // Update all connected sockets with new match info (for cosmetic purposes)
+                    // NOTE Update all connected sockets with new match info (for cosmetic purposes)
                     io.emit("new_match", match_key)
                     curr_match_key = match_key
                 }
             )
+
+            socket.on("clear_robot_queue", async () => {
+                robot_queue = []
+            })
 
             // Event-listener sockets that were offline to sync back up with the current match key
             socket.on("get_curr_match", callback => {
@@ -155,17 +190,26 @@ const webSocketServer = {
 
             // NOTE For these next two, the team match has already been sent
             // or removed by the client sending a request to the server
-            socket.on("submit_team_match", (team_match: TeamMatch) => {
+            socket.on("submit_team_match", (team_match: UncountedTeamMatch) => {
                 io.to("admin_room").emit("new_team_match", team_match)
             })
 
-            socket.on("failed_submit_team_match", (team_match: TeamMatch) => {
-                io.to("admin_room").emit("failed_team_match", team_match)
-            })
+            socket.on(
+                "failed_submit_team_match",
+                (team_match: UncountedTeamMatch) => {
+                    io.to("admin_room").emit("failed_team_match", team_match)
+                }
+            )
 
-            socket.on("disconnect", _reason => {
+            socket.on("disconnect", async _reason => {
                 const scout_id = sid_to_username.get(socket.id)
+                if (!scout_id) return
+
+                sid_to_username.delete(socket.id)
+                leave_scout_queue(scout_id)
+
                 io.to("admin_room").emit("scout_left_queue", scout_id)
+                assert(socket.rooms.size === 0)
             })
         })
     },

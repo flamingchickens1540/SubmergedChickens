@@ -6,6 +6,15 @@
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
     import { AutoStart, Endgame } from "@prisma/client"
+    import { io, Socket } from "socket.io-client"
+
+    const username = $state(localStore("username", ""))
+
+    let socket: Socket = io({
+        auth: {
+            username: username.value,
+        },
+    })
 
     let matchData = $state(
         localStore<UncountedTeamMatch>("matchData", {
@@ -37,6 +46,8 @@
                 "Content-Type": "application/json",
             },
         })
+
+        socket.emit("submit_team_match", matchData.value)
 
         matchData.reset()
         goto("/home")
