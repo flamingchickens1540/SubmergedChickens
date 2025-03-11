@@ -30,13 +30,11 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
 
     onMount(() => {
-        matchData.reset()
-
         matchData.value.scout_id = Number.parseInt(
             (browser && localStorage.getItem("scout_id")) || ""
         )
@@ -51,8 +49,6 @@
     const swipeHandler = (event: SwipeCustomEvent) => {
         if ((event.detail.direction = "left")) goto("/match-scout/auto")
     }
-
-    console.log(data.color)
 </script>
 
 <div
