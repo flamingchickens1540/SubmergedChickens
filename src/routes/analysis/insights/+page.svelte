@@ -40,8 +40,7 @@
     </div>
     <div
         class="col-span-1 col-start-2 row-span-1 row-span-1 row-start-1 rounded border border-solid border-white p-2"
-    >
-        Robor photo
+    >Robot photo!?!
     </div>
     <div
         class="col-span-1 col-start-2 row-span-2 row-start-2 content-center overflow-scroll rounded border border-solid border-white p-2 text-left"
