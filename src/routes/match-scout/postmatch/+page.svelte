@@ -27,17 +27,12 @@
         notes: "",
         incap_time: [],
         scout_id: 0,
-        tagNames: [],
+        tags: [],
     })
 
     let { data }: PageProps = $props()
 
     let displaying_timeline = $state(false)
-
-    //TODO ADD TAGS TO THE MATCHDATA
-    let roles: string[] = $state([])
-    let matchplay: string[] = $state([])
-    let damage: string[] = $state([])
 </script>
 
 <div
@@ -60,7 +55,7 @@
         team_key={matchData.value.team_key}
         prev_page={() => goto("/match-scout/tele")}
         next_page={() => goto("/match-scout/notes")}
-        bind:timeline={matchData.value.timeline.tele}
+        bind:timeline={matchData.value.timeline}
     />
     <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>
@@ -72,16 +67,10 @@
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
-
-        <!-- TODO IMPLEMENT TAGS INTO MATCHDATA -->
-        {#each data.tagcategories as tagcategory, i}
-            <span class="font-heading text-xl font-semibold"
-                >{tagcategory.category}</span
-            >
-            <!-- TODO THIS DOESN"T ACTUALLY WORK NEED TO GET TAGS WORKING -->
-            <CheckGroup labels={tagcategory.tags} bind:selected={roles}
-            ></CheckGroup>
-        {/each}
+        <CheckGroup
+            labels={data.tagcategories}
+            bind:selected={matchData.value.tags}
+        ></CheckGroup>
     </div>
 
     <button

@@ -20,5 +20,5 @@ pg_start # if you didn't run above command
 bun i
 bun db:load
 # once your done
-pg_stop && exit
+exit
 ```

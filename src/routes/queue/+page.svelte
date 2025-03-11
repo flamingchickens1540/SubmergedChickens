@@ -1,12 +1,15 @@
 <script lang="ts">
     import { browser } from "$app/environment"
     import { goto } from "$app/navigation"
+    import { localStore } from "@/localStore.svelte"
     import { io, Socket } from "socket.io-client"
+    import { onDestroy } from "svelte"
 
-    const username = browser && localStorage.getItem("username")
+    const username = $state(localStore("username", ""))
+    let got_robot = $state(false)
     let socket: Socket = io({
         auth: {
-            username,
+            username: username.value,
         },
     })
 
@@ -16,25 +19,25 @@
 
     socket.on(
         "time_to_scout",
-        ([match_key, team_key, color]: [string, string, "red" | "blue"]) => {
-            console.log("match: " + match_key)
-            console.log("team: " + team_key)
-            console.log("color: " + color)
-
+        ([match_key, { key, color }]: [
+            string,
+            { key: string; color: "red" | "blue" },
+        ]) => {
+            browser && localStorage.setItem("matchData", "")
             goto(
-                `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
+                `/match-scout/prematch?match=${match_key}&team=${key}&color=${color}`
             )
         }
     )
 
     socket.on("scout_left_queue", (scout: string) => {
-        if (scout === username) {
+        if (scout === username.value) {
             goto("/")
         }
     })
 
     const leave = () => {
-        socket.emit("leave_scout_queue", username)
+        socket.emit("leave_scout_queue", username.value)
         goto("/")
     }
 </script>

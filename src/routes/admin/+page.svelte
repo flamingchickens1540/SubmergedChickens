@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { X, Check } from "lucide-svelte"
+    import { Dot, X } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
-    import { localStore } from "@/localStore.svelte"
+    import { LocalStore, localStore } from "@/localStore.svelte"
     import EventManager from "./EventManager.svelte"
     import type { PageProps } from "./$types"
     import { error } from "@/consoleUtils"
+    import type { UncountedTeamMatch } from "@/types"
 
     let { data }: PageProps = $props()
     const tba_event_keys = data.tba_event_keys
@@ -18,18 +19,17 @@
         localStore<string[]>("next_blue_robots", ["", "", ""])
     )
 
-    let curr_red_robots = $state(
-        localStore<string[]>("curr_red_robots", ["", "", ""])
-    )
-    let curr_blue_robots = $state(
-        localStore<string[]>("curr_blue_robots", ["", "", ""])
-    )
-
-    let new_users: string[] = $state([])
     let scout_queue: string[] = $state([])
+
+    let robot_queue: { key: string; color: string }[] = $state([])
+    let pending_robots: LocalStore<{ key: string; color: string }[]> = $state(
+        localStore("pending_robots", [])
+    )
     // TODO Change to actual type
     // TODO Pull from backend
-    let submitted_team_matches: string[] = $state([])
+    let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
+        localStore("submitted_team_matches", [])
+    )
 
     let socket: Socket = io({
         auth: {
@@ -42,9 +42,12 @@
         scout_queue = response.scouts
     })
 
-    socket.emit("get_new_user_queue", (response: { users: string[] }) => {
-        new_users = response.users
-    })
+    socket.emit(
+        "get_robot_queue",
+        (response: { robots: { key: string; color: string }[] }) => {
+            robot_queue = response.robots
+        }
+    )
 
     socket.on("scout_joined_queue", (scout: string) => {
         scout_queue.push(scout)
@@ -57,20 +60,52 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("new_user_request", (user: string) => {
-        new_users.push(user)
+    socket.on("robot_left_queue", (robot: string) => {
+        const index = robot_queue.findIndex(
+            ({ key, color: _ }) => key !== robot
+        )
+        if (index === -1) return
+
+        const team_match = robot_queue.splice(index, 1)[0]
+        pending_robots.value.push(team_match)
+    })
+
+    socket.on("new_team_match", (team_match: UncountedTeamMatch) => {
+        const index = pending_robots.value.findIndex(
+            ({ key, color: _ }) => Number.parseInt(key) !== team_match.team_key
+        )
+        if (index === -1) return
+        pending_robots.value.splice(index, 1)[0]
+
+        submitted_team_matches.value.push(team_match)
     })
 
     const queue_match = async () => {
         let next_robots = [
-            ...next_red_robots.value.map(team => [team, "red"]),
-            ...next_blue_robots.value.map(team => [team, "blue"]),
+            ...next_red_robots.value.map(key => {
+                return {
+                    key,
+                    color: "red",
+                }
+            }),
+            ...next_blue_robots.value.map(key => {
+                return {
+                    key,
+                    color: "blue",
+                }
+            }),
         ]
 
         socket.emit("send_match", [next_match_key.value, next_robots])
 
-        curr_red_robots.value = next_red_robots.value
-        curr_blue_robots.value = next_blue_robots.value
+        robot_queue = [
+            ...next_red_robots.value.map(key => {
+                return { key, color: "red" }
+            }),
+            ...next_blue_robots.value.map(key => {
+                return { key, color: "blue" }
+            }),
+        ]
 
         next_match_key.value =
             next_match_key.value.slice(0, 2) +
@@ -115,12 +150,10 @@
         next_red_robots.value = red
         next_blue_robots.value = blue
     }
-    const approve_new_user = (user: string) => {
-        const i = new_users.indexOf(user)
-        if (i === -1) return
-        new_users.splice(i, 1)
 
-        socket.emit("approve_new_user", user)
+    const clear_robot_queue = async () => {
+        robot_queue = []
+        socket.emit("clear_robot_queue")
     }
 
     let event_selection = $state("Event Key")
@@ -156,13 +189,48 @@
             {/each}
         </div>
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-            <span class="col-span-3 text-center">Currently Playing</span>
-            <div class="grid flex-grow grid-cols-3 grid-rows-2 gap-2">
-                {#each curr_red_robots.value as robot}
-                    <div class="rounded bg-bittersweet p-2">{robot}</div>
+            <span class="col-span-3 text-center"
+                >Team Matches <button
+                    class="rounded bg-eerie_black p-2"
+                    onclick={() => {
+                        pending_robots.value = []
+                        submitted_team_matches.value = []
+                    }}>Clear (not db)</button
+                ></span
+            >
+            <div class="grid max-h-28 grid-cols-3 gap-2 overflow-y-scroll">
+                {#each robot_queue as { key, color }}
+                    <div
+                        class="grid h-12 grid-cols-2 place-items-center rounded bg-eerie_black p-2"
+                    >
+                        <div>{key}</div>
+                        <div
+                            class="size-6 rounded-full bg-{color === 'red'
+                                ? 'bittersweet'
+                                : 'steel_blue'}"
+                        ></div>
+                    </div>
                 {/each}
-                {#each curr_blue_robots.value as robot}
-                    <div class="rounded bg-steel_blue p-2">{robot}</div>
+                {#each pending_robots.value as { key, color }}
+                    <div
+                        class="grid grid-cols-2 place-items-center rounded bg-crayola_orange p-2"
+                    >
+                        <div>{key}</div>
+                        <div
+                            class="grid h-6 w-6 rounded-full bg-{color === 'red'
+                                ? 'bittersweet'
+                                : 'steel_blue'}"
+                        ></div>
+                    </div>
+                {/each}
+                {#each submitted_team_matches.value as team_match}
+                    <div
+                        class="grid place-items-center rounded bg-jungle_green p-2"
+                    >
+                        <div>
+                            {team_match.match_key}:{team_match.team_key}
+                        </div>
+                    </div>
                 {/each}
             </div>
         </div>
@@ -170,25 +238,7 @@
     <div
         class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
     >
-        <span class="text-center">New Users</span>
-        <div class="flex flex-col gap-2 overflow-auto">
-            {#each new_users as user}
-                <div
-                    class="flex items-center justify-between rounded bg-eerie_black p-1"
-                >
-                    {user}
-                    <button
-                        class="rounded bg-gunmetal p-1"
-                        onclick={() => approve_new_user(user)}><Check /></button
-                    >
-                </div>
-            {/each}
-        </div>
-    </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
-        <span class="text-center">Queue</span>
+        <span class="text-center">Scout Queue</span>
         <div class="flex flex-col gap-2 overflow-auto">
             {#each scout_queue as scout}
                 <div
@@ -203,19 +253,9 @@
             {/each}
         </div>
     </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
-        <span class="text-center">Submitted Team Matches</span>
-        <div class="flex flex-col gap-2 overflow-auto">
-            {#each submitted_team_matches as team_match}
-                <button
-                    class="flex items-center justify-between rounded bg-eerie_black px-1 py-2"
-                >
-                    {team_match}
-                </button>
-            {/each}
-        </div>
-    </div>
+
     <EventManager {tba_event_keys} bind:selection={event_selection} />
+    <button class="rounded bg-gunmetal" onclick={clear_robot_queue}
+        >Clear Robot Queue</button
+    >
 </div>

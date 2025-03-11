@@ -6,6 +6,15 @@
     import Timeline from "../Timeline.svelte"
     import { localStore } from "@/localStore.svelte"
     import { AutoStart, Endgame } from "@prisma/client"
+    import { io, Socket } from "socket.io-client"
+
+    const username = $state(localStore("username", ""))
+
+    let socket: Socket = io({
+        auth: {
+            username: username.value,
+        },
+    })
 
     let matchData = $state(
         localStore<UncountedTeamMatch>("matchData", {
@@ -23,15 +32,13 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
 
     let displaying_timeline = $state(false)
 
     const submit = async () => {
-        console.log(matchData.value)
-
         await fetch("/api/submitMatch", {
             method: "POST",
             body: JSON.stringify(matchData.value),
@@ -39,6 +46,8 @@
                 "Content-Type": "application/json",
             },
         })
+
+        socket.emit("submit_team_match", matchData.value)
 
         matchData.reset()
         goto("/home")
@@ -57,7 +66,7 @@
         team_key={matchData.value.team_key}
         page_state="None"
         prev_page={() => goto("/match-scout/postmatch")}
-        bind:timeline={matchData.value.timeline.tele}
+        bind:timeline={matchData.value.timeline}
     />
     <div class="m-2 flex flex-grow flex-col gap-2 rounded p-2">
         <span class="font-heading text-xl font-semibold">Notes</span>

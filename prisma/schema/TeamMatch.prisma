@@ -54,6 +54,7 @@ model TeamMatch {
   tags                             Tag[]
   notes                            String?
   incap_time                       Float[]
+  total_incap_time                 Float?
   scoutId                          Int?
   scout                             User?         @relation(fields: [scoutId], references: [id])
   ComparisonA                      Comparison[] @relation("TeamMatchA")
