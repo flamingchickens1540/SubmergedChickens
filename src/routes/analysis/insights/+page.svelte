@@ -39,7 +39,7 @@
         {/each}
     </div>
     <div
-        class="col-span-1 col-start-2 row-span-1 row-span-1 row-start-1 rounded border border-solid border-white p-2"
+        class="col-span-1 col-start-2 row-span-1 row-start-1 rounded border border-solid border-white p-2"
     >
         Robor photo
     </div>
