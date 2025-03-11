@@ -3,6 +3,7 @@
         AutoPageState,
         FrontendTeleActionData,
         FrontendAutoActionData,
+        Timeline,
     } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
     import { localStore } from "@/localStore.svelte"
@@ -23,7 +24,7 @@
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
-        timeline?: FrontendAutoActionData[] | FrontendTeleActionData[]
+        timeline?: Timeline
     } = $props()
 </script>
 
