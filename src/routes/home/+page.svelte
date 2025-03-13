@@ -11,8 +11,6 @@
         goto("/")
     }
 
-    // let bugReportVisible = $state(false)
-
     const logout = () => {
         username.reset()
         goto("/")
@@ -51,20 +49,5 @@
                 goto("analysis")
             }}>Analysis</button
         >
-        <!-- <button
-            class="rounded bg-gunmetal p-2 disabled:opacity-30"
-            onclick={() => {
-                bugReportVisible = !bugReportVisible
-            }}>Bug Report</button
-        > -->
     </div>
-    <!-- <Drawer bind:displaying={bugReportVisible} bg="bg-gunmetal">
-        <textarea
-            class="w-full flex-grow rounded bg-eerie_black p-1"
-            placeholder="Bug Description"
-        ></textarea>
-        <button class="w-full rounded bg-eerie_black p-2 font-bold"
-            >Submit</button
-        >
-    </Drawer> -->
 </div>
