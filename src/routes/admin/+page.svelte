@@ -77,10 +77,9 @@
         const index = pending_robots.value.findIndex(
             ({ key, color: _ }) => Number.parseInt(key) == team_match.team_key
         )
+        submitted_team_matches.value.push(team_match)
         if (index === -1) return
         pending_robots.value.splice(index, 1)
-
-        submitted_team_matches.value.push(team_match)
     })
 
     const queue_match = async () => {
