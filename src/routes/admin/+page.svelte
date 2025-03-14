@@ -28,8 +28,6 @@
     let current_robots: LocalStore<
         { key: string; color: string; displaying: bool; scout: string }[]
     > = $state(localStore("current_robots", []))
-    let display_scout: Map<string, boolean> = $state(new Map())
-    display_scout["3132"] = true
     // TODO Change to actual type
     // TODO Pull from backend
     let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
