@@ -37,7 +37,6 @@ const webSocketServer = {
 
         io.on("connect", socket => {
             if (socket.handshake.auth.token === "celary") {
-                info("Admin Aquired")
                 socket.join("admin_room")
             }
 

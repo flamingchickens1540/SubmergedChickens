@@ -193,7 +193,7 @@
             {/each}
         </div>
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-            <span class="col-span-3 text-center">Team Matches</span>
+            <span class="col-span-3 text-center">Current Robots</span>
             <div class="grid max-h-28 grid-cols-3 gap-2">
                 {#each current_robots.value as { key, color }}
                     <div
