@@ -195,21 +195,21 @@
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
             <span class="col-span-3 text-center">Team Matches</span>
             <div class="grid max-h-28 grid-cols-3 gap-2">
-                {#each current_robots.value as robot}
+                {#each current_robots.value as { key, color }}
                     <div
                         class="grid h-12 grid-cols-2 place-items-center rounded bg-{robot_queue.some(
-                            queue => queue.key === robot.key
+                            robot => robot.key === key
                         )
                             ? 'eerie_black'
                             : pending_robots.value.some(
-                                    pending => pending.key === robot.key
+                                    robot => robot.key === key
                                 )
                               ? 'crayola_orange'
                               : 'jungle_green'} p-2"
                     >
-                        <div>{robot.key}</div>
+                        <div>{key}</div>
                         <div
-                            class="size-6 rounded-full bg-{robot.color === 'red'
+                            class="size-6 rounded-full bg-{color === 'red'
                                 ? 'bittersweet'
                                 : 'steel_blue'}"
                         ></div>
