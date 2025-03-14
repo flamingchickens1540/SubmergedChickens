@@ -52,7 +52,7 @@ const webSocketServer = {
                 const team_data = robot_queue.pop()
                 if (!team_data) {
                     io.to("admin_room").emit("scout_joined_queue", username)
-                    info(`Scout ${socket.id} joined queue`)
+                    info(`Scout ${username} joined queue`)
                     socket.join("scout_queue")
                     return
                 }
@@ -74,19 +74,21 @@ const webSocketServer = {
                     socket => socket.id === scout_sid
                 )
                 if (!socket) {
-                    warn(`Cannot remove ${scout_id}, not in queue`)
                     return
                 }
                 socket.leave("scout_queue")
 
                 // Grab and log the new queue (might remove)
+                // Pls no logging of scout IDs <3
                 const scout_queue = (
                     await io.in("scout_queue").fetchSockets()
                 ).map(t => t.id)
                 if (scout_queue.length === 0) {
-                    info("Scout left queue: scout queue now empty")
+                    info(`${scout_id} left queue; scout queue now empty`)
                 } else {
-                    info(`Scout left queue: scout queue: ${scout_queue}`)
+                    info(
+                        `${scout_id} left queue; scout queue length: ${scout_queue.length}`
+                    )
                 }
             }
 
