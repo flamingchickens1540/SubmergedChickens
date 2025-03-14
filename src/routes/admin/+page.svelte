@@ -37,7 +37,7 @@
     let socket: Socket = io({
         auth: {
             token: "celary",
-            username: "admin",
+            username: "Admin",
         },
     })
 
