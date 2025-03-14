@@ -14,6 +14,7 @@ export async function submitTeamMatch(
     auto_actions: Omit<AutoActionData, "id" | "team_match">[],
     tags: { name: string; category: string }[]
 ) {
+    console.log(`${verbose_match_key}, ${tm.team_key}`)
     const { id_num: id } = await prisma.teamMatch.update({
         where: {
             id_key: {

@@ -151,6 +151,27 @@
         next_blue_robots.value = blue
     }
 
+    const update_team_matches = async () => {
+        for (
+            let i = 1;
+            i < Number.parseInt(next_match_key.value.slice(2));
+            i++
+        ) {
+            let match_key = "qm" + i.toString()
+            const res = await fetch(`/api/updateMatch`, {
+                method: "POST",
+                body: JSON.stringify(match_key),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            if (!res.ok) {
+                console.log(`Updated team matches up to ${match_key}`)
+                break
+            }
+        }
+    }
+
     const clear_robot_queue = async () => {
         robot_queue = []
         socket.emit("clear_robot_queue")
@@ -255,7 +276,12 @@
     </div>
 
     <EventManager {tba_event_keys} bind:selection={event_selection} />
-    <button class="rounded bg-gunmetal" onclick={clear_robot_queue}
-        >Clear Robot Queue</button
-    >
+    <div class="grid grid-rows-2 gap-2 rounded bg-gunmetal p-2">
+        <button class="rounded bg-eerie_black" onclick={clear_robot_queue}
+            >Clear Robot Queue</button
+        >
+        <button class="rounded bg-eerie_black" onclick={update_team_matches}
+            >Update TBA</button
+        >
+    </div>
 </div>
