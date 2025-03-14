@@ -1,13 +1,8 @@
 import type { PageServerLoad } from "./$types"
 import { prisma } from "@/prisma"
 import { warn } from "@/consoleUtils"
-
-type ChartData = {
-    key: string
-    x: number[]
-    y: number[]
-    color: string
-}
+import { redirect } from "@sveltejs/kit"
+import { API_KEY } from "$env/static/private"
 
 export type GraphData = {
     match_numbers: number[]
@@ -22,89 +17,152 @@ type TeamEventProcessed = {
     graph_data: GraphData
     average_coral: number
     average_algae: number
+    rank: number
+    record: string
+    rp: number
 }
 
 export const load: PageServerLoad = async ({}) => {
     const teams = await get_teams()
-    const processed_team_events = await process_data(teams)
+    const processed_team_events = (await process_data(teams)).filter(
+        n => n !== undefined
+    )
+
+    if (processed_team_events.length === 0) {
+        return redirect(307, "/analysis/insights/blank")
+    }
 
     return { teams, processed_team_events }
 }
 
 async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
+    const event_state = await prisma.eventState.findMany({})
+    if (event_state.length !== 1) return []
+    const event_key = event_state[0].event_key
+
     return Promise.all(
         teams.map(async team_key => {
-            const team_matches = await prisma.teamMatch.findMany({
-                where: {
-                    team_key: {
-                        equals: team_key,
-                    },
-                },
-            })
+            const { graph_data, average_coral, average_algae } =
+                await get_team_data(team_key)
 
-            const graph_data = {
-                match_numbers: [] as number[],
-                coral_scored: [] as number[],
-                coral_ratio: [] as number[],
-                algae_scored: [] as number[],
-                algae_ratio: [] as number[],
-            }
-
-            team_matches.forEach(team_match => {
-                const coral_scored =
-                    team_match.auto_score_l1_succeed! +
-                    team_match.auto_score_l2_succeed! +
-                    team_match.auto_score_l3_succeed! +
-                    team_match.auto_score_l4_succeed! +
-                    team_match.tele_score_l1_succeed! +
-                    team_match.tele_score_l2_succeed! +
-                    team_match.tele_score_l3_succeed! +
-                    team_match.tele_score_l4_succeed!
-                const coral_failed =
-                    team_match.auto_score_l1_fail! +
-                    team_match.auto_score_l2_fail! +
-                    team_match.auto_score_l3_fail! +
-                    team_match.auto_score_l4_fail! +
-                    team_match.tele_score_l1_fail! +
-                    team_match.tele_score_l2_fail! +
-                    team_match.tele_score_l3_fail! +
-                    team_match.tele_score_l4_fail!
-                const coral_ratio = coral_scored / coral_failed
-
-                const algae_scored =
-                    team_match.auto_score_processor_succeed! +
-                    team_match.tele_score_processor_succeed!
-                const algae_failed =
-                    team_match.auto_score_processor_fail! +
-                    team_match.tele_score_processor_fail!
-                const algae_ratio = algae_scored / algae_failed
-
-                graph_data.match_numbers.push(
-                    match_key_to_number(team_match.match_key)
-                )
-                graph_data.coral_scored.push(coral_scored)
-                graph_data.coral_ratio.push(coral_ratio)
-                graph_data.algae_scored.push(algae_scored)
-                graph_data.algae_ratio.push(algae_ratio)
-            })
-
-            const number_of_matches = graph_data.match_numbers.length + 1
-            const average_coral =
-                graph_data.coral_scored.reduce((acc, n) => acc + n, 0) /
-                number_of_matches
-
-            const average_algae =
-                graph_data.algae_scored.reduce((acc, n) => acc + n, 0) /
-                number_of_matches
+            const team_status = await get_team_status(team_key, event_key)
+            if (team_status === undefined) return undefined
+            const { rank, record, rp } = team_status
 
             return {
                 key: team_key,
                 graph_data: graph_data,
                 average_coral,
                 average_algae,
+                rank,
+                record,
+                rp,
             }
-        })
+        }) as Promise<TeamEventProcessed>[]
     )
+}
+
+async function get_team_status(team_key: number, event_key: string) {
+    const res = await fetch(
+        `https://www.thebluealliance.com/api/v3/team/${team_key}/event/${event_key}/status`,
+        {
+            method: "GET",
+            headers: {
+                "accept": "application/json",
+                "If-None-Match": "ETag",
+                "X-TBA-Auth-Key": API_KEY,
+            },
+        }
+    )
+    if (res.ok !== true) {
+        warn(`TBA Status not found for team ${team_key} in event ${event_key}`)
+        return undefined
+    }
+
+    const json = await res.json()
+
+    const ranking: any = json["qual"]["ranking"]
+    const rank: number = ranking["rank"]
+    const record: string = Array.from(ranking["record"].values())
+        .slice(0, -2)
+        .join(":")
+    const rp = ranking["qual_average"] // average ranking points each match
+
+    return {
+        rank,
+        record,
+        rp,
+    }
+}
+
+async function get_team_data(team_key: number) {
+    const team_matches = await prisma.teamMatch.findMany({
+        where: {
+            team_key: {
+                equals: team_key,
+            },
+        },
+    })
+
+    const graph_data = {
+        match_numbers: [] as number[],
+        coral_scored: [] as number[],
+        coral_ratio: [] as number[],
+        algae_scored: [] as number[],
+        algae_ratio: [] as number[],
+    }
+
+    team_matches.forEach(team_match => {
+        const coral_scored =
+            team_match.auto_score_l1_succeed! +
+            team_match.auto_score_l2_succeed! +
+            team_match.auto_score_l3_succeed! +
+            team_match.auto_score_l4_succeed! +
+            team_match.tele_score_l1_succeed! +
+            team_match.tele_score_l2_succeed! +
+            team_match.tele_score_l3_succeed! +
+            team_match.tele_score_l4_succeed!
+        const coral_failed =
+            team_match.auto_score_l1_fail! +
+            team_match.auto_score_l2_fail! +
+            team_match.auto_score_l3_fail! +
+            team_match.auto_score_l4_fail! +
+            team_match.tele_score_l1_fail! +
+            team_match.tele_score_l2_fail! +
+            team_match.tele_score_l3_fail! +
+            team_match.tele_score_l4_fail!
+        const coral_ratio = coral_scored / coral_failed
+
+        const algae_scored =
+            team_match.auto_score_processor_succeed! +
+            team_match.tele_score_processor_succeed!
+        const algae_failed =
+            team_match.auto_score_processor_fail! +
+            team_match.tele_score_processor_fail!
+        const algae_ratio = algae_scored / algae_failed
+
+        graph_data.match_numbers.push(match_key_to_number(team_match.match_key))
+        graph_data.coral_scored.push(coral_scored)
+        graph_data.coral_ratio.push(coral_ratio)
+        graph_data.algae_scored.push(algae_scored)
+        graph_data.algae_ratio.push(algae_ratio)
+    })
+
+    const number_of_matches = graph_data.match_numbers.length + 1
+    const average_coral =
+        graph_data.coral_scored.reduce((acc, n) => acc + n, 0) /
+        number_of_matches
+
+    const average_algae =
+        graph_data.algae_scored.reduce((acc, n) => acc + n, 0) /
+        number_of_matches
+
+    return {
+        key: team_key,
+        graph_data,
+        average_coral,
+        average_algae,
+    }
 }
 
 async function get_teams(): Promise<number[]> {

@@ -44,7 +44,7 @@
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
             onclick={() => {
-                goto("analysis")
+                goto("analysis/insights")
             }}>Analysis</button
         >
     </div>
