@@ -38,9 +38,10 @@ const webSocketServer = {
         io.on("connect", socket => {
             if (socket.handshake.auth.token === "celary") {
                 socket.join("admin_room")
+                info("Admin Authenticated")
+            } else {
+                info(`${sid_to_username.get(socket.id)} connected`)
             }
-            info(`${sid_to_username.get(socket.id)} connected`)
-
             socket.on("new_user", (user: string) => {
                 sid_to_username.set(socket.id, user)
                 info(`New user ${user} on socket ${socket.id}`)
@@ -52,12 +53,15 @@ const webSocketServer = {
                 const team_data = robot_queue.pop()
                 if (!team_data) {
                     io.to("admin_room").emit("scout_joined_queue", username)
-                    info(`Scout ${username} joined queue`)
+                    info(`${username} joined queue`)
                     socket.join("scout_queue")
                     return
                 }
 
-                io.to("admin_room").emit("robot_left_queue", team_data)
+                io.to("admin_room").emit("robot_left_queue", [
+                    team_data,
+                    username,
+                ])
                 socket.emit("time_to_scout", [curr_match_key, team_data])
             })
 

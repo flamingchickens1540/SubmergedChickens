@@ -25,9 +25,11 @@
         localStore("pending_robots", [])
     )
 
-    let current_robots: LocalStore<{ key: string; color: string }[]> = $state(
-        localStore("current_robots", [])
-    )
+    let current_robots: LocalStore<
+        { key: string; color: string; displaying: bool; scout: string }[]
+    > = $state(localStore("current_robots", []))
+    let display_scout: Map<string, boolean> = $state(new Map())
+    display_scout["3132"] = true
     // TODO Change to actual type
     // TODO Pull from backend
     let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
@@ -63,12 +65,15 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("robot_left_queue", (robot: string) => {
+    socket.on("robot_left_queue", ([robot: string, scout: string]) => {
         const index = robot_queue.findIndex(
             ({ key, color: _ }) => key === robot.key
         )
         if (index === -1) return
-
+        console.log(scout)
+        current_robots.value.find(
+            current => current.key === robot.key
+        ).scout = scout
         const team_match = robot_queue.splice(index, 1)[0]
         pending_robots.value.push(team_match)
     })
@@ -108,7 +113,11 @@
                 return { key, color: "blue" }
             }),
         ]
-        current_robots.value = $state.snapshot(robot_queue)
+        current_robots.value = $state.snapshot(robot_queue).map(item => {
+            item["displaying"] = true
+            item["scout"] = "none"
+            return item
+        })
         next_match_key.value =
             next_match_key.value.slice(0, 2) +
             (Number.parseInt(next_match_key.value.slice(2)) + 1).toString()
@@ -194,25 +203,32 @@
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
             <span class="col-span-3 text-center">Current Robots</span>
             <div class="grid max-h-28 grid-cols-3 gap-2">
-                {#each current_robots.value as { key, color }}
-                    <div
+                {#each current_robots.value as robot}
+                    <button
                         class="grid h-12 grid-cols-2 place-items-center rounded bg-{robot_queue.some(
-                            robot => robot.key === key
+                            queue => queue.key === robot.key
                         )
                             ? 'eerie_black'
                             : pending_robots.value.some(
-                                    robot => robot.key === key
+                                    pending => pending.key === robot.key
                                 )
                               ? 'crayola_orange'
                               : 'jungle_green'} p-2"
+                        onclick={() => {
+                            robot.displaying = !robot.displaying
+                        }}
                     >
-                        <div>{key}</div>
+                        {#if robot.displaying || robot_queue.some(queue => queue.key === robot.key)}
+                            {robot.key}
+                        {:else}
+                            {robot.scout}
+                        {/if}
                         <div
-                            class="size-6 rounded-full bg-{color === 'red'
+                            class="size-6 rounded-full bg-{robot.color === 'red'
                                 ? 'bittersweet'
                                 : 'steel_blue'}"
                         ></div>
-                    </div>
+                    </button>
                 {/each}
             </div>
         </div>
