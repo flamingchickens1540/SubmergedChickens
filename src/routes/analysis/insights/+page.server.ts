@@ -1,24 +1,32 @@
-import { error } from "@sveltejs/kit"
 import type { PageServerLoad } from "./$types"
 import { prisma } from "@/prisma"
 import { warn } from "@/consoleUtils"
 
+type ChartData = {
+    key: string
+    x: number[]
+    y: number[]
+    color: string
+}
+
+export type GraphData = {
+    match_numbers: number[]
+    coral_scored: number[]
+    coral_ratio: number[]
+    algae_scored: number[]
+    algae_ratio: number[]
+}
+
 type TeamEventProcessed = {
-    team_matches: TeamMatchProcessed[]
+    key: number
+    graph_data: GraphData
     average_coral: number
     average_algae: number
 }
 
-type TeamMatchProcessed = {
-    coral_scored: number
-    coral_ratio: number
-    algae_scored: number
-    algae_ratio: number
-}
-
 export const load: PageServerLoad = async ({}) => {
     const teams = await get_teams()
-    const processed_team_events = process_data(teams)
+    const processed_team_events = await process_data(teams)
 
     return { teams, processed_team_events }
 }
@@ -34,7 +42,15 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                 },
             })
 
-            const processed_team_matches = team_matches.map(team_match => {
+            const graph_data = {
+                match_numbers: [] as number[],
+                coral_scored: [] as number[],
+                coral_ratio: [] as number[],
+                algae_scored: [] as number[],
+                algae_ratio: [] as number[],
+            }
+
+            team_matches.forEach(team_match => {
                 const coral_scored =
                     team_match.auto_score_l1_succeed! +
                     team_match.auto_score_l2_succeed! +
@@ -63,28 +79,27 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                     team_match.tele_score_processor_fail!
                 const algae_ratio = algae_scored / algae_failed
 
-                return {
-                    coral_scored,
-                    coral_ratio,
-                    algae_scored,
-                    algae_ratio,
-                }
+                graph_data.match_numbers.push(
+                    match_key_to_number(team_match.match_key)
+                )
+                graph_data.coral_scored.push(coral_scored)
+                graph_data.coral_ratio.push(coral_ratio)
+                graph_data.algae_scored.push(algae_scored)
+                graph_data.algae_ratio.push(algae_ratio)
             })
-            const number_of_matches = processed_team_matches.length + 1
+
+            const number_of_matches = graph_data.match_numbers.length + 1
             const average_coral =
-                processed_team_matches.reduce(
-                    (acc, match) => acc + match.coral_scored,
-                    0
-                ) / number_of_matches
+                graph_data.coral_scored.reduce((acc, n) => acc + n, 0) /
+                number_of_matches
 
             const average_algae =
-                processed_team_matches.reduce(
-                    (acc, match) => acc + match.algae_scored,
-                    0
-                ) / number_of_matches
+                graph_data.algae_scored.reduce((acc, n) => acc + n, 0) /
+                number_of_matches
 
             return {
-                team_matches: processed_team_matches,
+                key: team_key,
+                graph_data: graph_data,
                 average_coral,
                 average_algae,
             }
@@ -118,4 +133,8 @@ async function get_teams(): Promise<number[]> {
     }
 
     return team_events.map(team_event => team_event.team_key)
+}
+
+function match_key_to_number(match_key: string): number {
+    return Number.parseInt(match_key.split("_").pop()!.split("m").pop()!)
 }

@@ -1,22 +1,68 @@
 <script lang="ts">
     import LineChart from "@/components/charts/LineChart.svelte"
     import BarChart from "@/components/charts/BarChart.svelte"
+    import type { GraphData } from "./+page.server"
+    import type { PageProps } from "./$types"
+
+    const { data }: PageProps = $props()
+    const teams_data = data.processed_team_events
 
     let teams: Array<{
         team: number
         rank: string
         record: string
         rp: number
-    }> = [
-        { team: 1540, rank: "rank1", record: "record1", rp: 8 },
-        { team: 1844, rank: "rank2", record: "record2", rp: 2 },
-        { team: 1540, rank: "rank1", record: "record1", rp: 8 },
-        { team: 1844, rank: "rank2", record: "record2", rp: 2 },
-    ]
-    let dataOptions: Array<string> = [
-        "PointsPerMatch",
-        "BarChart",
+        graph_data: GraphData
+    }> = teams_data.map(team_data => {
+        return {
+            team: team_data.key,
+            rank: "rank1",
+            record: "record1",
+            rp: 8,
+            graph_data: team_data.graph_data,
+        }
+    })
+    const coral_1540 = {
+        name: "1540",
+        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
+        color: "#fbd50b",
+    }
+
+    let curr_team_index = $state(0)
+
+    let team_data = $derived(teams_data[curr_team_index])
+
+    const curr_coral_ratio = $derived({
+        name: team_data.key.toString(),
+        x: team_data.graph_data.coral_ratio,
+        y: team_data.graph_data.match_numbers,
+        color: "#fbd50b",
+    })
+    const curr_coral_scored = $derived({
+        name: team_data.key.toString(),
+        x: team_data.graph_data.coral_scored,
+        y: team_data.graph_data.match_numbers,
+        color: "#fbd50b",
+    })
+    const curr_algae_ratio = $derived({
+        name: team_data.key.toString(),
+        x: team_data.graph_data.algae_ratio,
+        y: team_data.graph_data.match_numbers,
+        color: "#fbd50b",
+    })
+    const curr_algae_scored = $derived({
+        name: team_data.key.toString(),
+        x: team_data.graph_data.algae_scored,
+        y: team_data.graph_data.match_numbers,
+        color: "#fbd50b",
+    })
+
+    let dataOptions = [
+        "CoralRatio",
         "CoralPerMatch",
+        "AlgaePerMatch",
+        "AlgaeRatio",
     ]
 
     let averagePoints: number = 30
@@ -29,13 +75,14 @@
         class="col-span-1 col-start-1 row-span-2 overflow-scroll rounded border border-solid border-white p-2 text-center"
     >
         Teams
-        {#each teams as teams}
-            <div
+        {#each teams as team, i}
+            <button
                 class="mb-2 rounded border border-solid border-white bg-gunmetal p-2"
+                onclick={() => (curr_team_index = i)}
             >
-                Team: {teams.team} | Rank: {teams.rank} | Record: {teams.record}
-                | RP: {teams.rp}
-            </div>
+                Team: {team.team} | Rank: {team.rank} | Record: {team.record}
+                | RP: {team.rp}
+            </button>
         {/each}
     </div>
     <div
@@ -72,22 +119,9 @@
     <div
         class="col-span-2 col-start-1 row-span-3 rounded border border-solid border-white p-2"
     >
-        {#if selectedChart === "PointsPerMatch"}
+        {#if selectedChart === "CoralPerMatch"}
             <LineChart
-                data={[
-                    {
-                        name: "1540",
-                        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        y: [12, 14, 11, 13, 15, 17, 14, 16, 18, 21],
-                        color: "#fbd50b",
-                    },
-                    {
-                        name: "1844",
-                        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        y: [15, 20, 14, 19, 18, 23, 21, 22, 24, 25],
-                        color: "#9440cf",
-                    },
-                ]}
+                data={[curr_coral_scored]}
                 title={"Tele Points vs Match Number"}
                 xLabel={"Match Number"}
                 yLabel={"Tele Points"}
@@ -113,22 +147,9 @@
                 width={"100%"}
                 height={"100%"}
             />
-        {:else if selectedChart === "CoralPerMatch"}
+        {:else if selectedChart === "AlgaePerMatch"}
             <LineChart
-                data={[
-                    {
-                        name: "team3",
-                        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        y: [12, 14, 5, 8, 19, 10, 20, 17, 9, 21],
-                        color: "#ff0000",
-                    },
-                    {
-                        name: "team4",
-                        x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        y: [6, 11, 14, 10, 13, 7, 5, 18, 13, 24],
-                        color: "#0000ff",
-                    },
-                ]}
+                data={[curr_coral_scored]}
                 title={"CoralPerMatch"}
                 xLabel={"Match Number"}
                 yLabel={"Coral"}

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Drawer from "$lib/components/Drawer.svelte"
     import { LogOut, Settings } from "lucide-svelte"
     import { goto } from "$app/navigation"
     import { localStore } from "@/localStore.svelte"
@@ -44,7 +43,6 @@
         >
         <button
             class="rounded bg-gunmetal p-2 disabled:opacity-30"
-            disabled
             onclick={() => {
                 goto("analysis")
             }}>Analysis</button
