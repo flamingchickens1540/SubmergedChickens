@@ -202,15 +202,15 @@
             <div class="grid max-h-28 grid-cols-3 gap-2">
                 {#each current_robots.value as robot}
                     <button
-                        class="grid h-12 grid-cols-2 place-items-center rounded bg-{robot_queue.some(
+                        class="grid h-12 grid-cols-2 place-items-center rounded {robot_queue.some(
                             queue => queue.key === robot.key
                         )
-                            ? 'eerie_black'
+                            ? 'bg-eerie_black'
                             : pending_robots.value.some(
                                     pending => pending.key === robot.key
                                 )
-                              ? 'crayola_orange'
-                              : 'jungle_green'} p-2"
+                              ? 'bg-crayola_orange'
+                              : 'bg-jungle_green'} p-2"
                         onclick={() => {
                             robot.displaying = !robot.displaying
                         }}
