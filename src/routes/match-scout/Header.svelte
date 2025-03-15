@@ -1,10 +1,5 @@
 <script lang="ts">
-    import type {
-        AutoPageState,
-        FrontendTeleActionData,
-        FrontendAutoActionData,
-        Timeline,
-    } from "$lib/types"
+    import type { AutoPageState, Timeline } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
     import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
@@ -39,7 +34,7 @@
         {team_key}
     </span>
     {#if timeline}
-        <UndoButton {timeline} />
+        <UndoButton bind:timeline />
     {/if}
     <div class="align-item-center flex gap-2">
         <button

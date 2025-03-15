@@ -89,7 +89,7 @@
         {page_state}
         {prev_page}
         {next_page}
-        bind:timeline={matchData.value.timeline.auto}
+        bind:timeline={matchData.value.timeline}
     />
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
