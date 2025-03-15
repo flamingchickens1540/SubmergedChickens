@@ -68,7 +68,6 @@
             ({ key, color: _ }) => key === robot.key
         )
         if (index === -1) return
-        console.log(scout)
         current_robots.value.find(
             current => current.key === robot.key
         ).scout = scout
