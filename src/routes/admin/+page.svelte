@@ -228,7 +228,8 @@
                         class="grid place-items-center rounded bg-jungle_green p-2"
                     >
                         <div>
-                            {team_match.match_key}:{team_match.team_key}
+                            {team_match.match_key}
+                            {team_match.team_key}
                         </div>
                     </div>
                 {/each}

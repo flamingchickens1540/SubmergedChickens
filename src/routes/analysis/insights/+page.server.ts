@@ -17,9 +17,9 @@ type TeamEventProcessed = {
     graph_data: GraphData
     average_coral: number
     average_algae: number
-    rank: number
-    record: string
-    rp: number
+    rank?: number
+    record?: string
+    rp?: number
 }
 
 export const load: PageServerLoad = async ({}) => {
@@ -46,12 +46,19 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                 await get_team_data(team_key)
 
             const team_status = await get_team_status(team_key, event_key)
-            if (team_status === undefined) return undefined
+            if (team_status === undefined) {
+                return {
+                    key: team_key,
+                    graph_data,
+                    average_coral,
+                    average_algae,
+                }
+            }
             const { rank, record, rp } = team_status
 
             return {
                 key: team_key,
-                graph_data: graph_data,
+                graph_data,
                 average_coral,
                 average_algae,
                 rank,
@@ -105,14 +112,23 @@ async function get_team_data(team_key: number) {
     })
 
     const graph_data = {
-        match_numbers: [] as number[],
-        coral_scored: [] as number[],
-        coral_ratio: [] as number[],
-        algae_scored: [] as number[],
-        algae_ratio: [] as number[],
+        match_numbers: [] as (number | null)[],
+        coral_scored: [] as (number | null)[],
+        coral_ratio: [] as (number | null)[],
+        algae_scored: [] as (number | null)[],
+        algae_ratio: [] as (number | null)[],
     }
 
     team_matches.forEach(team_match => {
+        if (team_match.scoutId === null) {
+            graph_data.match_numbers.push(
+                match_key_to_number(team_match.match_key)
+            )
+            graph_data.coral_scored.push(null)
+            graph_data.coral_ratio.push(null)
+            graph_data.algae_scored.push(null)
+            graph_data.algae_ratio.push(null)
+        }
         const coral_scored =
             team_match.auto_score_l1_succeed! +
             team_match.auto_score_l2_succeed! +
@@ -141,7 +157,6 @@ async function get_team_data(team_key: number) {
             team_match.tele_score_processor_fail!
         const algae_ratio = algae_scored / algae_failed
 
-        graph_data.match_numbers.push(match_key_to_number(team_match.match_key))
         graph_data.coral_scored.push(coral_scored)
         graph_data.coral_ratio.push(coral_ratio)
         graph_data.algae_scored.push(algae_scored)
@@ -150,11 +165,11 @@ async function get_team_data(team_key: number) {
 
     const number_of_matches = graph_data.match_numbers.length + 1
     const average_coral =
-        graph_data.coral_scored.reduce((acc, n) => acc + n, 0) /
+        graph_data.coral_scored.reduce((acc, n) => acc + (n ?? 0), 0) /
         number_of_matches
 
     const average_algae =
-        graph_data.algae_scored.reduce((acc, n) => acc + n, 0) /
+        graph_data.algae_scored.reduce((acc, n) => acc + n ?? 0, 0) /
         number_of_matches
 
     return {

@@ -8,16 +8,16 @@
 
     let teams: Array<{
         team: number
-        rank: string
-        record: string
-        rp: number
         graph_data: GraphData
+        rank?: number
+        record?: string
+        rp?: number
     }> = teams_data.map(team_data => {
         return {
             team: team_data.key,
-            rank: "rank1",
-            record: "record1",
-            rp: 8,
+            rank: team_data.rank,
+            record: team_data.record,
+            rp: team_data.rp,
             graph_data: team_data.graph_data,
         }
     })
@@ -28,26 +28,26 @@
 
     const curr_coral_ratio = $derived({
         name: team_data.key.toString(),
-        x: team_data.graph_data.coral_ratio,
-        y: team_data.graph_data.match_numbers,
+        y: team_data.graph_data.coral_ratio,
+        x: team_data.graph_data.match_numbers,
         color: "#fbd50b",
     })
     const curr_coral_scored = $derived({
         name: team_data.key.toString(),
-        x: team_data.graph_data.coral_scored,
-        y: team_data.graph_data.match_numbers,
+        y: team_data.graph_data.coral_scored,
+        x: team_data.graph_data.match_numbers,
         color: "#fbd50b",
     })
     const curr_algae_ratio = $derived({
         name: team_data.key.toString(),
-        x: team_data.graph_data.algae_ratio,
-        y: team_data.graph_data.match_numbers,
+        y: team_data.graph_data.algae_ratio,
+        x: team_data.graph_data.match_numbers,
         color: "#fbd50b",
     })
     const curr_algae_scored = $derived({
         name: team_data.key.toString(),
-        x: team_data.graph_data.algae_scored,
-        y: team_data.graph_data.match_numbers,
+        y: team_data.graph_data.algae_scored,
+        x: team_data.graph_data.match_numbers,
         color: "#fbd50b",
     })
 
@@ -64,9 +64,9 @@
 <h1 class="text-center text-3xl">Analysis</h1>
 <div class="m-auto grid h-screen w-full grid-cols-2 grid-rows-6 gap-1 p-2">
     <div
-        class="col-span-1 col-start-1 row-span-2 overflow-scroll rounded border border-solid border-white p-2 text-center"
+        class="col-span-1 col-start-1 row-span-2 grid grid-rows-1 overflow-y-scroll rounded border border-solid border-white p-2 text-center"
     >
-        Teams
+        <div>Teams</div>
         {#each teams as team, i}
             <button
                 class="mb-2 rounded border border-solid border-white bg-gunmetal p-2"
