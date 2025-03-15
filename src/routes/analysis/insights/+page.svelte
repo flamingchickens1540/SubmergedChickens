@@ -11,7 +11,6 @@
         graph_data: GraphData
         rank?: number
         record?: string
-        rp?: number
     }> = teams_data.map(team_data => {
         return {
             team: team_data.key,
@@ -96,7 +95,6 @@
                 >Team: {team.team}
                 {#if team.rank !== undefined}
                     | Rank: {team.rank} | Record: {team.record}
-                    | RP: {team.rp}
                 {/if}
             </button>
         {/each}

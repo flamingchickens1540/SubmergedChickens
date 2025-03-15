@@ -54,7 +54,7 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                     average_algae,
                 }
             }
-            const { rank, record, rp } = team_status
+            const { rank, record } = team_status
 
             return {
                 key: team_key,
@@ -63,7 +63,6 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                 average_algae,
                 rank,
                 record,
-                rp,
             }
         }) as Promise<TeamEventProcessed>[]
     )
@@ -71,7 +70,7 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
 
 async function get_team_status(team_key: number, event_key: string) {
     const res = await fetch(
-        `https://www.thebluealliance.com/api/v3/team/${team_key}/event/${event_key}/status`,
+        `https://www.thebluealliance.com/api/v3/team/frc${team_key}/event/${event_key}/status`,
         {
             method: "GET",
             headers: {
@@ -90,15 +89,12 @@ async function get_team_status(team_key: number, event_key: string) {
 
     const ranking: any = json["qual"]["ranking"]
     const rank: number = ranking["rank"]
-    const record: string = Array.from(ranking["record"].values())
-        .slice(0, -2)
-        .join(":")
-    const rp = ranking["qual_average"] // average ranking points each match
+    const [losses, _ties, wins] = Object.values(ranking["record"])
+    const record: string = `${wins}:${losses}`
 
     return {
         rank,
         record,
-        rp,
     }
 }
 
