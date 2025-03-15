@@ -169,7 +169,7 @@
 </script>
 
 <div
-    class="m-auto grid max-w-6xl grid-cols-2 grid-rows-6 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid max-w-6xl grid-cols-2 grid-rows-5 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-2 sm:gap-4 md:grid-cols-5"
 >
     <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
