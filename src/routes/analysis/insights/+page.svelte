@@ -74,13 +74,7 @@
     function selectTeam(i: number) {
         const index = curr_team_indexes.indexOf(i)
         if (index !== -1) {
-            // NOTE We shouldn't need this, but otherwise it won't let us remove the first element
-            if (index === 0) {
-                curr_team_indexes.shift()
-                console.log(curr_team_indexes)
-            } else {
-                curr_team_indexes.splice(index)
-            }
+            curr_team_indexes.splice(index, 1)
             return
         }
         curr_team_indexes.push(i)
@@ -134,7 +128,7 @@
         class="col-start-1 row-span-1 row-start-3 content-center rounded border border-solid border-white p-2 text-center"
     >
         {#if selectedChart.includes("Coral")}
-            {#if curr_teams_data[0].average_coral !== undefined}
+            {#if curr_teams_data[0]?.average_coral !== undefined}
                 Average Coral ({curr_teams_data[0].key})
                 <p class="text-3xl">
                     {curr_teams_data[0].average_coral}
@@ -142,7 +136,7 @@
             {:else}
                 No Coral Collected In Event
             {/if}
-        {:else if curr_teams_data[0].average_coral !== undefined}
+        {:else if curr_teams_data[0]?.average_algae !== undefined}
             Average Algae ({curr_teams_data[0].key})
             <p class="text-3xl">
                 {curr_teams_data[0].average_algae}
