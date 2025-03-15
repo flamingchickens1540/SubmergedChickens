@@ -155,7 +155,7 @@
         </div>
         <Dialog.Root>
             <Dialog.Trigger
-                class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
+                class="w-full bg-gunmetal text-center text-imperial_red"
                 >Coral</Dialog.Trigger
             >
             <Dialog.Content
