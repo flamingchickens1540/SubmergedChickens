@@ -81,8 +81,6 @@ const webSocketServer = {
                 }
                 socket.leave("scout_queue")
 
-                // Grab and log the new queue (might remove)
-                // Pls no logging of scout IDs <3
                 const scout_queue = (
                     await io.in("scout_queue").fetchSockets()
                 ).map(t => t.id)
