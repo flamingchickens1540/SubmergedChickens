@@ -18,7 +18,7 @@
     }
 </script>
 
-{#if timeline.auto.length > 0 || timeline.tele.length > 0}
+{#if timeline.auto?.length > 0 || timeline.tele?.length > 0}
     <button onclick={() => pop(timeline)}>
         Undo: <span
             class={get_next(timeline)?.success

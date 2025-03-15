@@ -37,10 +37,9 @@ const webSocketServer = {
 
         io.on("connect", socket => {
             if (socket.handshake.auth.token === "celary") {
-                info("Admin Aquired")
                 socket.join("admin_room")
+                info("Admin Aquired")
             }
-
             socket.on("new_user", (user: string) => {
                 sid_to_username.set(socket.id, user)
                 info(`New user ${user} on socket ${socket.id}`)
@@ -52,12 +51,16 @@ const webSocketServer = {
                 const team_data = robot_queue.pop()
                 if (!team_data) {
                     io.to("admin_room").emit("scout_joined_queue", username)
-                    info(`Scout ${socket.id} joined queue`)
+                    info(`${username} joined queue`)
                     socket.join("scout_queue")
                     return
                 }
 
-                io.to("admin_room").emit("robot_left_queue", team_data)
+                io.to("admin_room").emit("robot_left_queue", [
+                    team_data,
+                    username,
+                ])
+                info(`${username} recieved robot ${team_data.key}`)
                 socket.emit("time_to_scout", [curr_match_key, team_data])
             })
 
@@ -74,19 +77,19 @@ const webSocketServer = {
                     socket => socket.id === scout_sid
                 )
                 if (!socket) {
-                    warn(`Cannot remove ${scout_id}, not in queue`)
                     return
                 }
                 socket.leave("scout_queue")
 
-                // Grab and log the new queue (might remove)
                 const scout_queue = (
                     await io.in("scout_queue").fetchSockets()
                 ).map(t => t.id)
                 if (scout_queue.length === 0) {
-                    info("Scout left queue: scout queue now empty")
+                    info(`${scout_id} left queue; scout queue now empty`)
                 } else {
-                    info(`Scout left queue: scout queue: ${scout_queue}`)
+                    info(
+                        `${scout_id} left queue; scout queue length: ${scout_queue.length}`
+                    )
                 }
             }
 
@@ -146,6 +149,9 @@ const webSocketServer = {
                             continue
                         }
 
+                        info(
+                            `${username} recieved robot ${team_data.key} from queue`
+                        )
                         scout.leave("scout_queue")
                         scout.emit("time_to_scout", [match_key, team_data])
                         io.to("admin_room").emit("scout_left_queue", username)
