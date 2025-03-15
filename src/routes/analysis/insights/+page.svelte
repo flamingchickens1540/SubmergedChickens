@@ -93,9 +93,11 @@
                     ? 'bg-eminence'
                     : 'bg-gunmetal'}"
                 onclick={() => selectTeam(i)}
-            >
-                Team: {team.team} | Rank: {team.rank} | Record: {team.record}
-                | RP: {team.rp}
+                >Team: {team.team}
+                {#if team.rank !== undefined}
+                    | Rank: {team.rank} | Record: {team.record}
+                    | RP: {team.rp}
+                {/if}
             </button>
         {/each}
     </div>
