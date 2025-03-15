@@ -135,14 +135,18 @@
     >
         {#if selectedChart.includes("Coral")}
             {#if curr_teams_data[0].average_coral !== undefined}
-                Average Coral
-                <p class="text-3xl">{curr_teams_data[0].average_coral}</p>
+                Average Coral ({curr_teams_data[0].key})
+                <p class="text-3xl">
+                    {curr_teams_data[0].average_coral}
+                </p>
             {:else}
                 No Coral Collected In Event
             {/if}
         {:else if curr_teams_data[0].average_coral !== undefined}
-            Average Algae
-            <p class="text-3xl">{curr_teams_data[0].average_algae}</p>
+            Average Algae ({curr_teams_data[0].key})
+            <p class="text-3xl">
+                {curr_teams_data[0].average_algae}
+            </p>
         {:else}
             No Algae Collected In Event
         {/if}
