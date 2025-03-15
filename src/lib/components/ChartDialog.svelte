@@ -4,7 +4,7 @@
 </script>
 
 <dialog
-    class="content-center justify-center border border-solid border-white bg-gunmetal p-2 drop-shadow-xl"
+    class="border border-solid border-white bg-gunmetal p-2 drop-shadow-xl"
     bind:this={dialog}
     onclose={() => {}}
 >

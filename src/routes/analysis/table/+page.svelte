@@ -155,11 +155,11 @@
         </div>
         <Dialog.Root>
             <Dialog.Trigger
-                class="row-span-1 w-full content-center bg-gunmetal text-center text-imperial_red"
+                class="w-full bg-gunmetal text-center text-imperial_red"
                 >Coral</Dialog.Trigger
             >
             <Dialog.Content
-                class="h-96 w-96 border-2 border-solid border-imperial_red bg-gunmetal"
+                class="size-96 border-2 border-solid border-imperial_red bg-gunmetal"
             >
                 <LineChart
                     data={[
