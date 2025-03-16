@@ -137,7 +137,7 @@ async function get_team_data(team_key: number) {
             team_match.tele_score_l2_fail! +
             team_match.tele_score_l3_fail! +
             team_match.tele_score_l4_fail!
-        const coral_ratio = coral_scored / coral_failed
+        const coral_ratio = coral_scored / (coral_failed + coral_scored)
 
         const algae_scored =
             team_match.auto_score_processor_succeed! +
