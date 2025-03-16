@@ -181,7 +181,7 @@
                 >Algae</Dialog.Trigger
             >
             <Dialog.Content
-                class="h-96 w-96 border-2 border-solid border-imperial_red bg-gunmetal"
+                class="size-96 border-2 border-solid border-imperial_red bg-gunmetal"
             >
                 <LineChart
                     data={[
