@@ -26,12 +26,8 @@ export async function TBAUpdateMatchData(match_key: string) {
     }
 
     const match = await res.json()
-    const red: number[] = (
-        match["alliances"]["red"]["team_keys"] as string[]
-    ).map(team => Number.parseInt(team.slice(3)))
-    const blue: number[] = (
-        match["alliances"]["blue"]["team_keys"] as string[]
-    ).map(team => Number.parseInt(team.slice(3)))
+    const { red, blue } = parseTeamKeysFromMatch(match)
+
     const scores = match["score_breakdown"]
     const recorded_endgames = await prisma.teamMatch.findMany({
         where: {
@@ -83,6 +79,15 @@ export async function TBAUpdateMatchData(match_key: string) {
             },
         })
     }
+}
+
+function parseTeamKeysFromMatch(match: any): { red: number[]; blue: number[] } {
+    const parse = (color: string): number[] =>
+        (match["alliances"][color]["team_keys"] as string[]).map(team =>
+            Number.parseInt(team.slice(3))
+        )
+
+    return { red: parse("red"), blue: parse("blue") }
 }
 
 function determineEndgame(
