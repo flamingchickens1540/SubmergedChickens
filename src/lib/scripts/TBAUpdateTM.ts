@@ -58,27 +58,27 @@ export async function updateTBAMatchData(match_key: string) {
                 ?.endgame ?? Endgame.None
         )
 
-        prisma.teamMatch.update({
+        await prisma.teamMatch.update({
             where: {
                 id_key: {
-                    match_key: verbose_match_key,
                     team_key: red[i - 1],
+                    match_key: match_key,
                 },
             },
             data: {
                 auto_leave_start: scores["red"][`autoLineRobot${i}`] === "Yes",
-                endgame: red_endgame, // None, Parked, ShallowCage, DeepCage
+                endgame: red_endgame,
             },
         })
-        prisma.teamMatch.update({
+        await prisma.teamMatch.update({
             where: {
                 id_key: {
-                    match_key: verbose_match_key,
+                    match_key: match_key, // update to verbose_match_key if data submission ever gets fixed :skull:
                     team_key: blue[i - 1],
                 },
             },
             data: {
-                auto_leave_start: true, // scores["blue"][`autoLineRobot${i}`] == "Yes",
+                auto_leave_start: scores["blue"][`autoLineRobot${i}`] == "Yes",
                 endgame: blue_endgame,
             },
         })
