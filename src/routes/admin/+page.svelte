@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Dot, X } from "lucide-svelte"
+    import { X } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
     import { LocalStore, localStore } from "@/localStore.svelte"
     import EventManager from "./EventManager.svelte"
@@ -26,7 +26,7 @@
     )
 
     let current_robots: LocalStore<
-        { key: string; color: string; displaying: bool; scout: string }[]
+        { key: string; color: string; displaying: boolean; scout: string }[]
     > = $state(localStore("current_robots", []))
     // TODO Change to actual type
     // TODO Pull from backend
@@ -63,14 +63,13 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("robot_left_queue", ([robot: string, scout: string]) => {
+    socket.on("robot_left_queue", ([robot, scout]: [string, string]) => {
         const index = robot_queue.findIndex(
-            ({ key, color: _ }) => key === robot.key
+            ({ key, color: _ }) => key === robot
         )
         if (index === -1) return
-        current_robots.value.find(
-            current => current.key === robot.key
-        ).scout = scout
+        current_robots.value.find(current => current.key === robot)!.scout =
+            scout
         const team_match = robot_queue.splice(index, 1)[0]
         pending_robots.value.push(team_match)
     })
@@ -110,11 +109,13 @@
                 return { key, color: "blue" }
             }),
         ]
-        current_robots.value = $state.snapshot(robot_queue).map(item => {
-            item["displaying"] = true
-            item["scout"] = "none"
-            return item
-        })
+        current_robots.value = robot_queue.map(
+            ({ key, color }: { key: string; color: string }) => {
+                item["displaying"] = true
+                item["scout"] = "none"
+                return item
+            }
+        )
         next_match_key.value =
             next_match_key.value.slice(0, 2) +
             (Number.parseInt(next_match_key.value.slice(2)) + 1).toString()

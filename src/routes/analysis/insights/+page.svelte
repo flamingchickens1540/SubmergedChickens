@@ -11,6 +11,7 @@
         graph_data: GraphData
         rank?: number
         record?: string
+        rp?: number
     }> = teams_data.map(team_data => {
         return {
             team: team_data.key,
@@ -94,7 +95,7 @@
                 onclick={() => selectTeam(i)}
                 >Team: {team.team}
                 {#if team.rank !== undefined}
-                    | Rank: {team.rank} | Record: {team.record}
+                    | Rank {team.rank} | Record {team.record} | RP {team.rp}
                 {/if}
             </button>
         {/each}

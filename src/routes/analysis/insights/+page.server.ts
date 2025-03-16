@@ -54,7 +54,7 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                     average_algae,
                 }
             }
-            const { rank, record } = team_status
+            const { rank, record, rp } = team_status
 
             return {
                 key: team_key,
@@ -63,6 +63,7 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
                 average_algae,
                 rank,
                 record,
+                rp,
             }
         }) as Promise<TeamEventProcessed>[]
     )
@@ -91,10 +92,12 @@ async function get_team_status(team_key: number, event_key: string) {
     const rank: number = ranking["rank"]
     const [losses, _ties, wins] = Object.values(ranking["record"])
     const record: string = `${wins}:${losses}`
+    const rp = ranking["sort_orders"][0]
 
     return {
         rank,
         record,
+        rp,
     }
 }
 
