@@ -56,10 +56,7 @@ const webSocketServer = {
                     return
                 }
 
-                io.to("admin_room").emit("robot_left_queue", [
-                    team_data,
-                    username,
-                ])
+                io.to("admin_room").emit("robot_left_queue", team_data)
                 info(`${username} recieved robot ${team_data.key}`)
                 socket.emit("time_to_scout", [curr_match_key, team_data])
             })

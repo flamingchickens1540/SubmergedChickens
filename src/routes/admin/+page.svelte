@@ -25,9 +25,6 @@
         localStore("pending_robots", [])
     )
 
-    let current_robots: LocalStore<
-        { key: string; color: string; displaying: boolean; scout: string }[]
-    > = $state(localStore("current_robots", []))
     // TODO Change to actual type
     // TODO Pull from backend
     let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
@@ -63,13 +60,12 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("robot_left_queue", ([robot, scout]: [string, string]) => {
+    socket.on("robot_left_queue", robot => {
         const index = robot_queue.findIndex(
-            ({ key, color: _ }) => key === robot
+            ({ key, color: _ }) => key === robot.key
         )
         if (index === -1) return
-        current_robots.value.find(current => current.key === robot)!.scout =
-            scout
+
         const team_match = robot_queue.splice(index, 1)[0]
         pending_robots.value.push(team_match)
     })
@@ -78,9 +74,11 @@
         const index = pending_robots.value.findIndex(
             ({ key, color: _ }) => Number.parseInt(key) == team_match.team_key
         )
-        submitted_team_matches.value.push(team_match)
         if (index === -1) return
-        pending_robots.value.splice(index, 1)
+        const robot = pending_robots.value.splice(index, 1)[0]
+
+        team_match.color = robot.color
+        submitted_team_matches.value.push(team_match)
     })
 
     const queue_match = async () => {
@@ -98,6 +96,7 @@
                 }
             }),
         ]
+        if (next_robots.some(({ key, color: _ }) => key === "")) return
 
         socket.emit("send_match", [next_match_key.value, next_robots])
 
@@ -109,13 +108,7 @@
                 return { key, color: "blue" }
             }),
         ]
-        current_robots.value = robot_queue.map(
-            ({ key, color }: { key: string; color: string }) => {
-                item["displaying"] = true
-                item["scout"] = "none"
-                return item
-            }
-        )
+
         next_match_key.value =
             next_match_key.value.slice(0, 2) +
             (Number.parseInt(next_match_key.value.slice(2)) + 1).toString()
@@ -132,17 +125,6 @@
         socket.emit("leave_scout_queue", scout_id)
     }
 
-    const robotsEqual = (
-        robot1: [string, "red" | "blue"],
-        robot2: [string, "red" | "blue"]
-    ): boolean => {
-        return robot1[0] === robot2[0] && robot1[1] === robot2[1]
-    }
-
-    // const open_modal = (team_match: SubmittedMatch) => {
-    //     displayed_team_match = team_match
-    //     show_modal = true
-    // }
     const auto_load_teams = async () => {
         const res = await fetch(`/api/getMatch/${next_match_key.value}`, {
             method: "GET",
@@ -162,11 +144,28 @@
 
     const clear_robot_queue = async () => {
         robot_queue = []
-        current_robots.value = []
         socket.emit("clear_robot_queue")
     }
 
     let event_selection = $state("Event Key")
+
+    // Disable Interactive Element
+    const disabled = "pointer-events-none opacity-30"
+
+    const can_queue = $derived(
+        next_red_robots.value.some(r => r === "") ||
+            next_blue_robots.value.some(r => r === "")
+            ? disabled
+            : ""
+    )
+
+    const can_autoload = $derived(next_match_key.value === "" ? disabled : "")
+
+    const can_clear_rq = $derived(robot_queue.length === 0 ? disabled : "")
+
+    const can_clear_pm = $derived(
+        submitted_team_matches.value.length === 0 ? disabled : ""
+    )
 </script>
 
 <div
@@ -179,10 +178,13 @@
                 placeholder="Next Match"
                 class="rounded bg-eerie_black p-2"
             />
-            <button class="rounded bg-eerie_black p-2" onclick={auto_load_teams}
-                >Auto Load</button
+            <button
+                class="rounded bg-eerie_black p-2 {can_autoload}"
+                onclick={auto_load_teams}>Auto Load</button
             >
-            <button onclick={queue_match} class="rounded bg-eerie_black p-2"
+            <button
+                onclick={queue_match}
+                class="rounded bg-eerie_black p-2 {can_queue}"
                 >Queue Match</button
             >
             {#each next_red_robots.value as _robot, i}
@@ -201,41 +203,36 @@
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
             <span class="col-span-3 text-center">Current Robots</span>
             <div class="grid max-h-28 grid-cols-3 gap-2">
-                {#each current_robots.value as robot}
-                    <button
-                        class="grid h-12 grid-cols-2 place-items-center rounded {robot_queue.some(
-                            queue => queue.key === robot.key
-                        )
-                            ? 'bg-eerie_black'
-                            : pending_robots.value.some(
-                                    pending => pending.key === robot.key
-                                )
-                              ? 'bg-crayola_orange'
-                              : 'bg-jungle_green'} p-2"
-                        onclick={() => {
-                            robot.displaying = !robot.displaying
-                        }}
+                {#each robot_queue as { key, color }}
+                    <div
+                        class="grid h-12 grid-cols-2 place-items-center rounded bg-eerie_black p-2"
                     >
-                        {#if robot.displaying || robot_queue.some(queue => queue.key === robot.key)}
-                            {robot.key}
-                        {:else}
-                            {robot.scout}
-                        {/if}
+                        {key}
                         <div
-                            class="size-6 rounded-full bg-{robot.color === 'red'
+                            class="size-6 rounded-full bg-{color === 'red'
                                 ? 'bittersweet'
                                 : 'steel_blue'}"
                         ></div>
-                    </button>
+                    </div>
+                {/each}
+                {#each pending_robots.value as { key, color }}
+                    <div
+                        class="grid h-12 grid-cols-2 place-items-center rounded bg-crayola_orange p-2"
+                    >
+                        {key}
+                        <div
+                            class="size-6 rounded-full bg-{color === 'red'
+                                ? 'bittersweet'
+                                : 'steel_blue'}"
+                        ></div>
+                    </div>
                 {/each}
             </div>
         </div>
     </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
+    <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
         <span class="text-center">Scout Queue</span>
-        <div class="flex flex-col gap-2 overflow-auto">
+        <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each scout_queue as scout}
                 <div
                     class="flex items-center justify-between rounded bg-eerie_black p-1"
@@ -249,27 +246,32 @@
             {/each}
         </div>
     </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
+    <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
         <span class="text-center">Past Team Matches</span>
-        <div class="flex flex-col gap-2 overflow-auto">
+        <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each submitted_team_matches.value as team_match}
-                <button
-                    class="flex items-center justify-between rounded bg-eerie_black p-1"
+                <div
+                    class="grid h-12 grid-cols-2 place-items-center rounded bg-jungle_green p-2 text-xl"
                 >
-                    {team_match.match_key}:{team_match.team_key}
-                </button>
+                    {team_match.team_key}
+                    <div
+                        class="size-6 rounded-full bg-{team_match.color ===
+                        'red'
+                            ? 'bittersweet'
+                            : 'steel_blue'}"
+                    ></div>
+                </div>
             {/each}
         </div>
     </div>
 
     <EventManager {tba_event_keys} bind:selection={event_selection} />
     <div class="grid gap-2 rounded bg-gunmetal p-2">
-        <button class="rounded bg-eerie_black" onclick={clear_robot_queue}
-            >Clear Robot Queue</button
+        <button
+            class="rounded bg-eerie_black {can_clear_rq} p-2"
+            onclick={clear_robot_queue}>Clear Robot Queue</button
         ><button
-            class="rounded bg-eerie_black"
+            class="rounded bg-eerie_black {can_clear_pm} p-2"
             onclick={() => {
                 pending_robots.value = []
                 submitted_team_matches.value = []
