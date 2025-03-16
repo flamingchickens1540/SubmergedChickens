@@ -72,9 +72,9 @@
     let selectedChart: string = $state("CoralPerMatch")
 
     function selectTeam(i: number) {
-        const index = curr_team_indexes.indexOf(i)
-        if (index !== -1) {
-            curr_team_indexes.splice(index, 1)
+        const meta_index = curr_team_indexes.indexOf(i)
+        if (meta_index !== -1) {
+            curr_team_indexes.splice(meta_index, 1)
             return
         }
         curr_team_indexes.push(i)

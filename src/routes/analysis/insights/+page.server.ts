@@ -43,7 +43,7 @@ async function process_data(teams: number[]): Promise<TeamEventProcessed[]> {
     return Promise.all(
         teams.map(async team_key => {
             const { graph_data, average_coral, average_algae } =
-                await get_team_data(team_key)
+                await get_team_data(team_key, event_key)
 
             const team_status = await get_team_status(team_key, event_key)
             if (team_status === undefined) {
@@ -101,11 +101,14 @@ async function get_team_status(team_key: number, event_key: string) {
     }
 }
 
-async function get_team_data(team_key: number) {
+async function get_team_data(team_key: number, event_key: string) {
     const team_matches = await prisma.teamMatch.findMany({
         where: {
             team_key: {
                 equals: team_key,
+            },
+            event_key: {
+                equals: event_key,
             },
         },
     })
@@ -118,7 +121,7 @@ async function get_team_data(team_key: number) {
         algae_ratio: [] as number[],
     }
 
-    team_matches.forEach(team_match => {
+    team_matches.reverse().forEach((team_match, i) => {
         // NOTE For both algae and coral, we only want to count the matches that haev been recorded sucessfully
         if (team_match.scoutId === null) return
 
@@ -150,7 +153,7 @@ async function get_team_data(team_key: number) {
             team_match.tele_score_processor_fail!
         const algae_ratio = algae_scored / (algae_failed + algae_scored)
 
-        graph_data.match_numbers.push(match_key_to_number(team_match.match_key))
+        graph_data.match_numbers.push(i + 1)
         graph_data.coral_scored.push(coral_scored)
         graph_data.coral_ratio.push(coral_ratio)
         graph_data.algae_scored.push(algae_scored)
@@ -205,8 +208,4 @@ async function get_teams(): Promise<number[]> {
     }
 
     return team_events.map(team_event => team_event.team_key)
-}
-
-function match_key_to_number(match_key: string): number {
-    return Number.parseInt(match_key.split("_").pop()!.split("m").pop()!)
 }
