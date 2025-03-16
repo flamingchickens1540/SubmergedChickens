@@ -100,11 +100,12 @@ function determineEndgame(
     if (tba_endgame === "DeepCage") {
         return Endgame.Deep
     }
-    switch (scout_endgame) {
-        case Endgame.Fail:
-        case Endgame.Deep:
-        case Endgame.Shallow:
-            return Endgame.Fail
+    if (
+        scout_endgame == Endgame.Fail ||
+        scout_endgame == Endgame.Deep ||
+        scout_endgame == Endgame.Park
+    ) {
+        return Endgame.Fail
     }
     if (tba_endgame === "Parked") {
         return Endgame.Park
