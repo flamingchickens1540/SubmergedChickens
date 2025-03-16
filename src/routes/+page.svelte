@@ -6,10 +6,11 @@
     import { LocalStore, localStore } from "@/localStore.svelte"
 
     let username: LocalStore<string> = $state(localStore("username", ""))
+    let scout_id: LocalStore<number> = localStore("scout_id", null)
     let waiting = $state(false)
 
     onMount(() => {
-        const isLoggedIn = username.value != ""
+        const isLoggedIn = username.value != "" && scout_id.value
 
         if (isLoggedIn) {
             socket.emit("new_user", username.value)

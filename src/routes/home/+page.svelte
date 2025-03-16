@@ -6,8 +6,8 @@
     import { browser } from "$app/environment"
 
     let username = $state(localStore("username", ""))
-
-    if (username.value === "" && browser) {
+    let scout_id = localStore("scout_id", null)
+    if ((username.value === "" || !scout_id.value) && browser) {
         goto("/")
     }
 
