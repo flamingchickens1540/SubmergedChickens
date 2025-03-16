@@ -1,6 +1,6 @@
 import { error } from "@/consoleUtils"
 import { prisma } from "@/prisma"
-import type { TeamMatch, Endgame } from "@prisma/client"
+import type { TeamMatch } from "@prisma/client"
 
 export async function lastTeamMatch(scout: string): Promise<TeamMatch> {
     const team_matches = await prisma.teamMatch.findMany({
