@@ -167,7 +167,7 @@
         ) {
             let match_key = "qm" + i.toString()
             const res = await fetch(`/api/updateMatch`, {
-                method: "POST",
+                method: "PATCH",
                 body: JSON.stringify(match_key),
                 headers: {
                     "Content-Type": "application/json",
@@ -295,7 +295,7 @@
                 submitted_team_matches.value = []
             }}>Clear Past Matches</button
         ><button class="rounded bg-eerie_black" onclick={update_team_matches}
-            >Update TBA</button
+            >Verify Data TBA</button
         >
     </div>
 </div>
