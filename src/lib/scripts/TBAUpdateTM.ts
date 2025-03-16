@@ -43,13 +43,13 @@ export async function TBAUpdateMatchData(match_key: string) {
 
     for (let i = 1; i <= 3; i++) {
         const red_endgame = determineEndgame(
-            scores["red"][`endgameRobot${i}`],
+            scores["red"][`endGameRobot${i}`],
             recorded_endgames.find(match => match.team_key === red[i - 1])
                 ?.endgame ?? Endgame.None
         )
 
         const blue_endgame = determineEndgame(
-            scores["blue"][`endgameRobot${i}`],
+            scores["blue"][`endGameRobot${i}`],
             recorded_endgames.find(match => match.team_key === blue[i - 1])
                 ?.endgame ?? Endgame.None
         )
@@ -103,7 +103,7 @@ function determineEndgame(
     if (
         scout_endgame == Endgame.Fail ||
         scout_endgame == Endgame.Deep ||
-        scout_endgame == Endgame.Park
+        scout_endgame == Endgame.Shallow
     ) {
         return Endgame.Fail
     }
