@@ -145,7 +145,7 @@ async function get_team_data(team_key: number) {
         const algae_failed =
             team_match.auto_score_processor_fail! +
             team_match.tele_score_processor_fail!
-        const algae_ratio = algae_scored / algae_failed
+        const algae_ratio = algae_scored / (algae_failed + algae_scored)
 
         graph_data.match_numbers.push(match_key_to_number(team_match.match_key))
         graph_data.coral_scored.push(coral_scored)
