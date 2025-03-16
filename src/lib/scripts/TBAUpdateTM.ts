@@ -62,7 +62,7 @@ export async function TBAUpdateMatchData(match_key: string) {
             where: {
                 id_key: {
                     team_key: red[i - 1],
-                    match_key: match_key,
+                    match_key: verbose_match_key,
                 },
             },
             data: {
@@ -73,7 +73,7 @@ export async function TBAUpdateMatchData(match_key: string) {
         await prisma.teamMatch.update({
             where: {
                 id_key: {
-                    match_key: match_key, // update to verbose_match_key if data submission ever gets fixed :skull:
+                    match_key: verbose_match_key,
                     team_key: blue[i - 1],
                 },
             },
@@ -95,8 +95,6 @@ function determineEndgame(
     if (tba_endgame === "DeepCage") {
         return Endgame.Deep
     }
-    // If the scout records a robot as climbed, and that robot didn't climb, then it presumably failed to climb
-    // we could therefor remove the "failed" option (unless we want it simply for the sake of the scouts) and tell scouts to always record fails as successes
     switch (scout_endgame) {
         case Endgame.Fail:
         case Endgame.Deep:
