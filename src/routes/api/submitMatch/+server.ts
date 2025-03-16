@@ -18,7 +18,7 @@ export const POST: RequestHandler = async ({
     }
     tm.event_key = event_key
     const verbose_match_key = event_key + "_" + tm.match_key
-
+    tm.match_key = verbose_match_key
     return json(
         await submitTeamMatch(
             count(tm),
