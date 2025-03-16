@@ -4,7 +4,7 @@ import { warn } from "@/consoleUtils"
 import { Endgame } from "@prisma/client"
 import { prisma } from "$lib/prisma"
 
-export async function updateTBAMatchData(match_key: string) {
+export async function TBAUpdateMatchData(match_key: string) {
     const event_key = await getEventKey()
     const verbose_match_key = event_key + "_" + match_key
 
