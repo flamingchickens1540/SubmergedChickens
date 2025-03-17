@@ -129,11 +129,6 @@ const webSocketServer = {
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
-<<<<<<< HEAD
-                    info(`Queued match ${match_key} with teams:`)
-                    printTeamMatch(teams)
-
-=======
                     const teams_print: string = teams
                         .map(team => {
                             if (team.color == "red") {
@@ -144,7 +139,7 @@ const webSocketServer = {
                         })
                         .join()
                     info(`New Match (${match_key}):${teams_print}`)
->>>>>>> a757463e81a0c661ac9f7ca618848defbe506679
+
                     robot_queue = []
 
                     const scout_queue = (
