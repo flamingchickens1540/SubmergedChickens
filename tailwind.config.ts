@@ -1,6 +1,6 @@
 import { fontFamily } from "tailwindcss/defaultTheme"
 import type { Config } from "tailwindcss"
-const colorMix = require("tailwindcss-color-mix")
+import colorMix from "tailwindcss-color-mix"
 
 const config: Config = {
     darkMode: ["class"],
