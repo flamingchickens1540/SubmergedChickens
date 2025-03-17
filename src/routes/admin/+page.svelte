@@ -142,6 +142,27 @@
         next_blue_robots.value = blue
     }
 
+    const update_team_matches = async () => {
+        for (
+            let i = 1;
+            i < Number.parseInt(next_match_key.value.slice(2));
+            i++
+        ) {
+            let match_key = "qm" + i.toString()
+            const res = await fetch(`/api/updateMatch`, {
+                method: "PATCH",
+                body: JSON.stringify(match_key),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            if (!res.ok) {
+                console.log(`Updated team matches up to ${match_key}`)
+                break
+            }
+        }
+    }
+
     const clear_robot_queue = async () => {
         robot_queue = []
         socket.emit("clear_robot_queue")
@@ -276,6 +297,8 @@
                 pending_robots.value = []
                 submitted_team_matches.value = []
             }}>Clear Past Matches</button
+        ><button class="rounded bg-eerie_black" onclick={update_team_matches}
+            >Verify Data TBA</button
         >
     </div>
 </div>
