@@ -14,8 +14,10 @@
     "components": "@/components",
     "utils": "@/lib/utils",
     "ui": "@/components/ui",
-    "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "lucide",
+  "typescript": true,
+  "registry": "https://next.shadcn-svelte.com/registry",
+  "lib": "@/lib"
 }

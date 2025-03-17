@@ -6,7 +6,7 @@ const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
 const warn = (s: string) => console.log(`\x1b[33m${s}\x1b[0m`)
 
 const sid_to_username: Map<string, string> = new Map()
-let robot_queue: { key: string; color: "red" | "blue" }[] = []
+let robot_queue: { team_key: string; color: "red" | "blue" }[] = []
 let curr_match_key: string = ""
 
 const webSocketServer = {
@@ -60,11 +60,11 @@ const webSocketServer = {
                 socket.emit("time_to_scout", [curr_match_key, ...team_data])
 =======
 
-                io.to("admin_room").emit("robot_left_queue", [
+                io.to("admin_room").emit("robot_left_queue", {
                     team_data,
-                    username,
-                ])
-                info(`${username} recieved robot ${team_data.key}`)
+                    scout: username,
+                })
+                info(`${username} recieved robot ${team_data.team_key}`)
                 socket.emit("time_to_scout", [curr_match_key, team_data])
 >>>>>>> a757463e81a0c661ac9f7ca618848defbe506679
             })
@@ -102,13 +102,13 @@ const webSocketServer = {
 
             socket.on(
                 "leave_robot_queue",
-                (robot: { key: string; color: "red" | "blue" }) => {
+                (robot: { team_key: string; color: "red" | "blue" }) => {
                     const robotsEqual = (
-                        robot1: { key: string; color: "red" | "blue" },
-                        robot2: { key: string; color: "red" | "blue" }
+                        robot1: { team_key: string; color: "red" | "blue" },
+                        robot2: { team_key: string; color: "red" | "blue" }
                     ): boolean => {
                         return (
-                            robot1.key === robot2.key &&
+                            robot1.team_key === robot2.team_key &&
                             robot1.color === robot2.color
                         )
                     }
@@ -125,16 +125,16 @@ const webSocketServer = {
                 "send_match",
                 async ([match_key, teams]: [
                     string,
-                    { key: string; color: "red" | "blue" }[],
+                    { team_key: string; color: "red" | "blue" }[],
                 ]) => {
                     if (!socket.rooms.has("admin_room")) return
 
                     const teams_print: string = teams
                         .map(team => {
                             if (team.color == "red") {
-                                return ` \x1b[31m${team.key}\x1b[0m`
+                                return ` \x1b[31m${team.team_key}\x1b[0m`
                             } else {
-                                return ` \x1b[34m${team.key}\x1b[0m`
+                                return ` \x1b[34m${team.team_key}\x1b[0m`
                             }
                         })
                         .join()
@@ -156,7 +156,7 @@ const webSocketServer = {
                         }
 
                         info(
-                            `${username} recieved robot ${team_data.key} from queue`
+                            `${username} recieved robot ${team_data.team_key} from queue`
                         )
                         scout.leave("scout_queue")
                         scout.emit("time_to_scout", [match_key, team_data])
