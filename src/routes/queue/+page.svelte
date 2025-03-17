@@ -19,13 +19,13 @@
 
     socket.on(
         "time_to_scout",
-        ([match_key, { key, color }]: [
+        ([match_key, { team_key, color }]: [
             string,
-            { key: string; color: "red" | "blue" },
+            { team_key: string; color: "red" | "blue" },
         ]) => {
             browser && localStorage.setItem("matchData", "")
             goto(
-                `/match-scout/prematch?match=${match_key}&team=${key}&color=${color}`
+                `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
             )
         }
     )
