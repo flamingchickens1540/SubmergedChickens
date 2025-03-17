@@ -7,6 +7,24 @@
     import { error } from "@/consoleUtils"
     import type { UncountedTeamMatch } from "@/types"
 
+    type QueuedTeamMatch = {
+        team_key: string
+        color: string
+    }
+
+    type PendingTeamMatch = {
+        team_key: string
+        color: string
+        scout: string
+        displaying_tk: boolean
+    }
+
+    type SubmittedTeamMatch = UncountedTeamMatch & {
+        scout_username: string
+        displaying_tmk: boolean
+        color: string
+    }
+
     let { data }: PageProps = $props()
     const tba_event_keys = data.tba_event_keys
 
@@ -20,14 +38,14 @@
     )
 
     let scout_queue: string[] = $state([])
-    let robot_queue: { key: string; color: string }[] = $state([])
-    let pending_robots: LocalStore<{ key: string; color: string }[]> = $state(
+    let robot_queue: QueuedTeamMatch[] = $state([])
+    let pending_robots: LocalStore<PendingTeamMatch[]> = $state(
         localStore("pending_robots", [])
     )
 
     // TODO Change to actual type
     // TODO Pull from backend
-    let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
+    let submitted_team_matches: LocalStore<SubmittedTeamMatch[]> = $state(
         localStore("submitted_team_matches", [])
     )
 
@@ -44,7 +62,7 @@
 
     socket.emit(
         "get_robot_queue",
-        (response: { robots: { key: string; color: string }[] }) => {
+        (response: { robots: QueuedTeamMatch[] }) => {
             robot_queue = response.robots
         }
     )
@@ -60,25 +78,40 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("robot_left_queue", robot => {
+    socket.on("robot_left_queue", ({ team_data, scout }) => {
         const index = robot_queue.findIndex(
-            ({ key, color: _ }) => key === robot.key
+            ({ team_key, color: _ }) => team_key === team_data.key
         )
         if (index === -1) return
 
-        const team_match = robot_queue.splice(index, 1)[0]
-        pending_robots.value.push(team_match)
+        const { team_key, color }: QueuedTeamMatch = robot_queue.splice(
+            index,
+            1
+        )[0]
+        const pending_team_match: PendingTeamMatch = {
+            team_key,
+            color,
+            scout,
+            displaying_tk: true,
+        }
+        pending_robots.value.push(pending_team_match)
     })
 
     socket.on("new_team_match", (team_match: UncountedTeamMatch) => {
         const index = pending_robots.value.findIndex(
-            ({ key, color: _ }) => Number.parseInt(key) == team_match.team_key
+            ({ team_key, color: _ }) =>
+                Number.parseInt(team_key) == team_match.team_key
         )
         if (index === -1) return
         const robot = pending_robots.value.splice(index, 1)[0]
 
-        team_match.color = robot.color
-        submitted_team_matches.value.push(team_match)
+        const submitted_team_match = {
+            ...team_match,
+            color: robot.color,
+            scout_username: robot.scout,
+            displaying_tmk: robot.displaying_tk,
+        }
+        submitted_team_matches.value.push(submitted_team_match)
     })
 
     const queue_match = async () => {
@@ -101,11 +134,11 @@
         socket.emit("send_match", [next_match_key.value, next_robots])
 
         robot_queue = [
-            ...next_red_robots.value.map(key => {
-                return { key, color: "red" }
+            ...next_red_robots.value.map(team_key => {
+                return { team_key, color: "red" }
             }),
-            ...next_blue_robots.value.map(key => {
-                return { key, color: "blue" }
+            ...next_blue_robots.value.map(team_key => {
+                return { team_key, color: "blue" }
             }),
         ]
 
@@ -224,11 +257,11 @@
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
             <span class="col-span-3 text-center">Current Robots</span>
             <div class="grid max-h-28 grid-cols-3 gap-2">
-                {#each robot_queue as { key, color }}
+                {#each robot_queue as { team_key, color }}
                     <div
                         class="grid h-12 grid-cols-2 place-items-center rounded bg-eerie_black p-2"
                     >
-                        {key}
+                        {team_key}
                         <div
                             class="size-6 rounded-full bg-{color === 'red'
                                 ? 'bittersweet'
@@ -236,17 +269,24 @@
                         ></div>
                     </div>
                 {/each}
-                {#each pending_robots.value as { key, color }}
-                    <div
+                {#each pending_robots.value as { team_key, color, scout, displaying_tk }, i}
+                    <button
                         class="grid h-12 grid-cols-2 place-items-center rounded bg-crayola_orange p-2"
+                        onclick={() =>
+                            (pending_robots.value[i].displaying_tk =
+                                !displaying_tk)}
                     >
-                        {key}
+                        {#if displaying_tk}
+                            {team_key}
+                        {:else}
+                            {scout}
+                        {/if}
                         <div
                             class="size-6 rounded-full bg-{color === 'red'
                                 ? 'bittersweet'
                                 : 'steel_blue'}"
                         ></div>
-                    </div>
+                    </button>
                 {/each}
             </div>
         </div>
@@ -270,18 +310,25 @@
     <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
         <span class="text-center">Past Team Matches</span>
         <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
-            {#each submitted_team_matches.value as team_match}
-                <div
-                    class="grid h-12 grid-cols-2 place-items-center rounded bg-jungle_green p-2 text-xl"
+            {#each submitted_team_matches.value as team_match, i}
+                <button
+                    class="grid h-12 grid-cols-2 place-items-center rounded bg-jungle_green p-2 text-center text-xl"
+                    onclick={() =>
+                        (submitted_team_matches.value[i].displaying_tmk =
+                            !team_match.displaying_tmk)}
                 >
-                    {team_match.team_key}
+                    {#if team_match.displaying_tmk}
+                        {team_match.match_key} {team_match.team_key}
+                    {:else}
+                        {team_match.scout_username}
+                    {/if}
                     <div
                         class="size-6 rounded-full bg-{team_match.color ===
                         'red'
                             ? 'bittersweet'
                             : 'steel_blue'}"
                     ></div>
-                </div>
+                </button>
             {/each}
         </div>
     </div>
