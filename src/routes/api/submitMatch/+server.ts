@@ -239,7 +239,10 @@ function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
         skill: match.skill,
         notes: match.notes,
         incap_time: match.incap_time,
-        total_incap_time: match.incap_time.reduce((a, b) => a + b, 0),
+        total_incap_time: Math.min(
+            135,
+            match.incap_time.reduce((a, b) => a + b, 0)
+        ),
         scoutId: match.scout_id,
     }
 }

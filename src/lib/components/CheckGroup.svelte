@@ -6,7 +6,7 @@
 
     let { labels, selected = $bindable([]) }: Props = $props()
     let categories: Map<string, string[]> = new Map()
-    labels.map(({ name, category }) =>
+    labels.forEach(({ name, category }) =>
         categories.set(category, [...(categories.get(category) ?? []), name])
     )
 </script>
