@@ -31,7 +31,7 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
 
@@ -91,8 +91,6 @@
                 onswipe={swipeHandler}
                 class="grid flex-grow grid-cols-2 gap-2"
             >
-                <button class="rounded {bg_color}" onclick={incap}>Incap</button
-                >
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
@@ -101,6 +99,8 @@
                 >
                 <button class="rounded {bg_color}" onclick={score_coral}
                     >Score Coral</button
+                >
+                <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
             </div>
         {:else if page_state == "ScoreAlgae"}
@@ -116,7 +116,12 @@
                 bind:actions={matchData.value.timeline.tele}
             />
         {:else if page_state == "Incap"}
-            <Incap bind:page_state bind:action_state {bg_color} />
+            <Incap
+                bind:page_state
+                bind:action_state
+                bind:incap_times={matchData.value.incap_time}
+                {bg_color}
+            />
         {/if}
     </div>
 

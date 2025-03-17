@@ -1,10 +1,11 @@
 <script lang="ts">
-    import { X, Check } from "lucide-svelte"
+    import { Dot, X } from "lucide-svelte"
     import { io, Socket } from "socket.io-client"
-    import { localStore } from "@/localStore.svelte"
+    import { LocalStore, localStore } from "@/localStore.svelte"
     import EventManager from "./EventManager.svelte"
     import type { PageProps } from "./$types"
     import { error } from "@/consoleUtils"
+    import type { UncountedTeamMatch } from "@/types"
 
     let { data }: PageProps = $props()
     const tba_event_keys = data.tba_event_keys
@@ -18,23 +19,25 @@
         localStore<string[]>("next_blue_robots", ["", "", ""])
     )
 
-    let curr_red_robots = $state(
-        localStore<string[]>("curr_red_robots", ["", "", ""])
-    )
-    let curr_blue_robots = $state(
-        localStore<string[]>("curr_blue_robots", ["", "", ""])
+    let scout_queue: string[] = $state([])
+    let robot_queue: { key: string; color: string }[] = $state([])
+    let pending_robots: LocalStore<{ key: string; color: string }[]> = $state(
+        localStore("pending_robots", [])
     )
 
-    let new_users: string[] = $state([])
-    let scout_queue: string[] = $state([])
+    let current_robots: LocalStore<
+        { key: string; color: string; displaying: bool; scout: string }[]
+    > = $state(localStore("current_robots", []))
     // TODO Change to actual type
     // TODO Pull from backend
-    let submitted_team_matches: string[] = $state([])
+    let submitted_team_matches: LocalStore<UncountedTeamMatch[]> = $state(
+        localStore("submitted_team_matches", [])
+    )
 
     let socket: Socket = io({
         auth: {
             token: "celary",
-            username: "admin",
+            username: "Admin",
         },
     })
 
@@ -42,9 +45,12 @@
         scout_queue = response.scouts
     })
 
-    socket.emit("get_new_user_queue", (response: { users: string[] }) => {
-        new_users = response.users
-    })
+    socket.emit(
+        "get_robot_queue",
+        (response: { robots: { key: string; color: string }[] }) => {
+            robot_queue = response.robots
+        }
+    )
 
     socket.on("scout_joined_queue", (scout: string) => {
         scout_queue.push(scout)
@@ -57,21 +63,58 @@
         scout_queue.splice(index, 1)
     })
 
-    socket.on("new_user_request", (user: string) => {
-        new_users.push(user)
+    socket.on("robot_left_queue", ([robot: string, scout: string]) => {
+        const index = robot_queue.findIndex(
+            ({ key, color: _ }) => key === robot.key
+        )
+        if (index === -1) return
+        current_robots.value.find(
+            current => current.key === robot.key
+        ).scout = scout
+        const team_match = robot_queue.splice(index, 1)[0]
+        pending_robots.value.push(team_match)
+    })
+
+    socket.on("new_team_match", (team_match: UncountedTeamMatch) => {
+        const index = pending_robots.value.findIndex(
+            ({ key, color: _ }) => Number.parseInt(key) == team_match.team_key
+        )
+        submitted_team_matches.value.push(team_match)
+        if (index === -1) return
+        pending_robots.value.splice(index, 1)
     })
 
     const queue_match = async () => {
         let next_robots = [
-            ...next_red_robots.value.map(team => [team, "red"]),
-            ...next_blue_robots.value.map(team => [team, "blue"]),
+            ...next_red_robots.value.map(key => {
+                return {
+                    key,
+                    color: "red",
+                }
+            }),
+            ...next_blue_robots.value.map(key => {
+                return {
+                    key,
+                    color: "blue",
+                }
+            }),
         ]
 
         socket.emit("send_match", [next_match_key.value, next_robots])
 
-        curr_red_robots.value = next_red_robots.value
-        curr_blue_robots.value = next_blue_robots.value
-
+        robot_queue = [
+            ...next_red_robots.value.map(key => {
+                return { key, color: "red" }
+            }),
+            ...next_blue_robots.value.map(key => {
+                return { key, color: "blue" }
+            }),
+        ]
+        current_robots.value = $state.snapshot(robot_queue).map(item => {
+            item["displaying"] = true
+            item["scout"] = "none"
+            return item
+        })
         next_match_key.value =
             next_match_key.value.slice(0, 2) +
             (Number.parseInt(next_match_key.value.slice(2)) + 1).toString()
@@ -115,19 +158,39 @@
         next_red_robots.value = red
         next_blue_robots.value = blue
     }
-    const approve_new_user = (user: string) => {
-        const i = new_users.indexOf(user)
-        if (i === -1) return
-        new_users.splice(i, 1)
 
-        socket.emit("approve_new_user", user)
+    const update_team_matches = async () => {
+        for (
+            let i = 1;
+            i < Number.parseInt(next_match_key.value.slice(2));
+            i++
+        ) {
+            let match_key = "qm" + i.toString()
+            const res = await fetch(`/api/updateMatch`, {
+                method: "PATCH",
+                body: JSON.stringify(match_key),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            if (!res.ok) {
+                console.log(`Updated team matches up to ${match_key}`)
+                break
+            }
+        }
+    }
+
+    const clear_robot_queue = async () => {
+        robot_queue = []
+        current_robots.value = []
+        socket.emit("clear_robot_queue")
     }
 
     let event_selection = $state("Event Key")
 </script>
 
 <div
-    class="m-auto grid max-w-6xl grid-cols-2 grid-rows-6 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-3 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid max-w-6xl grid-cols-2 grid-rows-5 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-2 sm:gap-4 md:grid-cols-5"
 >
     <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
@@ -156,13 +219,34 @@
             {/each}
         </div>
         <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-            <span class="col-span-3 text-center">Currently Playing</span>
-            <div class="grid flex-grow grid-cols-3 grid-rows-2 gap-2">
-                {#each curr_red_robots.value as robot}
-                    <div class="rounded bg-bittersweet p-2">{robot}</div>
-                {/each}
-                {#each curr_blue_robots.value as robot}
-                    <div class="rounded bg-steel_blue p-2">{robot}</div>
+            <span class="col-span-3 text-center">Current Robots</span>
+            <div class="grid max-h-28 grid-cols-3 gap-2">
+                {#each current_robots.value as robot}
+                    <button
+                        class="grid h-12 grid-cols-2 place-items-center rounded {robot_queue.some(
+                            queue => queue.key === robot.key
+                        )
+                            ? 'bg-eerie_black'
+                            : pending_robots.value.some(
+                                    pending => pending.key === robot.key
+                                )
+                              ? 'bg-crayola_orange'
+                              : 'bg-jungle_green'} p-2"
+                        onclick={() => {
+                            robot.displaying = !robot.displaying
+                        }}
+                    >
+                        {#if robot.displaying || robot_queue.some(queue => queue.key === robot.key)}
+                            {robot.key}
+                        {:else}
+                            {robot.scout}
+                        {/if}
+                        <div
+                            class="size-6 rounded-full bg-{robot.color === 'red'
+                                ? 'bittersweet'
+                                : 'steel_blue'}"
+                        ></div>
+                    </button>
                 {/each}
             </div>
         </div>
@@ -170,25 +254,7 @@
     <div
         class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
     >
-        <span class="text-center">New Users</span>
-        <div class="flex flex-col gap-2 overflow-auto">
-            {#each new_users as user}
-                <div
-                    class="flex items-center justify-between rounded bg-eerie_black p-1"
-                >
-                    {user}
-                    <button
-                        class="rounded bg-gunmetal p-1"
-                        onclick={() => approve_new_user(user)}><Check /></button
-                    >
-                </div>
-            {/each}
-        </div>
-    </div>
-    <div
-        class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
-    >
-        <span class="text-center">Queue</span>
+        <span class="text-center">Scout Queue</span>
         <div class="flex flex-col gap-2 overflow-auto">
             {#each scout_queue as scout}
                 <div
@@ -206,16 +272,30 @@
     <div
         class="row-span-2 flex max-h-96 flex-col gap-2 rounded bg-gunmetal p-2"
     >
-        <span class="text-center">Submitted Team Matches</span>
+        <span class="text-center">Past Team Matches</span>
         <div class="flex flex-col gap-2 overflow-auto">
-            {#each submitted_team_matches as team_match}
+            {#each submitted_team_matches.value as team_match}
                 <button
-                    class="flex items-center justify-between rounded bg-eerie_black px-1 py-2"
+                    class="flex items-center justify-between rounded bg-eerie_black p-1"
                 >
-                    {team_match}
+                    {team_match.match_key}:{team_match.team_key}
                 </button>
             {/each}
         </div>
     </div>
+
     <EventManager {tba_event_keys} bind:selection={event_selection} />
+    <div class="grid gap-2 rounded bg-gunmetal p-2">
+        <button class="rounded bg-eerie_black" onclick={clear_robot_queue}
+            >Clear Robot Queue</button
+        ><button
+            class="rounded bg-eerie_black"
+            onclick={() => {
+                pending_robots.value = []
+                submitted_team_matches.value = []
+            }}>Clear Past Matches</button
+        ><button class="rounded bg-eerie_black" onclick={update_team_matches}
+            >Verify Data TBA</button
+        >
+    </div>
 </div>

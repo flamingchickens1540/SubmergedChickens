@@ -1,10 +1,6 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type {
-        AutoActionData,
-        TeleActionData,
-        UncountedTeamMatch,
-    } from "$lib/types"
+    import type { UncountedTeamMatch } from "$lib/types"
     import { localStore } from "@/localStore.svelte"
     import Action from "./Action.svelte"
 
@@ -16,15 +12,15 @@
             auto_start_location: "Far",
             auto_leave_start: false,
             timeline: {
-                auto: [] as AutoActionData[],
-                tele: [] as TeleActionData[],
+                auto: [],
+                tele: [],
             },
             endgame: "None",
             skill: 3,
             notes: "",
             incap_time: [],
-            scout_id: "",
-            tagNames: [],
+            scout_id: 0,
+            tags: [],
         })
     )
     let {
@@ -40,7 +36,7 @@
         if (index < auto_len) {
             matchData.value.timeline.auto.splice(index, 1)
         } else {
-            matchData.value.timeline.tele.splice(index - auto_len)
+            matchData.value.timeline.tele.splice(index - auto_len, 1)
         }
     }
 

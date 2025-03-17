@@ -34,7 +34,7 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
 
@@ -64,7 +64,6 @@
     const prev_page = $derived(
         page_state == "None"
             ? () => {
-                  console.log(matchData.value.team_key)
                   goto(
                       `/match-scout/prematch?team=${matchData.value.team_key}&match=${matchData.value.match_key}&color=${team_color.value}`
                   )

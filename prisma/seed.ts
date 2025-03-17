@@ -70,8 +70,19 @@ async function seedTags() {
 
     const category_roles = {
         roles: ["defender", "algae", "coral"],
-        matchplay: ["heavily-defended", "gamepiece-stuck", "tipped-over"],
-        damage: ["lost-comms", "bumper-damage", "mech-fail"],
+        matchplay: [
+            "heavily-defended",
+            "gamepiece-stuck",
+            "tipped-over",
+            "looked-lost",
+        ],
+        damage: [
+            "lost-comms",
+            "mech-break",
+            "elect-fail",
+            "bumper-damage",
+            "e-stopped",
+        ],
     }
 
     let id = 0

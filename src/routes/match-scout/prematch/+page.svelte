@@ -30,13 +30,11 @@
             notes: "",
             incap_time: [],
             scout_id: 0,
-            tagNames: [],
+            tags: [],
         })
     )
 
     onMount(() => {
-        matchData.reset()
-
         matchData.value.scout_id = Number.parseInt(
             (browser && localStorage.getItem("scout_id")) || ""
         )
@@ -64,10 +62,14 @@
         page_state="None"
         next_page={() => goto("/match-scout/auto")}
     />
-    <!-- TODO Center Maybe -->
-    <div class="grid flex-grow place-items-center overflow-y-scroll text-white">
+    <div class="grid flex-grow place-items-center overflow-y-scroll">
         <div class="text-2xl">You're Scouting Team:</div>
-        <div class="text-2xl text-{data.color}-400">
+        <div
+            style={data.color === "blue"
+                ? "color: #2196F3 !important"
+                : "color: #F44336 !important"}
+            class="text-6xl font-semibold"
+        >
             {data.team_key}
         </div>
         <div class="text-xl">In {data.match_key.toUpperCase()}</div>

@@ -27,8 +27,23 @@
     }
 
     function submit() {
-        // TODO Submit images here
-        images = []
+        const base64Images = images.map(image => image.split(",")[1])
+
+        fetch("/api/submitImages", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ images: base64Images, team_key }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Success:", data)
+            })
+            .catch(error => {
+                console.error("Error:", error)
+            })
+
         goto("/pit-scout/teamlist")
     }
 </script>
