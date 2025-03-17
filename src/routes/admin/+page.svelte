@@ -163,7 +163,7 @@
         next_red_robots.value = ["", "", ""]
         next_blue_robots.value = ["", "", ""]
 
-        past_team_matches.value = submitted_team_matches.value
+        past_team_matches.value.push(...submitted_team_matches.value)
         submitted_team_matches.value = []
     }
 
