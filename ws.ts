@@ -54,19 +54,12 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
-<<<<<<< HEAD
-                io.to("admin_room").emit("robot_left_queue", team_data)
-
-                socket.emit("time_to_scout", [curr_match_key, ...team_data])
-=======
-
                 io.to("admin_room").emit("robot_left_queue", {
                     team_data,
                     scout: username,
                 })
                 info(`${username} recieved robot ${team_data.team_key}`)
                 socket.emit("time_to_scout", [curr_match_key, team_data])
->>>>>>> a757463e81a0c661ac9f7ca618848defbe506679
             })
 
             async function leave_scout_queue(scout_id: string) {
@@ -224,22 +217,6 @@ const webSocketServer = {
             })
         })
     },
-}
-
-function printTeamMatch(teams: [string, "blue" | "red"][]) {
-    teams
-        .slice(0, 3)
-        .map(team => team[0])
-        .forEach(key => {
-            console.log(`  \x1b[31m${key}\x1b[0m`)
-        })
-
-    teams
-        .slice(0, 3)
-        .map(team => team[0])
-        .forEach(key => {
-            console.log(`  \x1b[34m${key}\x1b[0m`)
-        })
 }
 
 export default webSocketServer
