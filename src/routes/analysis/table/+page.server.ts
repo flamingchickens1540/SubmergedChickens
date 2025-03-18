@@ -10,22 +10,22 @@ export const POST: RequestHandler = async ({
 }: any): Promise<Response> => {
     const team_key: number = await request.json()
 
-    let team : Team | null = await prisma.team.findUnique({
+    let team: Team | null = await prisma.team.findUnique({
         where: {
-            key: team_key
-        }
+            key: team_key,
+        },
     })
 
-    if (!team) error("team_key is not valid");
+    if (!team) error("team_key is not valid")
     team = team as Team
 
     let matches = await prisma.teamMatch.findMany({
         where: {
-            team: team
-        }
+            team: team,
+        },
     })
 
-    if (matches == null) console.error("Getting team match failed");
+    if (matches == null) console.error("Getting team match failed")
 
     let coral_results: Map<number, number> = new Map()
     let algae_results: Map<number, number> = new Map()
@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({
     return json({
         coral_results,
         algae_results,
-        ability
+        ability,
     })
 }
 
@@ -57,7 +57,7 @@ function coralScored(match: TeamMatch): number {
         match.tele_score_l2_succeed ?? 0,
         match.tele_score_l3_succeed ?? 0,
         match.tele_score_l4_succeed ?? 0,
-    ].reduce((a,b) => (a+b))
+    ].reduce((a, b) => a + b)
 }
 
 function algaeScored(match: TeamMatch): number {
@@ -67,5 +67,5 @@ function algaeScored(match: TeamMatch): number {
 
         match.tele_score_net_succeed ?? 0,
         match.tele_score_processor_succeed ?? 0,
-    ].reduce((a,b) => (a+b))
+    ].reduce((a, b) => a + b)
 }
