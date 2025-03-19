@@ -18,7 +18,7 @@
             team_B_team_key: data.two,
             team_B_match_key: data.two_match!,
             // TODO Figure out how to want to manage diff
-            diff: 1,
+            diff: one_is_better ? 1 : -1,
             category: category,
             event_key: data.event_key!,
             user_id: scout_id.value,
