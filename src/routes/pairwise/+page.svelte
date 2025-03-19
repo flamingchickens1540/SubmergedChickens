@@ -14,9 +14,9 @@
     const submit = async () => {
         const comp: Omit<Comparison, "id"> = {
             team_A_team_key: data.one,
-            team_A_match_key: data.event_key + "_" + data.one_match!,
+            team_A_match_key: data.one_match,
             team_B_team_key: data.two,
-            team_B_match_key: data.two_match!,
+            team_B_match_key: data.two_match,
             // TODO Figure out how to want to manage diff
             diff: one_is_better ? 1 : -1,
             category: category,
