@@ -30,7 +30,6 @@ export const load: PageServerLoad = async ({ params: _, url }) => {
                 [team_match.team_key, team_match.match_key] as [number, string]
         )
         .sort((b, a) => matchKeyToNum(b[1]) - matchKeyToNum(a[1]))
-    console.log(sorted)
 
     const [one, one_match] = sorted.pop()!
     const [two, two_match] = sorted.pop()!

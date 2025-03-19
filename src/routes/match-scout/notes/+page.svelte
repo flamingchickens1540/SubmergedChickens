@@ -47,14 +47,13 @@
             },
         })
 
-        const team_key = matchData.value.team_key
-        const match_key = matchData.value.match_key
         const scout_id = matchData.value.scout_id
         socket.emit("submit_team_match", matchData.value)
+        console.log(matchData.value)
 
         matchData.reset()
 
-        goto(`/pairwise?scout=${scout_id}&match=${match_key}&team=${team_key}`)
+        goto(`/pairwise?scout=${scout_id}`)
     }
 </script>
 
