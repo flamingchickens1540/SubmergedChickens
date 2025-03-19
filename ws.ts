@@ -153,7 +153,10 @@ const webSocketServer = {
                         )
                         scout.leave("scout_queue")
                         scout.emit("time_to_scout", [match_key, team_data])
-                        io.to("admin_room").emit("scout_left_queue", username)
+                        io.to("admin_room").emit("robot_left_queue", {
+                            team_data,
+                            scout: username,
+                        })
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
