@@ -13,8 +13,8 @@ export const POST: RequestHandler = async ({
 
     let matches = await prisma.teamMatch.findMany({
         where: {
-            team_key: team_key
-        }
+            team_key: team_key,
+        },
     })
 
     if (matches == null) console.error("Getting team match failed")
@@ -30,17 +30,22 @@ export const POST: RequestHandler = async ({
         algae_results.set(number, algaeScored(match))
     }
 
-    const event_key = await getEventKey() ?? (function () {console.error("No event key found"); return ""})()
+    const event_key =
+        (await getEventKey()) ??
+        (function () {
+            console.error("No event key found")
+            return ""
+        })()
     let results = await prisma.teamEvent.findUnique({
         where: {
             team_key_event_key: {
                 team_key: team_key,
-                event_key: event_key
-            }
-        }
+                event_key: event_key,
+            },
+        },
     })
 
-    if(!results) console.error("No team event found");
+    if (!results) console.error("No team event found")
     results = results as TeamEvent
 
     let ability: string = ""
@@ -81,7 +86,7 @@ function algaeScored(match: TeamMatch): number {
 }
 
 function coralScoreLevels(results: TeamEvent) {
-    let toBeReturned = "";
+    let toBeReturned = ""
     if (results.coralScoreL1) toBeReturned += "1"
     if (results.coralScoreL2) toBeReturned += "2"
     if (results.coralScoreL3) toBeReturned += "3"
@@ -90,21 +95,21 @@ function coralScoreLevels(results: TeamEvent) {
 }
 
 function cleanScoreLevels(results: TeamEvent) {
-    let toBeReturned = "";
+    let toBeReturned = ""
     if (results.cleanScoreL2) toBeReturned += "2"
     if (results.cleanScoreL3) toBeReturned += "3"
     return toBeReturned
 }
 
 function algaeScoreLocations(results: TeamEvent) {
-    let toBeReturned = "";
+    let toBeReturned = ""
     if (results.algaeScoreProcessor) toBeReturned += "P"
     if (results.algaeScoreNet) toBeReturned += "N"
     return toBeReturned
 }
 
 function climbAbility(results: TeamEvent) {
-    let toBeReturned = "";
+    let toBeReturned = ""
     if (results.shallowClimb) toBeReturned += "S"
     if (results.deepClimb) toBeReturned += "D"
     return toBeReturned
