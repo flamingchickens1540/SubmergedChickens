@@ -20,7 +20,7 @@
             // TODO Figure out how to want to manage diff
             diff: one_is_better ? 1 : -1,
             category: category,
-            event_key: data.event_key!,
+            event_key: data.event_key,
             user_id: scout_id.value,
         }
         console.log(comp)
