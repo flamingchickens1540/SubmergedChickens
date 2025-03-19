@@ -6,7 +6,7 @@
 
     const { data }: PageProps = $props()
 
-    let diff = $state(1)
+    let diff = $state(0)
     const scout_id = localStore("scout_id", 0)
 
     let category = $state(data.categories.shift()!)
@@ -49,17 +49,36 @@
             class="{diff === 1
                 ? 'bg-green-500'
                 : 'bg-gunmetal'} row-span-4 rounded-lg"
-            onclick={() => (diff = 1)}>{data.one}</button
+            onclick={() => {
+                if (diff === 1) {
+                    diff = 0
+                } else {
+                    diff = 1
+                }
+            }}>{data.one}</button
         >
         <button
             class="{diff === -1
                 ? 'bg-green-500'
                 : 'bg-gunmetal'} row-span-4 rounded-lg"
-            onclick={() => (diff = -1)}>{data.two}</button
+            onclick={() => {
+                if (diff === -1) {
+                    diff = 0
+                } else {
+                    diff = -1
+                }
+            }}>{data.two}</button
         >
+
         <button
             class="col-span-2 rounded-lg bg-gunmetal"
-            onclick={() => submit()}>Submit Comparison</button
+            onclick={() => submit()}
         >
+            {#if diff == 0}
+                I don't know
+            {:else}
+                Submit Comparison
+            {/if}
+        </button>
     </div>
 </div>
