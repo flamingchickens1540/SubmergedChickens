@@ -1,33 +1,40 @@
 <script lang="ts">
     import { browser } from "$app/environment"
-    import type { PageData } from "./$types"
+    import type { Comparison } from "@prisma/client"
+    import type { PageProps } from "./$types"
+    import { goto } from "$app/navigation"
+    import { localStore } from "@/localStore.svelte"
 
-    const data: PageData = $props()
+    const { data }: PageProps = $props()
 
     let one_is_better = $state(false)
+    const scout_id = localStore("scout_id", 0)
 
     const submit = async () => {
         const category = data.categories.shift()
-        const event_key = (browser && localStorage.getItem("event_key")) || ""
-        // TODO Type after `Brandon/backend` gets merged
-        const comp = {
-            team_A_team_num: data.one,
-            team_A_match_key: data.one_match,
-            team_B_team_num: data.two,
-            team_B_match_key: data.two_match,
+        console.log(data.event_key)
+        const comp: Omit<Comparison, "id"> = {
+            team_A_team_key: data.one,
+            team_A_match_key: data.event_key + "_" + data.one_match!,
+            team_B_team_key: data.two,
+            team_B_match_key: data.two_match!,
             // TODO Figure out how to want to manage diff
             diff: 1,
-            category,
-            event_key,
+            category: category!.name!,
+            event_key: data.event_key!,
+            user_id: scout_id.value,
         }
+        console.log(comp)
 
-        await fetch("/api/submitPairwise", {
+        const res = await fetch("/api/pairwise/submit", {
             method: "POST",
             body: JSON.stringify(comp),
             headers: {
                 "Content-Type": "application/json",
             },
         })
+
+        if (data.categories.length === 0 || !res.ok) goto("/home")
     }
 </script>
 
@@ -36,9 +43,7 @@
 {:else}
     <div class="flex h-dvh flex-col gap-2 p-2 text-center">
         <span class="col-span-2 text-lg">
-            Please select the robot better at <b class="font-bold"
-                >{data.categories[0]}</b
-            >
+            Select the better <b class="font-bold">{data.categories[0].name}</b>
         </span>
         <div
             class="grid h-dvh grid-cols-2 grid-rows-5 gap-2 text-xl font-semibold"
