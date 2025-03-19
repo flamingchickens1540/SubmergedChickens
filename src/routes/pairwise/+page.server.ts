@@ -21,15 +21,15 @@ export const load: PageServerLoad = async ({ params: _, url }) => {
     })
     if (team_matches.length < 2) return redirect(307, "/home")
 
-    // We have to sort by number, not by string, otherwise qm20 and qm2 will be next to each other
+    // NOTE We have to sort by number, not by string, otherwise qm20 and qm2 will be next to each other
     // WARNING This only yields the last two teams if last two match keys are different (Autumn)
     // Otherwise, it will just grab an arbitrary team from the current match
     const sorted = team_matches
-        .map(team_match => [team_match.team_key, team_match.match_key])
-        .sort(
-            (b, a) =>
-                matchKeyToNum(b[1] as string) - matchKeyToNum(a[1] as string)
+        .map(
+            team_match =>
+                [team_match.team_key, team_match.match_key] as [number, string]
         )
+        .sort((b, a) => matchKeyToNum(b[1]) - matchKeyToNum(a[1]))
     console.log(sorted)
 
     const [one, one_match] = sorted.pop()!

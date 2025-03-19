@@ -6,7 +6,7 @@
 
     const { data }: PageProps = $props()
 
-    let one_is_better = $state(false)
+    let diff = $state(1)
     const scout_id = localStore("scout_id", 0)
 
     let category = $state(data.categories.shift()!)
@@ -18,7 +18,8 @@
             team_B_team_key: data.two,
             team_B_match_key: data.two_match,
             // TODO Figure out how to want to manage diff
-            diff: one_is_better ? 1 : -1,
+            // (Can |diff| > 1)
+            diff,
             category: category,
             event_key: data.event_key,
             user_id: scout_id.value,
@@ -45,16 +46,16 @@
     </span>
     <div class="grid h-dvh grid-cols-2 grid-rows-5 gap-2 text-xl font-semibold">
         <button
-            class="{one_is_better
+            class="{diff === 1
                 ? 'bg-green-500'
                 : 'bg-gunmetal'} row-span-4 rounded-lg"
-            onclick={() => (one_is_better = true)}>{data.one}</button
+            onclick={() => (diff = 1)}>{data.one}</button
         >
         <button
-            class="{one_is_better
-                ? 'bg-gunmetal'
-                : 'bg-green-500'} row-span-4 rounded-lg"
-            onclick={() => (one_is_better = false)}>{data.two}</button
+            class="{diff === -1
+                ? 'bg-green-500'
+                : 'bg-gunmetal'} row-span-4 rounded-lg"
+            onclick={() => (diff = -1)}>{data.two}</button
         >
         <button
             class="col-span-2 rounded-lg bg-gunmetal"
