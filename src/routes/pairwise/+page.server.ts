@@ -25,9 +25,7 @@ export const load: PageServerLoad = async ({ params: _, url }) => {
     const two = last_team.team_key
     const two_match = last_team.match_key
 
-    // TODO Create endpoint
-    const categories = await prisma.tag.findMany({})
-    console.log(categories)
+    const categories = ["algae", "coral", "defense"]
 
     return {
         event_key,
