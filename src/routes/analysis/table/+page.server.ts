@@ -17,7 +17,8 @@ export const POST: RequestHandler = async ({
         },
     })
 
-    if (matches === null) console.error(`Getting team matches failed for team ${team_key}`)
+    if (matches === null)
+        console.error(`Getting team matches failed for team ${team_key}`)
 
     let coral_results: Map<number, number> = new Map()
     let algae_results: Map<number, number> = new Map()
