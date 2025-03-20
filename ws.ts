@@ -1,5 +1,4 @@
 import type { UncountedTeamMatch } from "@/types"
-import assert from "assert"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
 
@@ -55,7 +54,6 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
-
                 io.to("admin_room").emit("robot_left_queue", {
                     team_data,
                     scout: username,
@@ -134,6 +132,7 @@ const webSocketServer = {
                         })
                         .join()
                     info(`New Match (${match_key}):${teams_print}`)
+
                     robot_queue = []
 
                     const scout_queue = (
@@ -154,7 +153,10 @@ const webSocketServer = {
                         )
                         scout.leave("scout_queue")
                         scout.emit("time_to_scout", [match_key, team_data])
-                        io.to("admin_room").emit("scout_left_queue", username)
+                        io.to("admin_room").emit("robot_left_queue", {
+                            team_data,
+                            scout: username,
+                        })
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
@@ -215,7 +217,6 @@ const webSocketServer = {
                 leave_scout_queue(scout_id)
 
                 io.to("admin_room").emit("scout_left_queue", scout_id)
-                assert(socket.rooms.size === 0)
             })
         })
     },
