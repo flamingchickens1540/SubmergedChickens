@@ -24,11 +24,11 @@ export const POST: RequestHandler = async ({
     let algae_results: Map<number, number> = new Map()
 
     for (let match of matches) {
-        let number = Number.parseInt(
+        let match_number = Number.parseInt(
             match.match_key.split("_")[1].split("m").at(-1) ?? ""
         )
-        coral_results.set(number, coralScored(match))
-        algae_results.set(number, algaeScored(match))
+        coral_results.set(match_number, coralScored(match))
+        algae_results.set(match_number, algaeScored(match))
     }
 
     const event_key =
