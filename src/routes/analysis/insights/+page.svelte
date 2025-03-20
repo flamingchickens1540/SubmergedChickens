@@ -2,6 +2,7 @@
     import LineChart from "@/components/charts/LineChart.svelte"
     import type { GraphData } from "./+page.server"
     import type { PageProps } from "./$types"
+    import { goto } from "$app/navigation"
 
     const { data }: PageProps = $props()
     const teams_data = data.processed_team_events
@@ -81,7 +82,14 @@
     }
 </script>
 
-<h1 class="text-center text-3xl">Analysis</h1>
+<header
+    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
+>
+    <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
+        >Return Home</button
+    >
+    <span class="self-center">Analysis Page</span>
+</header>
 <div class="m-auto grid h-screen w-full grid-cols-2 grid-rows-6 gap-1 p-2">
     <div
         class="col-span-1 col-start-1 row-span-2 grid grid-rows-1 overflow-y-scroll rounded border border-solid border-white p-2 text-center"
@@ -106,13 +114,11 @@
         No Robot Photo Yet
     </div>
     <div
-        class="col-span-1 col-start-2 row-span-2 row-start-2 content-center overflow-scroll rounded border border-solid border-white p-2 text-left"
+        class="col-span-1 col-start-2 row-span-2 row-start-2 content-center overflow-y-scroll rounded border p-2 text-left"
     >
-        <ul>
+        <ul class="grid grid-cols-1 gap-2">
             {#each dataOptions as dataOptions}
-                <div
-                    class="mb-2 rounded border border-solid border-white bg-gunmetal p-2"
-                >
+                <div class="rounded bg-gunmetal p-2">
                     <label>
                         <input
                             type="radio"
