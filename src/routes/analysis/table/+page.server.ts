@@ -46,7 +46,7 @@ export const POST: RequestHandler = async ({
         },
     })
 
-    if (!results) console.error("No team event found")
+    if (!results) console.error(`No team event found for ${team_key} at ${event_key}`)
     results = results as TeamEvent
 
     let ability: string = ""
