@@ -81,6 +81,9 @@
     })
 
     socket.on("robot_left_queue", ({ team_data, scout }) => {
+        const scout_index = scout_queue.indexOf(scout)
+        if (scout_index !== -1) scout_queue.splice(scout_index, 1)
+
         const index = robot_queue.findIndex(
             ({ team_key, color: _ }) => team_key === team_data.team_key
         )
