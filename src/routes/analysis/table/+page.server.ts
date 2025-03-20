@@ -1,54 +1,57 @@
-import { error } from "@/consoleUtils"
-import type { RequestHandler } from "../$types"
+import { warn } from "@/consoleUtils"
 import { prisma } from "@/prisma"
-import type { Team, TeamEvent, TeamMatch } from "@prisma/client"
-import { json } from "@sveltejs/kit"
-import Action from "../../match-scout/Action.svelte"
+import type { PageServerLoad } from "./$types"
+import type { TeamEvent, TeamMatch } from "@prisma/client"
+import { json, redirect } from "@sveltejs/kit"
 import { getEventKey } from "@/scripts/dbUtil"
+import { matchKeyToNumber } from "@/utils"
 
-export const POST: RequestHandler = async ({
+export const load: PageServerLoad = async ({
     request,
 }: any): Promise<Response> => {
     const team_key: number = await request.json()
 
-    let matches = await prisma.teamMatch.findMany({
+    const team_matches = await prisma.teamMatch.findMany({
         where: {
             team_key: team_key,
         },
     })
 
-    if (matches === null)
-        console.error(`Getting team matches failed for team ${team_key}`)
+    if (team_matches.length === 0) {
+        warn(`No TeamMatches found for team ${team_key}`)
+        return redirect(307, "/home")
+    }
 
-    let coral_results: Map<number, number> = new Map()
-    let algae_results: Map<number, number> = new Map()
+    const coral_results: Map<number, number> = new Map()
+    const algae_results: Map<number, number> = new Map()
 
-    for (let match of matches) {
-        let match_number = Number.parseInt(
-            match.match_key.split("_")[1].split("m").at(-1) ?? ""
-        )
-        coral_results.set(match_number, coralScored(match))
-        algae_results.set(match_number, algaeScored(match))
+    for (const team_match of team_matches) {
+        const match_number = matchKeyToNumber(team_match.match_key)
+
+        coral_results.set(match_number, coralScored(team_match))
+        algae_results.set(match_number, algaeScored(team_match))
     }
 
     const event_key =
         (await getEventKey()) ??
-        (function () {
+        (() => {
             console.error("No event key found")
-            return ""
+            return redirect(307, "/home")
         })()
-    let results = await prisma.teamEvent.findUnique({
+
+    const results = (await prisma.teamEvent.findUnique({
         where: {
             team_key_event_key: {
                 team_key: team_key,
                 event_key: event_key,
             },
         },
-    })
+    })) as TeamEvent | null
 
-    if (!results)
-        console.error(`No team event found for ${team_key} at ${event_key}`)
-    results = results as TeamEvent
+    if (results === null) {
+        warn(`No team events found for ${team_key} at ${event_key}`)
+        return redirect(307, "/home")
+    }
 
     let ability: string = ""
     ability += `Coral:${coralScoreLevels(results)};`
