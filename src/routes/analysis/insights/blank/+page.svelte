@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
+    import { Home } from "lucide-svelte"
 </script>
 
 <div class="flex min-h-dvh flex-col items-center justify-center gap-4 p-6">
@@ -8,6 +9,6 @@
     </div>
     <button
         class="rounded bg-gunmetal px-4 py-2 text-center text-xl"
-        onclick={() => goto("/home")}>Return Home</button
+        onclick={() => goto("/home")}><Home /></button
     >
 </div>

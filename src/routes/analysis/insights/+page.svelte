@@ -3,6 +3,7 @@
     import type { GraphData } from "./+page.server"
     import type { PageProps } from "./$types"
     import { goto } from "$app/navigation"
+    import { Home } from "lucide-svelte"
 
     const { data }: PageProps = $props()
     const teams_data = data.processed_team_events
@@ -86,9 +87,9 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
-        >Return Home</button
+        ><Home /></button
     >
-    <span class="self-center">Analysis Page</span>
+    <span class="self-center align-middle">Analysis Page</span>
 </header>
 <div class="m-auto grid h-screen w-full grid-cols-2 grid-rows-6 gap-1 p-2">
     <div

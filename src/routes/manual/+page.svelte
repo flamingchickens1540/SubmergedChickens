@@ -1,6 +1,7 @@
 <script>
     import { goto } from "$app/navigation"
     import { localStore } from "@/localStore.svelte"
+    import { Home } from "lucide-svelte"
 
     let team_key = $state("")
     let match = $state("")
@@ -18,7 +19,7 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
-        >Return Home</button
+        ><Home /></button
     >
     <span class="self-center">Manual Scouting</span>
 </header>

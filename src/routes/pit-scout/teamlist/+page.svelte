@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ClipboardList } from "lucide-svelte"
+    import { ClipboardList, Home } from "lucide-svelte"
     import { Camera } from "lucide-svelte"
 
     import { goto } from "$app/navigation"
@@ -11,7 +11,7 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
-        >Return Home</button
+        ><Home /></button
     >
     <span class="self-center">Manual Scouting</span>
 </header>
