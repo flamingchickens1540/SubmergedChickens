@@ -1,18 +1,14 @@
 <script lang="ts">
     import type { FrontendAutoActionData } from "$lib/types"
-    import { MoveUp, MoveDown, X } from "lucide-svelte"
+    import { X } from "lucide-svelte"
 
     let {
         action_data = $bindable(),
         index,
-        sub_timeline_len,
-        shift,
         remove,
     }: {
         action_data: FrontendAutoActionData
         index: number
-        sub_timeline_len: number
-        shift: (index: number, change: -1 | 1) => void
         remove: (index: number) => void
     } = $props()
 
@@ -32,20 +28,6 @@
 >
     <span class="w-auto shrink text-clip">{action_data.action}</span>
     <div class="flex shrink-0 flex-row content-center justify-end gap-4">
-        <button
-            class="disabled:opacity-30 group-first:pointer-events-none group-first:opacity-30"
-            onclick={() => shift(index, 1)}
-            disabled={sub_timeline_len == index + 1}
-        >
-            <MoveUp />
-        </button>
-        <button
-            class="disabled:opacity-30 group-last:pointer-events-none group-last:opacity-30"
-            onclick={() => shift(index, -1)}
-            disabled={index == 0}
-        >
-            <MoveDown />
-        </button>
         <button onclick={() => remove(index)}>
             <X />
         </button>
