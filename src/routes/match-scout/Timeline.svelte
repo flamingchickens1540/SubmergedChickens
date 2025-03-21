@@ -65,7 +65,7 @@
     {#each timeline.auto as _, i}
         <Action
             action_data={timeline.auto[auto_len - i - 1]}
-            index={tele_len + auto_len - i - 1}
+            index={auto_len - i - 1}
             remove={remove_auto}
         />
     {/each}
