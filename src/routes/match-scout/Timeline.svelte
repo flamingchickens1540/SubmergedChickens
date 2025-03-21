@@ -58,7 +58,7 @@
             remove={remove_tele}
         />
     {/each}
-    <div class="flex w-full justify-between rounded bg-gunmetal p-2">
+    <div class="flex w-full justify-evenly rounded bg-gunmetal p-2">
         <button class={can_move_up} onclick={moveUp}><MoveUp /></button>
         <button class={can_move_down} onclick={moveDown}><MoveDown /></button>
     </div>
