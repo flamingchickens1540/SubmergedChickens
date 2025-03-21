@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({
 
     if (team_matches.length === 0) {
         warn(`No TeamMatches found for team ${team_key}`)
-        return redirect(307, "/home")
+        return redirect(307, "/analysis/blank")
     }
 
     const coral_results: Map<number, number> = new Map()
@@ -32,25 +32,25 @@ export const load: PageServerLoad = async ({
         algae_results.set(match_number, algaeScored(team_match))
     }
 
-    const event_key =
-        (await getEventKey()) ??
-        (() => {
-            console.error("No event key found")
-            return redirect(307, "/home")
-        })()
+    const event_key = (await getEventKey()) ?? ""
+
+    if (event_key === "") {
+        console.error("No event key found")
+        return redirect(307, "/analysis/blank")
+    }
 
     const results = (await prisma.teamEvent.findUnique({
         where: {
             team_key_event_key: {
-                team_key: team_key,
-                event_key: event_key,
+                team_key,
+                event_key,
             },
         },
     })) as TeamEvent | null
 
     if (results === null) {
         warn(`No team events found for ${team_key} at ${event_key}`)
-        return redirect(307, "/home")
+        return redirect(307, "/analysis/blank")
     }
 
     let ability: string = ""
