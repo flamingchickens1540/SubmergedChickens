@@ -6,20 +6,26 @@ import { json, redirect } from "@sveltejs/kit"
 import { getEventKey } from "@/scripts/dbUtil"
 import { matchKeyToNumber } from "@/utils"
 
-export const load: PageServerLoad = async ({
+export const GET: PageServerLoad = async ({
     request,
 }: any): Promise<Response> => {
     const team_key: number = await request.json()
 
+    const event_key = (await getEventKey()) ?? ""
+    if (event_key === "") {
+        console.error("No event key found")
+        // TODO: Azalea, put good thing here <3
+    }
+
     const team_matches = await prisma.teamMatch.findMany({
         where: {
             team_key: team_key,
+            event_key: event_key
         },
     })
 
     if (team_matches.length === 0) {
         warn(`No TeamMatches found for team ${team_key}`)
-        return redirect(307, "/analysis/blank")
     }
 
     const coral_results: Map<number, number> = new Map()
@@ -32,13 +38,6 @@ export const load: PageServerLoad = async ({
         algae_results.set(match_number, algaeScored(team_match))
     }
 
-    const event_key = (await getEventKey()) ?? ""
-
-    if (event_key === "") {
-        console.error("No event key found")
-        return redirect(307, "/analysis/blank")
-    }
-
     const results = (await prisma.teamEvent.findUnique({
         where: {
             team_key_event_key: {
@@ -48,7 +47,7 @@ export const load: PageServerLoad = async ({
         },
     })) as TeamEvent | null
 
-    if (results === null) {
+    if (results == null) {
         warn(`No team events found for ${team_key} at ${event_key}`)
         return redirect(307, "/analysis/blank")
     }
@@ -56,7 +55,7 @@ export const load: PageServerLoad = async ({
     let ability: string = ""
     ability += `Coral:${coralScoreLevels(results)};`
     ability += `Algae:${algaeScoreLocations(results)}`
-    ability += `Clean:${cleanScoreLevels(results)};`
+    // ability += `Clean:${cleanScoreLevels(results)};`
     ability += `Climb:${climbAbility(results)}`
 
     return json({
@@ -99,12 +98,12 @@ function coralScoreLevels(results: TeamEvent) {
     return toBeReturned
 }
 
-function cleanScoreLevels(results: TeamEvent) {
-    let toBeReturned = ""
-    if (results.cleanScoreL2) toBeReturned += "2"
-    if (results.cleanScoreL3) toBeReturned += "3"
-    return toBeReturned
-}
+// function cleanScoreLevels(results: TeamEvent) {
+//     let toBeReturned = ""
+//     if (results.cleanScoreL2) toBeReturned += "2"
+//     if (results.cleanScoreL3) toBeReturned += "3"
+//     return toBeReturned
+// }
 
 function algaeScoreLocations(results: TeamEvent) {
     let toBeReturned = ""
