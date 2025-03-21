@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { browser } from "$app/environment"
     import { goto } from "$app/navigation"
     import { onMount } from "svelte"
     import { io, Socket } from "socket.io-client"
     import { LocalStore, localStore } from "@/localStore.svelte"
 
     let username: LocalStore<string> = $state(localStore("username", ""))
-    let scout_id: LocalStore<number> = localStore("scout_id", null)
+    let scout_id: LocalStore<number | null> = localStore("scout_id", null)
     let waiting = $state(false)
 
     onMount(() => {
@@ -34,7 +33,7 @@
         if (!res.ok) return
 
         const id = await res.json()
-        browser && window.localStorage.setItem("scout_id", id)
+        scout_id.value = id
 
         goto("/home")
     }
