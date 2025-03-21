@@ -16,7 +16,7 @@
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between items-center border-b-2 border-white/10 p-2 text-lg font-semibold"
+    class="font-heading flex flex-row items-center justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
         ><Home /></button
