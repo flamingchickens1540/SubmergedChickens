@@ -51,7 +51,7 @@ export const GET: PageServerLoad = async ({
         warn(`No team events found for ${team_key} at ${event_key}`)
         // TODO: Azalea, put good thing here <3
     }
-    results = results as TeamEvent;
+    results = results as TeamEvent
 
     let ability: string = ""
     ability += `Coral:${coralScoreLevels(results)};`
