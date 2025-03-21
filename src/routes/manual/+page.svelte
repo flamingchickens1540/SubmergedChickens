@@ -21,7 +21,7 @@
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
         ><Home /></button
     >
-    <span class="self-center">Manual Scouting</span>
+    <span class="flex flex-1 justify-center self-center">Manual Scouting</span>
 </header>
 
 <div class="m-2 flex flex-col gap-2">
