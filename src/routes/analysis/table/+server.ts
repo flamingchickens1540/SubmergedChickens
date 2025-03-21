@@ -20,7 +20,7 @@ export const GET: PageServerLoad = async ({
     const team_matches = await prisma.teamMatch.findMany({
         where: {
             team_key: team_key,
-            event_key: event_key
+            event_key: event_key,
         },
     })
 
