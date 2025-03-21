@@ -16,12 +16,12 @@
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
+    class="font-heading flex flex-row justify-between items-center border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
         ><Home /></button
     >
-    <span class="flex flex-1 justify-center self-center">Manual Scouting</span>
+    <span class="flex-1 text-center">Manual Scouting</span>
 </header>
 
 <div class="m-2 flex flex-col gap-2">

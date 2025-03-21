@@ -84,12 +84,12 @@
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
+    class="font-heading flex flex-row items-center justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <button class="rounded bg-gunmetal p-2" onclick={() => goto("/home")}
         ><Home /></button
     >
-    <span class="flex flex-1 justify-center self-center">Analysis Page</span>
+    <span class="flex-1 text-center">Analysis Page</span>
 </header>
 <div class="m-auto grid h-screen w-full grid-cols-2 grid-rows-6 gap-1 p-2">
     <div
