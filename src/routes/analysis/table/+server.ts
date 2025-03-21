@@ -38,7 +38,7 @@ export const GET: PageServerLoad = async ({
         algae_results.set(match_number, algaeScored(team_match))
     }
 
-    const results = (await prisma.teamEvent.findUnique({
+    let results = (await prisma.teamEvent.findUnique({
         where: {
             team_key_event_key: {
                 team_key,
@@ -49,8 +49,9 @@ export const GET: PageServerLoad = async ({
 
     if (results == null) {
         warn(`No team events found for ${team_key} at ${event_key}`)
-        return redirect(307, "/analysis/blank")
+        // TODO: Azalea, put good thing here <3
     }
+    results = results as TeamEvent;
 
     let ability: string = ""
     ability += `Coral:${coralScoreLevels(results)};`
