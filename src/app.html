@@ -2,14 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" href="%sveltekit.assets%/flamingChicken.png" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        <meta name="theme-color" content="#ffffff" />
+        <link
+            rel="apple-touch-icon"
+            href="%sveltekit.assets%/icon-192x192.png"
         />
+        <link
+            rel="apple-touch-icon-precomposed"
+            href="%sveltekit.assets%/icon-192x192.png"
+        />
+        <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="black-translucent"
+        />
+        <link
+            rel="icon"
+            sizes="196x196"
+            href="%sveltekit.assets%/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <title>Submerged Chickens</title>
+        <meta name="viewport" content="width=device-width" />
         %sveltekit.head%
     </head>
-    <body data-sveltekit-preload-data="hover">
+    <body data-sveltekit-preload-data="hover" style="background-color: #2c2c2c">
         <div style="display: contents">%sveltekit.body%</div>
     </body>
 </html>
