@@ -1,7 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import Header from "./Header.svelte"
     import type { UncountedTeamMatch } from "@/types"
 
     const {
@@ -19,12 +18,6 @@
     onswipe={swipeHandler}
     class="min-h-svh"
 >
-    <Header
-        game_stage={"Prematch"}
-        team_key={match_data.team_key}
-        page_state="None"
-        next_page={() => goto("/match-scout/auto")}
-    />
     <div class="grid flex-grow place-items-center overflow-y-scroll">
         <div class="text-2xl">You're Scouting Team:</div>
         <div

@@ -1,6 +1,5 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
-    import Header from "./Header.svelte"
     import ScoreAlgae from "./ScoreAlgae.svelte"
     import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
@@ -40,19 +39,6 @@
     const intake = () => (page_state = "Intake")
 
     const bg_color = "bg-steel_blue"
-
-    const prev_page = $derived(
-        page_state == "None"
-            ? () => {
-                  goto(
-                      `/match-scout/prematch?team=${match_data.team_key}&match=${match_data.match_key}&color=${color}`
-                  )
-              }
-            : undefined
-    )
-    const next_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/tele") : undefined
-    )
 </script>
 
 <svelte:head>
@@ -63,14 +49,6 @@
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-steel_blue bg-mix-steel_blue bg-mix-amount-10"
 >
-    <Header
-        game_stage={"Auto"}
-        team_key={match_data.team_key}
-        {page_state}
-        {prev_page}
-        {next_page}
-        bind:timeline={match_data.timeline}
-    />
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
             <div
@@ -118,5 +96,6 @@
     <Timeline
         bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"}
         bind:displaying={displaying_timeline}
+        bind:timeline={match_data.timeline}
     />
 </div>

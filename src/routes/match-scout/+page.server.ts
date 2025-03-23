@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ url }) => {
 
     return {
         match_key,
-        team_key,
+        team_key: Number.parseInt(team_key),
         color: color as "blue" | "red",
         tags,
     }

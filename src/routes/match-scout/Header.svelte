@@ -21,6 +21,10 @@
         next_page?: () => void
         timeline?: Timeline
     } = $props()
+
+    const disabled = "pointer-events-none opacity-30"
+    const can_next = $derived(game_stage === "Notes" ? disabled : "")
+    const can_prev = $derived(game_stage === "Prematch" ? disabled : "")
 </script>
 
 <header
@@ -37,24 +41,11 @@
         <UndoButton bind:timeline />
     {/if}
     <div class="align-item-center flex gap-2">
-        <button
-            onclick={prev_page}
-            class="disabled:opacity-30"
-            disabled={prev_page == null}
-        >
+        <button onclick={prev_page} class={can_prev}>
             <ArrowLeft />
         </button>
-        <span
-            >{page_state == "None" || page_state == null
-                ? game_stage == "Prematch"
-                    ? "Prematch"
-                    : game_stage.slice(0, 4)
-                : page_state}</span
-        >
-        <button
-            onclick={next_page}
-            class={next_page == null ? "pointer-events-none opacity-30" : ""}
-        >
+        <span class="select-none">{game_stage}</span>
+        <button onclick={next_page} class={can_next}>
             <ArrowRight />
         </button>
     </div>

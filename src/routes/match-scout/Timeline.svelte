@@ -1,7 +1,6 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type { Timeline, UncountedTeamMatch } from "$lib/types"
-    import { localStore } from "@/localStore.svelte"
+    import type { Timeline } from "$lib/types"
     import Action from "./Action.svelte"
     import { MoveDown, MoveUp } from "lucide-svelte"
 

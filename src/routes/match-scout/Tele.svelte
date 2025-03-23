@@ -1,6 +1,5 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
-    import Header from "./Header.svelte"
     import ScoreAlgae from "./ScoreAlgae.svelte"
     import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
@@ -57,15 +56,6 @@
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
 >
-    <Header
-        game_stage={"Tele"}
-        team_key={match_data.team_key}
-        {page_state}
-        {prev_page}
-        {next_page}
-        bind:timeline={match_data.timeline}
-    />
-
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
             <div

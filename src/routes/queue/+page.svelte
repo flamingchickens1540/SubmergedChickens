@@ -25,7 +25,7 @@
         ]) => {
             browser && localStorage.setItem("matchData", "")
             goto(
-                `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
+                `/match-scout?match=${match_key}&team=${team_key}&color=${color}`
             )
         }
     )

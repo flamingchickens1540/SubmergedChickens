@@ -44,13 +44,6 @@
         if ((event.detail.direction = "right")) goto("/match-scout/postmatch")
     }}
 >
-    <Header
-        game_stage={"Notes"}
-        team_key={match_data.team_key}
-        page_state="None"
-        prev_page={() => goto("/match-scout/postmatch")}
-        bind:timeline={match_data.timeline}
-    />
     <div class="m-2 flex flex-grow flex-col gap-2 rounded p-2">
         <span class="font-heading text-xl font-semibold">Notes</span>
 

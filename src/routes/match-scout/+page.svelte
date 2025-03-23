@@ -12,12 +12,17 @@
     import Postmatch from "./Postmatch.svelte"
     import Notes from "./Notes.svelte"
     import Header from "./Header.svelte"
+    import { LocalStore, localStore } from "@/localStore.svelte"
 
     const { data }: PageProps = $props()
 
+    const scout_id: LocalStore<number | null> = $state(
+        localStore("scout_id", null)
+    )
+
     let match_data: UncountedTeamMatch = $state({
-        match_key: "",
-        team_key: 0,
+        match_key: data.match_key,
+        team_key: data.team_key,
         auto_start_location: AutoStart.Far,
         auto_leave_start: false,
         timeline: {
@@ -28,33 +33,33 @@
         skill: 3,
         notes: "",
         incap_time: [],
-        scout_id: 0,
+        scout_id: scout_id.value,
         tags: [],
     })
 
-    let game_stage: "prematch" | "auto" | "tele" | "post" | "notes" =
-        $state("prematch")
+    let game_stage: "Prematch" | "Auto" | "Tele" | "Post" | "Notes" =
+        $state("Prematch")
     let page_state: AutoPageState = $state("None")
 
     function next_game_stage() {
         game_stage =
-            game_stage === "prematch"
-                ? "auto"
-                : game_stage === "auto"
-                  ? "tele"
-                  : game_stage === "tele"
-                    ? "post"
-                    : "notes"
+            game_stage === "Prematch"
+                ? "Auto"
+                : game_stage === "Auto"
+                  ? "Tele"
+                  : game_stage === "Tele"
+                    ? "Post"
+                    : "Notes"
     }
     function prev_game_stage() {
         game_stage =
-            game_stage === "notes"
-                ? "post"
-                : game_stage === "post"
-                  ? "tele"
-                  : game_stage === "tele"
-                    ? "auto"
-                    : "prematch"
+            game_stage === "Notes"
+                ? "Post"
+                : game_stage === "Post"
+                  ? "Tele"
+                  : game_stage === "Tele"
+                    ? "Auto"
+                    : "Prematch"
     }
 </script>
 
@@ -62,21 +67,19 @@
     {game_stage}
     {page_state}
     team_key={match_data.team_key}
-    prev_page={next_game_stage}
-    next_page={prev_game_stage}
+    prev_page={prev_game_stage}
+    next_page={next_game_stage}
     bind:timeline={match_data.timeline}
 />
 
-{#if game_stage === "prematch"}
-    <Prematch
-        color={data.color}
-        bind:match_data
-    />{:else if game_stage === "auto"}
+{#if game_stage === "Prematch"}
+    <Prematch color={data.color} bind:match_data />
+{:else if game_stage === "Auto"}
     <Auto color={data.color} bind:match_data />
-{:else if game_stage === "tele"}
-    <Tele bind:match_data />{:else if game_stage === "post"}
-    <Postmatch
-        tags={data.tags}
-        bind:match_data
-    />{:else if game_stage === "notes"}
-    <Notes bind:match_data />{/if}
+{:else if game_stage === "Tele"}
+    <Tele bind:match_data />
+{:else if game_stage === "Post"}
+    <Postmatch tags={data.tags} bind:match_data />
+{:else if game_stage === "Notes"}
+    <Notes bind:match_data />
+{/if}
