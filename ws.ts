@@ -46,6 +46,11 @@ const webSocketServer = {
 
             socket.on("join_queue", () => {
                 const username = sid_to_username.get(socket.id)
+                if (!username) {
+                    warn(`Undefined scout joined queue. ID: ${socket.id}`)
+                    socket.disconnect()
+                    return
+                }
 
                 const team_data = robot_queue.pop()
                 if (!team_data) {
@@ -138,7 +143,10 @@ const webSocketServer = {
                     const scout_queue = (
                         await io.in("scout_queue").fetchSockets()
                     ).reverse()
-                    for (const scout of scout_queue) {
+                    for (const scout of scout_queue.filter(
+                        scout =>
+                            scout && scout.id && sid_to_username.get(scout.id)
+                    )) {
                         const team_data = teams.pop()
                         if (!team_data) break
 

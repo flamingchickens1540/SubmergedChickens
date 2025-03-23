@@ -42,7 +42,7 @@
 
 <div class="flex h-dvh flex-col gap-2 p-2 text-center">
     <span class="col-span-2 text-lg">
-        Which robot is better at <b class="font-bold">{category}</b>
+        Which robot is better at <b class="font-bold">offense</b>
     </span>
     <div class="grid h-dvh grid-cols-2 grid-rows-5 gap-2 text-xl font-semibold">
         <button

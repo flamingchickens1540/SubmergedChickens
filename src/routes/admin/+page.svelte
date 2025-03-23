@@ -99,7 +99,7 @@
             scout,
             displaying_tk: true,
         }
-        pending_team_matches.value.push(pending_team_match)
+        pending_team_matches.value.unshift(pending_team_match)
     })
 
     socket.on("new_team_match", (team_match: UncountedTeamMatch) => {
@@ -124,10 +124,10 @@
             5
         ) {
             // Handles the case where a new match is queued before an old team_match is submitted
-            past_team_matches.value.push(submitted_team_match)
+            past_team_matches.value.unshift(submitted_team_match)
         } else {
             // Handles the case where a new match hasn't been queued yet
-            submitted_team_matches.value.push(submitted_team_match)
+            submitted_team_matches.value.unshift(submitted_team_match)
         }
     })
 
@@ -166,7 +166,7 @@
         next_red_robots.value = ["", "", ""]
         next_blue_robots.value = ["", "", ""]
 
-        past_team_matches.value.push(...submitted_team_matches.value)
+        past_team_matches.value.unshift(...submitted_team_matches.value)
         submitted_team_matches.value = []
     }
 
@@ -237,10 +237,6 @@
     const can_autoload = $derived(next_match_key.value === "" ? disabled : "")
 
     const can_clear_rq = $derived(robot_queue.length === 0 ? disabled : "")
-
-    const can_clear_pm = $derived(
-        past_team_matches.value.length === 0 ? disabled : ""
-    )
 </script>
 
 <div
@@ -374,11 +370,10 @@
             class="rounded bg-eerie_black {can_clear_rq} p-2"
             onclick={clear_robot_queue}>Clear Robot Queue</button
         ><button
-            class="rounded bg-eerie_black {can_clear_pm} p-2"
+            class="rounded bg-eerie_black p-2"
             onclick={() => {
                 pending_team_matches.value = []
-                past_team_matches.value = []
-            }}>Clear Past Matches</button
+            }}>Clear Pending Matches</button
         ><button class="rounded bg-eerie_black" onclick={update_team_matches}
             >Verify Data TBA</button
         >
