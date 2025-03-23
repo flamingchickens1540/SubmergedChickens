@@ -1,6 +1,6 @@
 import { API_KEY } from "$env/static/private"
 import { getEventKey } from "./dbUtil"
-import { warn } from "@/consoleUtils"
+import { info, warn } from "@/consoleUtils"
 import { Endgame } from "@prisma/client"
 import { prisma } from "$lib/prisma"
 
@@ -29,6 +29,9 @@ export async function TBAUpdateMatchData(match_key: string) {
     const { red, blue } = parseTeamKeysFromMatch(match)
 
     const scores = match["score_breakdown"]
+    if (!scores) {
+        info(`TBA does not have data for ${match_key}`)
+    }
     const recorded_endgames = await prisma.teamMatch.findMany({
         where: {
             match_key: {
@@ -101,14 +104,13 @@ function determineEndgame(
         return Endgame.Deep
     }
     if (
-        scout_endgame == Endgame.Fail ||
-        scout_endgame == Endgame.Deep ||
-        scout_endgame == Endgame.Shallow
+        scout_endgame === Endgame.Fail || // We just want to count failing as having parked
+        scout_endgame === Endgame.Deep ||
+        scout_endgame === Endgame.Shallow ||
+        tba_endgame === "Parked"
     ) {
-        return Endgame.Fail
-    }
-    if (tba_endgame === "Parked") {
         return Endgame.Park
     }
+
     return Endgame.None
 }

@@ -1,3 +1,4 @@
+import { prisma } from "@/prisma"
 import { SVD } from "svd-js"
 
 export type Comparison<T> = {
@@ -79,7 +80,23 @@ export function analyze_comparisons<T>(
     return { rankings, stability, agreement }
 }
 
-function test() {
+async function test() {
+    const real_dataset = (
+        await prisma.comparison.findMany({
+            where: {
+                event_key: {
+                    equals: "2025orwil", // TODO Grab from db
+                },
+            },
+        })
+    ).map(set => {
+        return {
+            teamA: set.team_A_team_key,
+            teamB: set.team_B_team_key,
+            diff: -set.diff,
+        }
+    })
+
     const testDataSet: Comparison<number>[] = [
         { teamA: 1001, teamB: 1007, diff: 2 },
         { teamA: 1001, teamB: 1002, diff: 1 },
@@ -154,8 +171,7 @@ function test() {
         { teamA: 1115, teamB: 1116, diff: 0 },
     ]
 
-    console.log(analyze_comparisons(testDataSet))
-    console.log(analyze_comparisons(sixteenDataSet))
+    console.log(analyze_comparisons(real_dataset))
 }
 
-// test()
+test()
