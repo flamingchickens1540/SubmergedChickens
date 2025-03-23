@@ -1,21 +1,19 @@
 <script lang="ts">
     import type { AutoPageState, Timeline } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
-    import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
-
-    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
     let {
         team_key,
         game_stage,
-        page_state = $bindable(),
+        color,
         next_page,
         prev_page,
         timeline = $bindable(),
     }: {
         team_key: number
         game_stage: string
+        color: string
         page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
@@ -31,7 +29,7 @@
     class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span
-        style={team_color.value === "blue"
+        style={color === "blue"
             ? "color: #2196F3 !important"
             : "color: #F44336 !important"}
     >

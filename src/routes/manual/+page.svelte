@@ -5,7 +5,6 @@
 
     let team_key = $state("")
     let match = $state("")
-    let event = $state(localStore("event_key", ""))
     let color = $state("")
 
     let disabled = $derived(
@@ -37,12 +36,6 @@
         bind:value={match}
     ></textarea>
 
-    <textarea
-        class="w-full rounded bg-gunmetal p-4"
-        placeholder="Event Key"
-        bind:value={event.value}
-    ></textarea>
-
     <select
         name="color"
         bind:value={color}
@@ -56,8 +49,7 @@
     <button
         class="w-full rounded bg-gunmetal p-4 text-lg font-semibold {disabled}"
         onclick={() =>
-            goto(
-                `/match-scout/prematch?match=${match}&team=${team_key}&color=${color}`
-            )}>Scout</button
+            goto(`/match-scout?match=${match}&team=${team_key}&color=${color}`)}
+        >Scout</button
     >
 </div>

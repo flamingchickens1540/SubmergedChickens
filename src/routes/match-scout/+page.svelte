@@ -16,15 +16,13 @@
 
     const { data }: PageProps = $props()
 
-    const scout_id: LocalStore<number | null> = $state(
-        localStore("scout_id", null)
-    )
+    const scout_id: LocalStore<number> = $state(localStore("scout_id", -1))
 
     let match_data: UncountedTeamMatch = $state({
         match_key: data.match_key,
         team_key: data.team_key,
         auto_start_location: AutoStart.Far,
-        auto_leave_start: false,
+        auto_leave_start: true,
         timeline: {
             auto: [],
             tele: [],
@@ -66,6 +64,7 @@
 <Header
     {game_stage}
     {page_state}
+    color={data.color}
     team_key={match_data.team_key}
     prev_page={prev_game_stage}
     next_page={next_game_stage}
