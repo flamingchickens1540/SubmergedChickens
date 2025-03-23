@@ -1,48 +1,26 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
-
-    import Header from "../Header.svelte"
-    import ScoreAlgae from "../ScoreAlgae.svelte"
-    import CleanAlgae from "../CleanAlgae.svelte"
-    import ScoreCoral from "../ScoreCoral.svelte"
-    import Intake from "../Intake.svelte"
-    import SucceedFail from "../SucceedFail.svelte"
-
+    import Header from "./Header.svelte"
+    import ScoreAlgae from "./ScoreAlgae.svelte"
+    import CleanAlgae from "./CleanAlgae.svelte"
+    import ScoreCoral from "./ScoreCoral.svelte"
+    import Intake from "./Intake.svelte"
+    import SucceedFail from "./SucceedFail.svelte"
     import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
-
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import { localStore } from "@/localStore.svelte"
-    import { AutoStart, Endgame, AutoAction } from "@prisma/client"
+    import { AutoAction } from "@prisma/client"
+    import Timeline from "./Timeline.svelte"
 
-    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
-
-    // NOTE The passed object will only be set if there's nothing there
-    // Meaning this object should never actually get set
-    let matchData = $state(
-        localStore<UncountedTeamMatch>("matchData", {
-            event_key: "",
-            match_key: "",
-            team_key: 0,
-            auto_start_location: AutoStart.Far,
-            auto_leave_start: false,
-            timeline: {
-                auto: [],
-                tele: [],
-            },
-            endgame: Endgame.None,
-            skill: 3,
-            notes: "",
-            incap_time: [],
-            scout_id: 0,
-            tags: [],
-        })
-    )
+    const {
+        color,
+        match_data = $bindable(),
+    }: { color: "red" | "blue"; match_data: UncountedTeamMatch } = $props()
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
             case "right":
                 goto(
-                    `/match-scout/prematch?match=${matchData.value.match_key}&team=${matchData.value.team_key}&color=${team_color.value}`
+                    `/match-scout/prematch?match=${match_data.match_key}&team=${match_data.team_key}&color=${color}`
                 )
                 break
             case "left":
@@ -53,6 +31,8 @@
 
     let page_state: AutoPageState = $state("None")
     let action_state: AutoAction | null = $state(null)
+
+    let displaying_timeline = $state(false)
 
     const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")
@@ -65,7 +45,7 @@
         page_state == "None"
             ? () => {
                   goto(
-                      `/match-scout/prematch?team=${matchData.value.team_key}&match=${matchData.value.match_key}&color=${team_color.value}`
+                      `/match-scout/prematch?team=${match_data.team_key}&match=${match_data.match_key}&color=${color}`
                   )
               }
             : undefined
@@ -85,11 +65,11 @@
 >
     <Header
         game_stage={"Auto"}
-        team_key={matchData.value.team_key}
+        team_key={match_data.team_key}
         {page_state}
         {prev_page}
         {next_page}
-        bind:timeline={matchData.value.timeline}
+        bind:timeline={match_data.timeline}
     />
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
@@ -123,20 +103,20 @@
             <SucceedFail
                 bind:page_state
                 bind:action_state
-                bind:actions={matchData.value.timeline.auto}
+                bind:actions={match_data.timeline.auto}
             />
         {/if}
     </div>
 
-    <!-- <button -->
-    <!--     class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold" -->
-    <!--     onclick={(e: Event) => { -->
-    <!--         e.stopPropagation() -->
-    <!--         displaying_timeline = true -->
-    <!--     }}>Show Timeline</button -->
-    <!-- > -->
-    <!-- <Timeline -->
-    <!--     bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"} -->
-    <!--     bind:displaying={displaying_timeline} -->
-    <!-- /> -->
+    <button
+        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bg={"bg-eerie_black bg-mix-steel_blue bg-mix-amount-10"}
+        bind:displaying={displaying_timeline}
+    />
 </div>

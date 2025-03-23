@@ -2,35 +2,19 @@
     import { goto } from "$app/navigation"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import type { UncountedTeamMatch } from "$lib/types"
-    import Header from "../Header.svelte"
-    import Timeline from "../Timeline.svelte"
+    import Timeline from "./Timeline.svelte"
     import Rating from "@/components/Rating.svelte"
     import RadioGroup from "@/components/RadioGroup.svelte"
     import CheckGroup from "@/components/CheckGroup.svelte"
+    import { Endgame, type Tag } from "@prisma/client"
 
-    import type { PageProps } from "./$types"
-    import { localStore } from "@/localStore.svelte"
-    import { AutoStart, Endgame } from "@prisma/client"
-
-    let matchData = localStore<UncountedTeamMatch>("matchData", {
-        event_key: "",
-        match_key: "",
-        team_key: 0,
-        auto_start_location: AutoStart.Far,
-        auto_leave_start: false,
-        timeline: {
-            auto: [],
-            tele: [],
-        },
-        endgame: Endgame.None,
-        skill: 3,
-        notes: "",
-        incap_time: [],
-        scout_id: 0,
-        tags: [],
-    })
-
-    let { data }: PageProps = $props()
+    const {
+        tags,
+        match_data = $bindable(),
+    }: {
+        tags: Tag[]
+        match_data: UncountedTeamMatch
+    } = $props()
 
     let displaying_timeline = $state(false)
 </script>
@@ -49,28 +33,17 @@
         }
     }}
 >
-    <Header
-        game_stage={"Postmatch"}
-        page_state="None"
-        team_key={matchData.value.team_key}
-        prev_page={() => goto("/match-scout/tele")}
-        next_page={() => goto("/match-scout/notes")}
-        bind:timeline={matchData.value.timeline}
-    />
     <div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
         <span class="font-heading text-xl font-semibold">End State</span>
         <RadioGroup
-            bind:value={matchData.value.endgame}
+            bind:value={match_data.endgame}
             labels={Object.keys(Endgame)}
         ></RadioGroup>
-        <Rating name="Driver Skill" bind:value={matchData.value.skill} />
+        <Rating name="Driver Skill" bind:value={match_data.skill} />
         <span class="font-heading p-2 text-center text-3xl font-semibold"
             >Tags</span
         >
-        <CheckGroup
-            labels={data.tagcategories}
-            bind:selected={matchData.value.tags}
-        ></CheckGroup>
+        <CheckGroup labels={tags} bind:selected={match_data.tags}></CheckGroup>
     </div>
 
     <button
@@ -82,6 +55,6 @@
     >
     <Timeline
         bind:displaying={displaying_timeline}
-        bind:timeline={matchData.value.timeline}
+        bind:timeline={match_data.timeline}
     />
 </div>

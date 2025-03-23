@@ -1,39 +1,18 @@
 <script lang="ts">
     import { goto } from "$app/navigation"
-
-    import Header from "../Header.svelte"
-    import ScoreAlgae from "../ScoreAlgae.svelte"
-    import CleanAlgae from "../CleanAlgae.svelte"
-    import ScoreCoral from "../ScoreCoral.svelte"
-    import SucceedFail from "../SucceedFail.svelte"
-
+    import Header from "./Header.svelte"
+    import ScoreAlgae from "./ScoreAlgae.svelte"
+    import CleanAlgae from "./CleanAlgae.svelte"
+    import ScoreCoral from "./ScoreCoral.svelte"
+    import SucceedFail from "./SucceedFail.svelte"
     import type { TelePageState, UncountedTeamMatch } from "@/types"
-
-    import Incap from "../Incap.svelte"
-
+    import Incap from "./Incap.svelte"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
-    import { localStore } from "@/localStore.svelte"
-    import { AutoStart, Endgame, TeleAction } from "@prisma/client"
+    import { TeleAction } from "@prisma/client"
+    import Timeline from "./Timeline.svelte"
 
-    let matchData = $state(
-        localStore<UncountedTeamMatch>("matchData", {
-            event_key: "",
-            match_key: "",
-            team_key: 0,
-            auto_start_location: AutoStart.Far,
-            auto_leave_start: false,
-            timeline: {
-                auto: [],
-                tele: [],
-            },
-            endgame: Endgame.None,
-            skill: 3,
-            notes: "",
-            incap_time: [],
-            scout_id: 0,
-            tags: [],
-        })
-    )
+    const { match_data = $bindable() }: { match_data: UncountedTeamMatch } =
+        $props()
 
     const swipeHandler = (event: SwipeCustomEvent) => {
         switch (event.detail.direction) {
@@ -49,8 +28,10 @@
     let page_state: TelePageState = $state("None")
     let action_state: TeleAction | null = $state(null)
 
+    let displaying_timeline = $state(false)
+
     const incap = () => {
-        matchData.value.timeline.tele.push({ action: "Incap", success: true })
+        match_data.timeline.tele.push({ action: "Incap", success: true })
         page_state = "Incap"
     }
     const score_algae = () => (page_state = "ScoreAlgae")
@@ -69,6 +50,7 @@
 
 <svelte:head>
     <!-- eerie black + 10% eminence -->
+    <!-- TODO: Maybe remove -->
     <meta name="theme-color" content="#241e26" />
 </svelte:head>
 
@@ -77,11 +59,11 @@
 >
     <Header
         game_stage={"Tele"}
-        team_key={matchData.value.team_key}
+        team_key={match_data.team_key}
         {page_state}
         {prev_page}
         {next_page}
-        bind:timeline={matchData.value.timeline}
+        bind:timeline={match_data.timeline}
     />
 
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
@@ -113,27 +95,28 @@
             <SucceedFail
                 bind:page_state
                 bind:action_state
-                bind:actions={matchData.value.timeline.tele}
+                bind:actions={match_data.timeline.tele}
             />
         {:else if page_state == "Incap"}
             <Incap
                 bind:page_state
                 bind:action_state
-                bind:incap_times={matchData.value.incap_time}
+                bind:incap_times={match_data.incap_time}
                 {bg_color}
             />
         {/if}
     </div>
 
-    <!-- <button -->
-    <!--     class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold" -->
-    <!--     onclick={(e: Event) => { -->
-    <!--         e.stopPropagation() -->
-    <!--         displaying_timeline = true -->
-    <!--     }}>Show Timeline</button -->
-    <!-- > -->
-    <!-- <Timeline -->
-    <!--     bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"} -->
-    <!--     bind:displaying={displaying_timeline} -->
-    <!-- /> -->
+    <button
+        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
+        bind:displaying={displaying_timeline}
+        bind:timeline={match_data.timeline}
+    />
 </div>
