@@ -51,6 +51,18 @@
                 <button class="rounded {bg_color}" onclick={incap}>Incap</button
                 >
             </div>
+            <button
+                class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
+                onclick={(e: Event) => {
+                    e.stopPropagation()
+                    displaying_timeline = true
+                }}>Show Timeline</button
+            >
+            <Timeline
+                bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
+                bind:displaying={displaying_timeline}
+                bind:timeline={match_data.timeline}
+            />
         {:else if page_state == "ScoreAlgae"}
             <ScoreAlgae bind:page_state bind:action_state {bg_color} />
         {:else if page_state == "CleanAlgae"}
@@ -72,17 +84,4 @@
             />
         {/if}
     </div>
-
-    <button
-        class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
-        onclick={(e: Event) => {
-            e.stopPropagation()
-            displaying_timeline = true
-        }}>Show Timeline</button
-    >
-    <Timeline
-        bg={"bg-eerie_black bg-mix-eminence bg-mix-amount-10"}
-        bind:displaying={displaying_timeline}
-        bind:timeline={match_data.timeline}
-    />
 </div>
