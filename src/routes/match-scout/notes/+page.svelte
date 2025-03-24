@@ -47,10 +47,13 @@
             },
         })
 
+        const scout_id = matchData.value.scout_id
         socket.emit("submit_team_match", matchData.value)
+        console.log(matchData.value)
 
         matchData.reset()
-        goto("/home")
+
+        goto(`/pairwise?scout=${scout_id}`)
     }
 </script>
 
@@ -92,5 +95,8 @@
             displaying_timeline = true
         }}>Show Timeline</button
     >
-    <Timeline bind:displaying={displaying_timeline} />
+    <Timeline
+        bind:displaying={displaying_timeline}
+        bind:timeline={matchData.value.timeline}
+    />
 </div>

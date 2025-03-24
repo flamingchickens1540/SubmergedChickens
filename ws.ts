@@ -1,5 +1,4 @@
 import type { UncountedTeamMatch } from "@/types"
-import assert from "assert"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
 
@@ -47,6 +46,11 @@ const webSocketServer = {
 
             socket.on("join_queue", () => {
                 const username = sid_to_username.get(socket.id)
+                if (!username) {
+                    warn(`Undefined scout joined queue. ID: ${socket.id}`)
+                    socket.disconnect()
+                    return
+                }
 
                 const team_data = robot_queue.pop()
                 if (!team_data) {
@@ -55,7 +59,6 @@ const webSocketServer = {
                     socket.join("scout_queue")
                     return
                 }
-
                 io.to("admin_room").emit("robot_left_queue", {
                     team_data,
                     scout: username,
@@ -134,12 +137,16 @@ const webSocketServer = {
                         })
                         .join()
                     info(`New Match (${match_key}):${teams_print}`)
+
                     robot_queue = []
 
                     const scout_queue = (
                         await io.in("scout_queue").fetchSockets()
                     ).reverse()
-                    for (const scout of scout_queue) {
+                    for (const scout of scout_queue.filter(
+                        scout =>
+                            scout && scout.id && sid_to_username.get(scout.id)
+                    )) {
                         const team_data = teams.pop()
                         if (!team_data) break
 
@@ -154,7 +161,10 @@ const webSocketServer = {
                         )
                         scout.leave("scout_queue")
                         scout.emit("time_to_scout", [match_key, team_data])
-                        io.to("admin_room").emit("scout_left_queue", username)
+                        io.to("admin_room").emit("robot_left_queue", {
+                            team_data,
+                            scout: username,
+                        })
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
@@ -215,7 +225,6 @@ const webSocketServer = {
                 leave_scout_queue(scout_id)
 
                 io.to("admin_room").emit("scout_left_queue", scout_id)
-                assert(socket.rooms.size === 0)
             })
         })
     },

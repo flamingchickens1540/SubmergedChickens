@@ -27,6 +27,9 @@
                 username: username.value,
                 is_admin: false,
             }),
+            headers: {
+                "Content-Type": "application/json",
+            },
         })
         if (!res.ok) return
 

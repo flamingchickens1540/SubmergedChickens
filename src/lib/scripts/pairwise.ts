@@ -29,10 +29,9 @@ export function analyze_comparisons<T>(
         teams.add(comparison.teamB)
     })
     const uniqueTeams = Array.from(teams)
-    const teamToIndex = new Map<T, number>()
-    uniqueTeams.forEach((team, index) => {
-        teamToIndex.set(team, index)
-    })
+    const teamToIndex = new Map<T, number>(
+        uniqueTeams.map((team, index) => [team, index])
+    )
     const matrix: number[][] = Array.from({ length: uniqueTeams.length }, () =>
         Array(uniqueTeams.length).fill(0)
     )
@@ -46,7 +45,7 @@ export function analyze_comparisons<T>(
     })
 
     // Compute SVD
-    const { q: s, u, v } = SVD(matrix)
+    const { q: s, u, v: _ } = SVD(matrix)
 
     // Calculate and normalize rankings
     const scores = u.map(row => row[0])
