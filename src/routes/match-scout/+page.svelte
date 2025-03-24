@@ -13,6 +13,7 @@
     import Notes from "./Notes.svelte"
     import Header from "./Header.svelte"
     import { LocalStore, localStore } from "@/localStore.svelte"
+    import { swipe, type SwipeCustomEvent } from "svelte-gestures"
 
     const { data }: PageProps = $props()
 
@@ -59,26 +60,38 @@
                     ? "Auto"
                     : "Prematch"
     }
+    function swipeHandler(event: SwipeCustomEvent) {
+        if ((event.detail.direction = "left")) prev_game_stage()
+        else if ((event.detail.direction = "right")) next_game_stage()
+    }
 </script>
 
-<Header
-    {game_stage}
-    {page_state}
-    color={data.color}
-    team_key={match_data.team_key}
-    prev_page={prev_game_stage}
-    next_page={next_game_stage}
-    bind:timeline={match_data.timeline}
-/>
+<div
+    use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
+    onswipe={swipeHandler}
+    class="min-h-svh"
+>
+    <Header
+        {game_stage}
+        {page_state}
+        color={data.color}
+        team_key={match_data.team_key}
+        prev_page={prev_game_stage}
+        next_page={next_game_stage}
+        bind:timeline={match_data.timeline}
+    />
 
-{#if game_stage === "Prematch"}
-    <Prematch color={data.color} bind:match_data />
-{:else if game_stage === "Auto"}
-    <Auto color={data.color} bind:match_data />
-{:else if game_stage === "Tele"}
-    <Tele bind:match_data />
-{:else if game_stage === "Post"}
-    <Postmatch tags={data.tags} bind:match_data />
-{:else if game_stage === "Notes"}
-    <Notes bind:match_data />
-{/if}
+    {#if game_stage === "Prematch"}
+        <Prematch color={data.color} bind:match_data />
+    {:else if game_stage === "Auto"}
+        <Auto color={data.color} bind:match_data />
+    {:else if game_stage === "Tele"}
+        <Tele bind:match_data />
+    {:else if game_stage === "Post"}
+        <Postmatch tags={data.tags} bind:match_data />
+    {:else if game_stage === "Notes"}
+        <div class="flex min-h-dvh flex-col">
+            <Notes bind:match_data />
+        </div>
+    {/if}
+</div>

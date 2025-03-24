@@ -6,7 +6,7 @@
     import Intake from "./Intake.svelte"
     import SucceedFail from "./SucceedFail.svelte"
     import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
-    import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+    import type { SwipeCustomEvent } from "svelte-gestures"
     import { AutoAction } from "@prisma/client"
     import Timeline from "./Timeline.svelte"
 
@@ -51,11 +51,7 @@
 >
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
-            <div
-                use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
-                onswipe={swipeHandler}
-                class="grid flex-grow grid-cols-2 gap-2"
-            >
+            <div class="grid flex-grow grid-cols-2 gap-2">
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >
@@ -85,7 +81,6 @@
             />
         {/if}
     </div>
-
     <button
         class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
         onclick={(e: Event) => {

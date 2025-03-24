@@ -1,28 +1,15 @@
 <script lang="ts">
-    import { goto } from "$app/navigation"
     import ScoreAlgae from "./ScoreAlgae.svelte"
     import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
     import SucceedFail from "./SucceedFail.svelte"
     import type { TelePageState, UncountedTeamMatch } from "@/types"
     import Incap from "./Incap.svelte"
-    import { swipe, type SwipeCustomEvent } from "svelte-gestures"
     import { TeleAction } from "@prisma/client"
     import Timeline from "./Timeline.svelte"
 
     const { match_data = $bindable() }: { match_data: UncountedTeamMatch } =
         $props()
-
-    const swipeHandler = (event: SwipeCustomEvent) => {
-        switch (event.detail.direction) {
-            case "right":
-                goto("/match-scout/auto")
-                break
-            case "left":
-                goto("/match-scout/postmatch")
-                break
-        }
-    }
 
     let page_state: TelePageState = $state("None")
     let action_state: TeleAction | null = $state(null)
@@ -38,13 +25,6 @@
     const score_coral = () => (page_state = "ScoreCoral")
 
     const bg_color = "bg-eminence"
-
-    const prev_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/auto") : undefined
-    )
-    const next_page = $derived(
-        page_state == "None" ? () => goto("/match-scout/postmatch") : undefined
-    )
 </script>
 
 <svelte:head>
@@ -52,17 +32,13 @@
     <!-- TODO: Maybe remove -->
     <meta name="theme-color" content="#241e26" />
 </svelte:head>
-
+<!-- min-h-dvh -->
 <div
     class="flex min-h-dvh flex-col bg-eerie_black accent-eminence bg-mix-eminence bg-mix-amount-10"
 >
     <div class="m-2 flex flex-grow flex-col gap-2 text-xl font-semibold">
         {#if page_state == "None"}
-            <div
-                use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
-                onswipe={swipeHandler}
-                class="grid flex-grow grid-cols-2 gap-2"
-            >
+            <div class="grid flex-grow grid-cols-2 gap-2">
                 <button class="rounded {bg_color}" onclick={score_algae}
                     >Score Algae</button
                 >

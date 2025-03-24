@@ -30,4 +30,4 @@
     <button class="rounded {bg_color}" onclick={processor}> Processor </button>
     <button class="rounded {bg_color}" onclick={net}> Net </button>
 </div>
-<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>
+<button class="rounded bg-gunmetal py-2" onclick={cancel}>Cancel</button>

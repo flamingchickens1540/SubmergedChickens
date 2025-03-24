@@ -46,4 +46,4 @@
     >
 </div>
 
-<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>
+<button class="rounded bg-gunmetal py-2" onclick={cancel}>Cancel</button>

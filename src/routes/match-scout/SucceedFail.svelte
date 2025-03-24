@@ -36,15 +36,8 @@
     }
 </script>
 
-<div class="grid h-full flex-grow grid-cols-2 grid-rows-5 gap-2">
-    <button onclick={succeed} class="row-span-4 rounded bg-jungle_green"
-        >Succeed</button
-    >
-    <button onclick={fail} class="row-span-4 rounded bg-imperial_red"
-        >Fail</button
-    >
-
-    <button class="col-span-2 rounded bg-gunmetal" onclick={cancel}
-        >Cancel</button
-    >
+<div class="grid flex-grow grid-cols-2 gap-2">
+    <button onclick={succeed} class="rounded bg-jungle_green">Succeed</button>
+    <button onclick={fail} class="rounded bg-imperial_red">Fail</button>
 </div>
+<button class="rounded bg-gunmetal py-2" onclick={cancel}>Cancel</button>

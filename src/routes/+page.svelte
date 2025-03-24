@@ -6,7 +6,7 @@
     import { LocalStore, localStore } from "@/localStore.svelte"
 
     let username: LocalStore<string> = $state(localStore("username", ""))
-    let scout_id: LocalStore<number> = localStore("scout_id", null)
+    let scout_id: LocalStore<number> = localStore("scout_id", -1)
     let waiting = $state(false)
 
     onMount(() => {
