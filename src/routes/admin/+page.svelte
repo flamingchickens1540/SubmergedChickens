@@ -296,8 +296,9 @@
                               : 'bg-eerie_black'} p-2"
                         onclick={() => {
                             if (
-                                tm_status == "Pending" ||
-                                tm_status == "Submitted"
+                                (tm_status == "Pending" ||
+                                    tm_status == "Submitted") &&
+                                scout?.length
                             ) {
                                 current_robots.value[i].displaying_tk =
                                     !displaying_tk
@@ -353,7 +354,7 @@
                         (submitted_team_matches.value[i].displaying_tk =
                             !team_match.displaying_tk)}
                 >
-                    {#if team_match.displaying_tk}
+                    {#if team_match.displaying_tk || team_match.scout_username === ""}
                         {team_match.match_key} {team_match.team_key}
                     {:else}
                         {team_match.scout_username}
