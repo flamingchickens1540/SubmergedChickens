@@ -13,14 +13,23 @@ export async function submitTeamMatch(
     auto_actions: Omit<AutoActionData, "id" | "team_match">[],
     tags: { name: string; category: string }[]
 ) {
-    const { id_num: id } = await prisma.teamMatch.update({
+    const { id_num: id } = await prisma.teamMatch.upsert({
         where: {
             id_key: {
                 match_key: tm.match_key,
                 team_key: tm.team_key,
             },
         },
-        data: {
+        create: {
+            ...tm,
+            TeleActions: {
+                create: tele_actions,
+            },
+            AutoActions: {
+                create: auto_actions,
+            },
+        },
+        update: {
             ...tm,
             TeleActions: {
                 create: tele_actions,
