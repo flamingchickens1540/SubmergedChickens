@@ -6,7 +6,6 @@
     import type { PageProps } from "./$types"
     import { error } from "@/consoleUtils"
     import type { UncountedTeamMatch } from "@/types"
-    import { prisma } from "@/prisma"
 
     type QueuedTeamMatch = {
         team_key: string
@@ -26,7 +25,6 @@
         scout?: string
     }
 
-    // honestly I really don't care about the ability to see who scouted previous robots, I don't find that section of the menu relevant as a whole beyond the potentail ability to view user's submitted data
     type SubmittedTeamMatch = UncountedTeamMatch & {
         scout_username?: string
         displaying_tk: boolean
@@ -52,7 +50,7 @@
         []
     )
     let scout_queue: string[] = $state([])
-    let robot_queue: QueuedTeamMatch[] = []
+    let robot_queue: QueuedTeamMatch[] = $state([])
 
     let submitted_team_matches: LocalStore<SubmittedTeamMatch[]> = $state(
         localStore("submitted_team_matches", [])
@@ -110,22 +108,22 @@
         const submitted: CurrentRobot | undefined = current_robots.value.find(
             (robot: CurrentRobot) =>
                 parseInt(robot.team_key) === team_match.team_key
-        ) ?? {
-            team_key: team_match.team_key.toString(),
-            color: "none",
-            scout: "", // todo: pull from db
-            displaying_tk: true,
-            tm_status: "Submitted",
-        }
-        submitted.tm_status = "Submitted"
-
-        const submitted_team_match = {
+        )
+        const scout =
+            submitted?.scout ??
+            pending_submissions.value.find(
+                entry => entry.team_key === team_match.team_key.toString()
+            )?.scout ??
+            "None"
+        submitted_team_matches.value.push({
             ...team_match,
-            scout_username: submitted.scout,
+            scout_username: scout,
             displaying_tk: true,
-        }
+        })
 
-        submitted_team_matches.value.push(submitted_team_match)
+        if (submitted !== undefined) {
+            submitted.tm_status = "Submitted"
+        }
     })
 
     const queue_match = async () => {
@@ -254,12 +252,13 @@
     const can_clear_pm = $derived(
         submitted_team_matches.value.length === 0 ? disabled : ""
     )
+    const can_clear_scouts = $derived(scout_queue.length === 0 ? disabled : "")
 </script>
 
 <div
-    class="m-auto grid max-w-6xl grid-cols-4 grid-rows-5 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-2 sm:gap-4 md:grid-cols-5"
+    class="m-auto grid max-w-6xl select-none grid-cols-2 grid-rows-5 gap-2 p-2 sm:grid-cols-3 sm:grid-rows-2 sm:gap-4 md:grid-cols-5"
 >
-    <div class="col-span-2 row-span-5 grid grid-cols-subgrid grid-rows-subgrid">
+    <div class="col-span-2 row-span-2 grid grid-cols-subgrid grid-rows-subgrid">
         <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
             <input
                 bind:value={next_match_key.value}
@@ -328,10 +327,7 @@
     <div
         class="col-span-1 row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2"
     >
-        <div class="grid grid-cols-3">
-            <span class="col-span-2 text-center">Scout Queue</span>
-            <button class=" rounded bg-eerie_black">Clear</button>
-        </div>
+        <span class="text-center">Scout Queue</span>
         <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each scout_queue as scout}
                 <div
@@ -345,12 +341,14 @@
                 </div>
             {/each}
         </div>
+        <button
+            class="mt-auto rounded bg-eerie_black {can_clear_scouts}"
+            onclick={clear_scout_queue}>Clear</button
+        >
     </div>
     <div class="row-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-        <div class="grid grid-cols-3">
-            <span class="col-span-2 text-center">Scout Queue</span>
-            <button class=" rounded bg-eerie_black">Clear</button>
-        </div>
+        <span class="col-span-2 text-center">Team Matches</span>
+
         <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each submitted_team_matches.value as team_match, i}
                 <button
@@ -367,6 +365,10 @@
                 </button>
             {/each}
         </div>
+        <button
+            class="mt-auto rounded bg-eerie_black {can_clear_pm}"
+            onclick={() => (submitted_team_matches.value = [])}>Clear</button
+        >
     </div>
 
     <EventManager {tba_event_keys} bind:selection={event_selection} />
@@ -375,12 +377,8 @@
             class="rounded bg-eerie_black {can_clear_rq} p-2"
             onclick={clear_robot_queue}>Clear Robot Queue</button
         ><button
-            class="rounded bg-eerie_black {can_clear_pm} p-2"
-            onclick={() => {
-                submitted_team_matches.value = []
-            }}>Clear Past Matches</button
-        ><button class="rounded bg-eerie_black" onclick={update_team_matches}
-            >Verify Data TBA</button
+            class="rounded bg-eerie_black p-2"
+            onclick={update_team_matches}>Verify Data TBA</button
         >
     </div>
 </div>
