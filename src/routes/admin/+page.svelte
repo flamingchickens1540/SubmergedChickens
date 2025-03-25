@@ -209,17 +209,13 @@
             i++
         ) {
             let match_key = "qm" + i.toString()
-            const res = await fetch(`/api/updateMatch`, {
+            await fetch(`/api/updateMatch`, {
                 method: "PATCH",
                 body: JSON.stringify(match_key),
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
-            if (!res.ok) {
-                console.log(`Updated team matches up to ${match_key}`)
-                break
-            }
         }
     }
 
@@ -331,7 +327,7 @@
         <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each scout_queue as scout}
                 <div
-                    class="flex items-center justify-between rounded bg-eerie_black p-1"
+                    class="flex h-10 items-center justify-between rounded bg-eerie_black p-1"
                 >
                     {scout}
                     <button
@@ -352,7 +348,7 @@
         <div class="grid max-h-64 grid-cols-1 gap-2 overflow-y-scroll">
             {#each submitted_team_matches.value as team_match, i}
                 <button
-                    class="grid h-12 grid-cols-1 place-items-center rounded bg-jungle_green p-2 text-center"
+                    class="grid h-10 grid-cols-1 place-items-center rounded bg-eerie_black p-1 text-center"
                     onclick={() =>
                         (submitted_team_matches.value[i].displaying_tk =
                             !team_match.displaying_tk)}
