@@ -39,6 +39,7 @@
 
     let game_stage: LocalStore<"Pre" | "Auto" | "Tele" | "Post" | "Notes"> =
         $state(localStore("game_stage", "Pre"))
+
     let page_state: AutoPageState = $state("None")
 
     function next_game_stage() {
@@ -91,6 +92,7 @@
     {:else if game_stage.value === "Post"}
         <Postmatch tags={data.tags} bind:match_data={match_data.value} />
     {:else if game_stage.value === "Notes"}
-        <Notes bind:match_data={match_data.value} />
+        <!-- This is intentional, since we want to reset the stores -->
+        <Notes bind:match_data bind:game_stage />
     {/if}
 </div>

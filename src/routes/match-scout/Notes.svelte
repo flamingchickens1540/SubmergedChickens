@@ -2,7 +2,7 @@
     import { goto } from "$app/navigation"
     import type { UncountedTeamMatch } from "$lib/types"
     import Timeline from "./Timeline.svelte"
-    import { localStore } from "@/localStore.svelte"
+    import { LocalStore, localStore } from "@/localStore.svelte"
     import { io, Socket } from "socket.io-client"
 
     const username = $state(localStore("username", ""))
@@ -13,8 +13,13 @@
         },
     })
 
-    const { match_data = $bindable() }: { match_data: UncountedTeamMatch } =
-        $props()
+    const {
+        match_data = $bindable(),
+        game_stage = $bindable(),
+    }: {
+        match_data: LocalStore<UncountedTeamMatch>
+        game_stage: LocalStore<string>
+    } = $props()
 
     let displaying_timeline = $state(false)
 
@@ -27,9 +32,11 @@
             },
         })
 
-        const scout_id = match_data.scout_id
+        const scout_id = match_data.value.scout_id
         socket.emit("submit_team_match", match_data)
         console.log(match_data)
+        match_data.reset()
+        game_stage.reset()
 
         goto(`/pairwise?scout=${scout_id}`)
     }
@@ -41,7 +48,7 @@
     <textarea
         class="w-full flex-grow rounded bg-gunmetal p-2"
         placeholder="Notes..."
-        bind:value={match_data.notes}
+        bind:value={match_data.value.notes}
     ></textarea>
 
     <button
@@ -59,6 +66,6 @@
     >
     <Timeline
         bind:displaying={displaying_timeline}
-        bind:timeline={match_data.timeline}
+        bind:timeline={match_data.value.timeline}
     />
 </div>
