@@ -45,7 +45,7 @@ export function analyze_comparisons<T>(
     })
 
     // Compute SVD
-    const { q: s, u, v } = SVD(matrix)
+    const { q: s, u, v: _ } = SVD(matrix)
 
     // Calculate and normalize rankings
     const scores = u.map(row => row[0])

@@ -4,10 +4,11 @@ import { prisma } from "@/prisma"
 
 export const load: PageServerLoad = async ({ params: _, url }) => {
     const scout = Number.parseInt(url.searchParams.get("scout") ?? "")
-    const categories = ["algae", "coral", "defense"]
+    const categories = ["coral"]
 
     const event_key = (await prisma.eventState.findFirst({}))?.event_key
-    if (event_key === undefined) return redirect(307, "/home")
+    if (event_key === undefined || event_key.slice(4, 7) === "pre")
+        return redirect(307, "/home")
 
     const team_matches = await prisma.teamMatch.findMany({
         where: {

@@ -4,7 +4,9 @@
 
 ## Setup
 
-First setup postgresql and update .env
+Get an `API_KEY` for [the TBA API v3](https://www.thebluealliance.com/apidocs/v3)
+
+Setup postgresql and update .env
 
 ```bash
 bun i

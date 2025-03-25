@@ -1,80 +1,72 @@
 <script lang="ts">
     import Drawer from "$lib/components/Drawer.svelte"
-    import type { UncountedTeamMatch } from "$lib/types"
+    import type { Timeline, UncountedTeamMatch } from "$lib/types"
     import { localStore } from "@/localStore.svelte"
     import Action from "./Action.svelte"
+    import { MoveDown, MoveUp } from "lucide-svelte"
 
-    let matchData = $state(
-        localStore<UncountedTeamMatch>("matchData", {
-            event_key: "",
-            match_key: "",
-            team_key: 0,
-            auto_start_location: "Far",
-            auto_leave_start: false,
-            timeline: {
-                auto: [],
-                tele: [],
-            },
-            endgame: "None",
-            skill: 3,
-            notes: "",
-            incap_time: [],
-            scout_id: 0,
-            tags: [],
-        })
-    )
     let {
         displaying = $bindable(),
+        timeline = $bindable(),
         bg,
     }: {
         displaying: boolean
+        timeline: Timeline
         bg: string | undefined
     } = $props()
 
-    /// Determine if currying is the right solution or if we should use a binding
-    function remove(index: number) {
-        if (index < auto_len) {
-            matchData.value.timeline.auto.splice(index, 1)
-        } else {
-            matchData.value.timeline.tele.splice(index - auto_len, 1)
-        }
+    function remove_auto(index: number) {
+        timeline.auto.splice(index, 1)
     }
 
-    function shift(index: number, change: -1 | 1) {
-        const [actions, new_index] =
-            index < auto_len
-                ? [matchData.value.timeline.auto, index]
-                : [matchData.value.timeline.tele, index - auto_len]
-
-        if (new_index == 0 && change == -1) return
-        ;[actions[new_index], actions[new_index + change]] = [
-            actions[new_index + change],
-            actions[new_index],
-        ]
+    function remove_tele(index: number) {
+        timeline.tele.splice(index, 1)
     }
 
-    const auto_len = $derived(matchData.value.timeline.auto.length)
-    const tele_len = $derived(matchData.value.timeline.tele.length)
+    function moveUp() {
+        const firstTele = timeline.tele.shift()
+        timeline.auto.push(firstTele!)
+    }
+    function moveDown() {
+        const lastAuto = timeline.auto.pop()!
+        // NOTE This function will never be called while the conversion is invalid
+        // Thus our conversion is safe
+        timeline.tele.unshift(lastAuto as any)
+    }
+
+    const auto_len = $derived(timeline.auto.length)
+    const tele_len = $derived(timeline.tele.length)
+
+    const lastAutoAction = $derived(timeline.auto[auto_len - 1].action)
+
+    const disabled = "pointer-events-none opacity-30"
+    const can_move_up: string = $derived(tele_len === 0 ? disabled : "")
+    const can_move_down: string = $derived(
+        auto_len === 0 ||
+            lastAutoAction.includes("Intake") ||
+            lastAutoAction == "LeaveStart"
+            ? disabled
+            : ""
+    )
 </script>
 
 <Drawer bind:displaying {bg}>
-    {#each matchData.value.timeline.tele as _, i}
+    {#each timeline.tele as _, i}
         <Action
-            action_data={matchData.value.timeline.tele[tele_len - i - 1]}
+            action_data={timeline.tele[tele_len - i - 1]}
             index={tele_len - i - 1}
-            sub_timeline_len={tele_len}
-            {remove}
-            {shift}
+            remove={remove_tele}
         />
     {/each}
-    <hr />
-    {#each matchData.value.timeline.auto as _, i}
+    <div class="flex w-full justify-evenly rounded bg-gunmetal p-2">
+        <button class={can_move_up} onclick={moveUp}><MoveUp /></button>
+        <button class={can_move_down} onclick={moveDown}><MoveDown /></button>
+    </div>
+    {#each timeline.auto as _, i}
         <Action
-            action_data={matchData.value.timeline.auto[auto_len - i - 1]}
+            action_data={timeline.auto[auto_len - i - 1]}
             index={auto_len - i - 1}
-            sub_timeline_len={auto_len}
-            {remove}
-            {shift}
+            remove={remove_auto}
         />
     {/each}
     {#if auto_len + tele_len === 0}

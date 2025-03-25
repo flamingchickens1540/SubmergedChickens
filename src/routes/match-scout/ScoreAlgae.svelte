@@ -17,7 +17,7 @@
         page_state = "Verify"
     }
     const net = () => {
-        action_state = "ScoreAlgaeProcessor"
+        action_state = "ScoreAlgaeNet"
         page_state = "Verify"
     }
     const cancel = () => {
