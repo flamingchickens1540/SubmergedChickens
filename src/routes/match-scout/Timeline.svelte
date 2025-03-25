@@ -7,11 +7,9 @@
     let {
         displaying = $bindable(),
         timeline = $bindable(),
-        bg,
     }: {
         displaying: boolean
         timeline: Timeline
-        bg: string | undefined
     } = $props()
 
     function remove_auto(index: number) {
@@ -49,7 +47,7 @@
     )
 </script>
 
-<Drawer bind:displaying {bg}>
+<Drawer bind:displaying>
     {#each timeline.tele as _, i}
         <Action
             action_data={timeline.tele[tele_len - i - 1]}
@@ -57,10 +55,14 @@
             remove={remove_tele}
         />
     {/each}
-    <div class="flex w-full justify-evenly rounded bg-gunmetal p-2">
-        <button class={can_move_up} onclick={moveUp}><MoveUp /></button>
-        <button class={can_move_down} onclick={moveDown}><MoveDown /></button>
-    </div>
+    {#if auto_len + tele_len > 0}
+        <div class="flex w-full justify-evenly rounded bg-gunmetal p-2">
+            <button class={can_move_up} onclick={moveUp}><MoveUp /></button>
+            <button class={can_move_down} onclick={moveDown}
+                ><MoveDown /></button
+            >
+        </div>
+    {/if}
     {#each timeline.auto as _, i}
         <Action
             action_data={timeline.auto[auto_len - i - 1]}
@@ -69,6 +71,6 @@
         />
     {/each}
     {#if auto_len + tele_len === 0}
-        <h3 class="font-heading m-auto font-bold">No actions yet :3</h3>
+        <h3 class="font-heading p-2 font-bold">No actions yet :3</h3>
     {/if}
 </Drawer>

@@ -22,11 +22,11 @@
 
     const disabled = "pointer-events-none opacity-30"
     const can_next = $derived(game_stage === "Notes" ? disabled : "")
-    const can_prev = $derived(game_stage === "Prematch" ? disabled : "")
+    const can_prev = $derived(game_stage === "Pre" ? disabled : "")
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
+    class="font-heading flex flex-none flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span
         style={color === "blue"

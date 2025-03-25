@@ -18,47 +18,48 @@
     const { data }: PageProps = $props()
 
     const scout_id: LocalStore<number> = $state(localStore("scout_id", -1))
+    let match_data: LocalStore<UncountedTeamMatch> = $state(
+        localStore("match_data", {
+            match_key: data.match_key,
+            team_key: data.team_key,
+            auto_start_location: AutoStart.Far,
+            auto_leave_start: true,
+            timeline: {
+                auto: [],
+                tele: [],
+            },
+            endgame: Endgame.None,
+            skill: 3,
+            notes: "",
+            incap_time: [],
+            scout_id: scout_id.value,
+            tags: [],
+        })
+    )
 
-    let match_data: UncountedTeamMatch = $state({
-        match_key: data.match_key,
-        team_key: data.team_key,
-        auto_start_location: AutoStart.Far,
-        auto_leave_start: true,
-        timeline: {
-            auto: [],
-            tele: [],
-        },
-        endgame: Endgame.None,
-        skill: 3,
-        notes: "",
-        incap_time: [],
-        scout_id: scout_id.value,
-        tags: [],
-    })
-
-    let game_stage: "Prematch" | "Auto" | "Tele" | "Post" | "Notes" =
-        $state("Prematch")
+    let game_stage: LocalStore<"Pre" | "Auto" | "Tele" | "Post" | "Notes"> =
+        $state(localStore("game_stage", "Pre"))
     let page_state: AutoPageState = $state("None")
 
     function next_game_stage() {
-        game_stage =
-            game_stage === "Prematch"
+        game_stage.value =
+            game_stage.value === "Pre"
                 ? "Auto"
-                : game_stage === "Auto"
+                : game_stage.value === "Auto"
                   ? "Tele"
-                  : game_stage === "Tele"
+                  : game_stage.value === "Tele"
                     ? "Post"
                     : "Notes"
     }
     function prev_game_stage() {
-        game_stage =
-            game_stage === "Notes"
+        game_stage.value =
+            game_stage.value === "Notes"
                 ? "Post"
-                : game_stage === "Post"
+                : game_stage.value === "Post"
                   ? "Tele"
-                  : game_stage === "Tele"
+                  : game_stage.value === "Tele"
                     ? "Auto"
-                    : "Prematch"
+                    : "Pre"
     }
     function swipeHandler(event: SwipeCustomEvent) {
         if ((event.detail.direction = "left")) prev_game_stage()
@@ -69,29 +70,27 @@
 <div
     use:swipe={() => ({ timeframe: 300, minSwipeDistance: 60 })}
     onswipe={swipeHandler}
-    class="min-h-svh"
+    class="flex min-h-svh flex-col"
 >
     <Header
-        {game_stage}
+        game_stage={game_stage.value}
         {page_state}
         color={data.color}
-        team_key={match_data.team_key}
+        team_key={match_data.value.team_key}
         prev_page={prev_game_stage}
         next_page={next_game_stage}
-        bind:timeline={match_data.timeline}
+        bind:timeline={match_data.value.timeline}
     />
 
-    {#if game_stage === "Prematch"}
-        <Prematch color={data.color} bind:match_data />
-    {:else if game_stage === "Auto"}
-        <Auto color={data.color} bind:match_data />
-    {:else if game_stage === "Tele"}
-        <Tele bind:match_data />
-    {:else if game_stage === "Post"}
-        <Postmatch tags={data.tags} bind:match_data />
-    {:else if game_stage === "Notes"}
-        <div class="flex min-h-dvh flex-col">
-            <Notes bind:match_data />
-        </div>
+    {#if game_stage.value === "Pre"}
+        <Prematch color={data.color} bind:match_data={match_data.value} />
+    {:else if game_stage.value === "Auto"}
+        <Auto color={data.color} bind:match_data={match_data.value} />
+    {:else if game_stage.value === "Tele"}
+        <Tele bind:match_data={match_data.value} />
+    {:else if game_stage.value === "Post"}
+        <Postmatch tags={data.tags} bind:match_data={match_data.value} />
+    {:else if game_stage.value === "Notes"}
+        <Notes bind:match_data={match_data.value} />
     {/if}
 </div>

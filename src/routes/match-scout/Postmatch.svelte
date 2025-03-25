@@ -17,24 +17,27 @@
     let displaying_timeline = $state(false)
 </script>
 
-<div class="flex flex-grow flex-col gap-4 overflow-y-scroll p-4">
-    <span class="font-heading text-xl font-semibold">End State</span>
+<div
+    class="flex flex-grow select-none flex-col gap-2 overflow-y-scroll px-4 py-2"
+>
+    <span class="font-heading text-center text-xl font-semibold">End State</span
+    >
     <RadioGroup bind:value={match_data.endgame} labels={Object.keys(Endgame)}
     ></RadioGroup>
     <Rating name="Driver Skill" bind:value={match_data.skill} />
-    <span class="font-heading p-2 text-center text-3xl font-semibold">Tags</span
-    >
+    <!-- <span class="font-heading p-2 text-center text-3xl font-semibold">Tags</span -->
+    <!-- > -->
     <CheckGroup labels={tags} bind:selected={match_data.tags}></CheckGroup>
-</div>
 
-<button
-    class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
-    onclick={(e: Event) => {
-        e.stopPropagation()
-        displaying_timeline = true
-    }}>Show Timeline</button
->
-<Timeline
-    bind:displaying={displaying_timeline}
-    bind:timeline={match_data.timeline}
-/>
+    <button
+        class="font-heading w-full border-t-2 border-white/10 pb-1 pt-2 text-center text-lg font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bind:displaying={displaying_timeline}
+        bind:timeline={match_data.timeline}
+    />
+</div>

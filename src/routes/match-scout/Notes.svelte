@@ -35,7 +35,7 @@
     }
 </script>
 
-<div class="m-2 flex flex-grow flex-col gap-2 rounded p-2">
+<div class="m-2 flex flex-1 flex-grow flex-col gap-2 px-2">
     <span class="font-heading text-xl font-semibold">Notes</span>
 
     <textarea
@@ -46,20 +46,19 @@
 
     <button
         onclick={submit}
-        class="mt-auto rounded bg-gunmetal p-2 text-lg font-semibold"
+        class="rounded bg-gunmetal p-2 text-lg font-semibold"
     >
         Submit
     </button>
+    <button
+        class="font-heading w-full border-t-2 border-white/10 p-2 pb-1 text-center text-lg font-semibold"
+        onclick={(e: Event) => {
+            e.stopPropagation()
+            displaying_timeline = true
+        }}>Show Timeline</button
+    >
+    <Timeline
+        bind:displaying={displaying_timeline}
+        bind:timeline={match_data.timeline}
+    />
 </div>
-
-<button
-    class="font-heading w-full border-t-2 border-white/10 py-2 text-center text-lg font-semibold"
-    onclick={(e: Event) => {
-        e.stopPropagation()
-        displaying_timeline = true
-    }}>Show Timeline</button
->
-<Timeline
-    bind:displaying={displaying_timeline}
-    bind:timeline={match_data.timeline}
-/>

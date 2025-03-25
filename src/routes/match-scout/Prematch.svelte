@@ -7,7 +7,7 @@
     }: { color: "red" | "blue"; match_data: UncountedTeamMatch } = $props()
 </script>
 
-<div class="grid flex-grow place-items-center overflow-y-scroll">
+<div class="flex flex-1 flex-col place-items-center overflow-y-scroll">
     <div class="text-2xl">You're Scouting Team:</div>
     <div
         style={color === "blue"
