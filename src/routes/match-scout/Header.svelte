@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { AutoPageState, Timeline } from "$lib/types"
+    import type { Timeline } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
 
@@ -14,7 +14,6 @@
         team_key: number
         game_stage: string
         color: string
-        page_state: AutoPageState
         prev_page?: () => void
         next_page?: () => void
         timeline?: Timeline

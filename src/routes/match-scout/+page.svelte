@@ -1,9 +1,5 @@
 <script lang="ts">
-    import type {
-        AutoPageState,
-        TelePageState,
-        UncountedTeamMatch,
-    } from "@/types"
+    import type { AutoPageState, UncountedTeamMatch } from "@/types"
     import Prematch from "./Prematch.svelte"
     import { AutoStart, Endgame } from "@prisma/client"
     import type { PageProps } from "./$types"
@@ -14,6 +10,7 @@
     import Header from "./Header.svelte"
     import { LocalStore, localStore } from "@/localStore.svelte"
     import { swipe, type SwipeCustomEvent } from "svelte-gestures"
+    import { onMount } from "svelte"
 
     const { data }: PageProps = $props()
 
@@ -36,11 +33,13 @@
             tags: [],
         })
     )
+    onMount(() => {
+        match_data.value.match_key = data.match_key
+        match_data.value.team_key = data.team_key
+    })
 
     let game_stage: LocalStore<"Pre" | "Auto" | "Tele" | "Post" | "Notes"> =
         $state(localStore("game_stage", "Pre"))
-
-    let page_state: AutoPageState = $state("None")
 
     function next_game_stage() {
         game_stage.value =
@@ -75,7 +74,6 @@
 >
     <Header
         game_stage={game_stage.value}
-        {page_state}
         color={data.color}
         team_key={match_data.value.team_key}
         prev_page={prev_game_stage}
