@@ -26,7 +26,7 @@
     const submit = async () => {
         await fetch("/api/submitMatch", {
             method: "POST",
-            body: JSON.stringify(match_data),
+            body: JSON.stringify(match_data.value),
             headers: {
                 "Content-Type": "application/json",
             },
