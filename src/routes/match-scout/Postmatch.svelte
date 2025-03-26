@@ -25,17 +25,19 @@
     <RadioGroup bind:value={match_data.endgame} labels={Object.keys(Endgame)}
     ></RadioGroup>
     <Rating name="Driver Skill" bind:value={match_data.skill} />
-    <!-- <span class="font-heading p-2 text-center text-3xl font-semibold">Tags</span -->
-    <!-- > -->
     <CheckGroup labels={tags} bind:selected={match_data.tags}></CheckGroup>
+    <br />
 
-    <button
-        class="font-heading w-full border-t-2 border-white/10 pb-1 pt-2 text-center text-lg font-semibold"
-        onclick={(e: Event) => {
-            e.stopPropagation()
-            displaying_timeline = true
-        }}>Show Timeline</button
-    >
+    <footer class="fixed bottom-0 left-0 w-full rounded-t bg-eerie_black p-2">
+        <button
+            class="w-full rounded bg-gunmetal py-2 text-center text-xl font-semibold"
+            onclick={(e: Event) => {
+                e.stopPropagation()
+                displaying_timeline = true
+            }}>Show Timeline</button
+        >
+    </footer>
+
     <Timeline
         bind:displaying={displaying_timeline}
         bind:timeline={match_data.timeline}

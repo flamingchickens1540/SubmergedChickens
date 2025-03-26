@@ -28,11 +28,9 @@
     const bg_color = "bg-steel_blue"
 </script>
 
-<div
-    class="m-2 flex flex-1 flex-grow flex-col gap-2 bg-eerie_black text-xl font-semibold"
->
+<div class="m-2 flex flex-1 flex-grow flex-col gap-2 bg-eerie_black">
     {#if page_state == "None"}
-        <div class="grid flex-grow grid-cols-2 gap-2">
+        <div class="grid flex-grow grid-cols-2 gap-2 text-xl font-semibold">
             <button class="rounded {bg_color}" onclick={score_algae}
                 >Score Algae</button
             >
@@ -44,8 +42,9 @@
             >
             <button class="rounded {bg_color}" onclick={intake}>Intake</button>
         </div>
+        <!-- border-t-2 border-white/10  -->
         <button
-            class="font-heading w-full border-t-2 border-white/10 p-2 pb-1 text-center text-lg font-semibold"
+            class="w-full rounded bg-gunmetal p-2 text-center text-xl font-semibold"
             onclick={(e: Event) => {
                 e.stopPropagation()
                 displaying_timeline = true

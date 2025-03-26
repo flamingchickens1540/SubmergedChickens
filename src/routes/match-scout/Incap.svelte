@@ -27,7 +27,10 @@
     }
 </script>
 
-<button class="flex-grow rounded {bg_color}" onclick={recap}
-    >Re-Capacitate</button
+<button
+    class="flex-grow rounded {bg_color} text-xl font-semibold"
+    onclick={recap}>Re-Capacitate</button
 >
-<div class="text-center">{total_time} Seconds</div>
+<div class="w-full p-2 text-center text-xl font-semibold">
+    {total_time} Seconds
+</div>

@@ -36,8 +36,10 @@
     }
 </script>
 
-<div class="grid flex-grow grid-cols-2 gap-2">
+<div class="grid flex-grow grid-cols-2 gap-2 text-xl font-semibold">
     <button onclick={succeed} class="rounded bg-jungle_green">Succeed</button>
     <button onclick={fail} class="rounded bg-imperial_red">Fail</button>
 </div>
-<button class="rounded bg-gunmetal py-2" onclick={cancel}>Cancel</button>
+<button class="rounded bg-gunmetal py-2 text-xl font-semibold" onclick={cancel}
+    >Cancel</button
+>

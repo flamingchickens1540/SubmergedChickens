@@ -53,19 +53,8 @@
 
     <button
         onclick={submit}
-        class="rounded bg-gunmetal p-2 text-lg font-semibold"
+        class="rounded bg-gunmetal p-2 text-xl font-semibold"
     >
         Submit
     </button>
-    <button
-        class="font-heading w-full border-t-2 border-white/10 p-2 pb-1 text-center text-lg font-semibold"
-        onclick={(e: Event) => {
-            e.stopPropagation()
-            displaying_timeline = true
-        }}>Show Timeline</button
-    >
-    <Timeline
-        bind:displaying={displaying_timeline}
-        bind:timeline={match_data.value.timeline}
-    />
 </div>

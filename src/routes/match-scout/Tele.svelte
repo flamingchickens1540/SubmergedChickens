@@ -28,23 +28,23 @@
 </script>
 
 <div
-    class="m-2 flex flex-1 flex-grow flex-col gap-2 overflow-y-hidden bg-eerie_black text-xl font-semibold"
+    class="m-2 flex flex-1 flex-grow flex-col gap-2 overflow-y-hidden bg-eerie_black"
 >
     {#if page_state == "None"}
-        <div class="grid flex-grow grid-cols-2 gap-2">
-            <button class="rounded {bg_color} " onclick={score_algae}
+        <div class="grid flex-grow grid-cols-2 gap-2 text-xl font-semibold">
+            <button class="rounded {bg_color}" onclick={score_algae}
                 >Score Algae</button
             >
-            <button class="rounded {bg_color} " onclick={remove_algae}
+            <button class="rounded {bg_color}" onclick={remove_algae}
                 >Clean Algae</button
             >
-            <button class="rounded {bg_color} " onclick={score_coral}
+            <button class="rounded {bg_color}" onclick={score_coral}
                 >Score Coral</button
             >
-            <button class="rounded {bg_color} " onclick={incap}>Incap</button>
+            <button class="rounded {bg_color}" onclick={incap}>Incap</button>
         </div>
         <button
-            class="font-heading col-span-2 w-full border-t-2 border-white/10 p-2 pb-1 text-center text-lg font-semibold"
+            class="col-span-2 w-full rounded bg-gunmetal p-2 text-center text-xl font-semibold"
             onclick={(e: Event) => {
                 e.stopPropagation()
                 displaying_timeline = true
