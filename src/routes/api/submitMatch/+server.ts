@@ -2,21 +2,26 @@ import { json } from "@sveltejs/kit"
 import type { RequestHandler } from "./$types"
 import { submitTeamMatch } from "$lib/scripts/submit"
 import type { TeamMatch, AutoAction, TeleAction } from "@prisma/client"
-import type { UncountedTeamMatch, Timeline } from "$lib/types"
+import type { UncountedTeamMatch as TM, Timeline } from "$lib/types"
 import { getEventKey } from "@/scripts/dbUtil"
 import { error } from "@/consoleUtils"
+
+// TODO Potentially switch TM and UncountedTeamMatch naming
+type UncountedTeamMatch = TM & { event_key: string }
 
 export const POST: RequestHandler = async ({
     request,
 }: any): Promise<Response> => {
-    const tm: UncountedTeamMatch = await request.json()
-
     const event_key = await getEventKey()
     if (event_key === undefined) {
         error("No Event Key present")
         return new Response(null)
     }
-    tm.event_key = event_key
+
+    const tm: UncountedTeamMatch & { event_key: string } = {
+        ...(await request.json()),
+        event_key,
+    }
     tm.match_key = event_key + "_" + tm.match_key
     return json(
         await submitTeamMatch(
@@ -28,7 +33,9 @@ export const POST: RequestHandler = async ({
     )
 }
 
-function count(match: UncountedTeamMatch): Omit<TeamMatch, "id_num"> {
+function count(
+    match: UncountedTeamMatch & { event_key: string }
+): Omit<TeamMatch, "id_num"> {
     return {
         match_key: match.match_key,
         team_key: match.team_key,

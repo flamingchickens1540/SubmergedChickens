@@ -2,8 +2,8 @@
     let { value = $bindable() }: { name: string; value: number } = $props()
 </script>
 
-<span class="font-heading text-xl font-semibold">Driver Skill</span>
-<div class="grid grid-flow-col items-center justify-center py-2">
+<span class="font-heading text-center text-xl font-semibold">Driver Skill</span>
+<div class="grid grid-flow-col items-center justify-center">
     {#each Array(value) as _, i}
         <!-- svelte-ignore a11y_consider_explicit_label -->
         <!-- svelte-ignore event_directive_deprecated -->

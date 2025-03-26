@@ -1,33 +1,34 @@
 <script lang="ts">
-    import type { AutoPageState, Timeline } from "$lib/types"
+    import type { Timeline } from "$lib/types"
     import UndoButton from "@/components/UndoButton.svelte"
-    import { localStore } from "@/localStore.svelte"
     import { ArrowRight, ArrowLeft } from "lucide-svelte"
-
-    let team_color = $state(localStore<"blue" | "red" | "">("team_color", ""))
 
     let {
         team_key,
         game_stage,
-        page_state = $bindable(),
+        color,
         next_page,
         prev_page,
         timeline = $bindable(),
     }: {
         team_key: number
         game_stage: string
-        page_state: AutoPageState
+        color: string
         prev_page?: () => void
         next_page?: () => void
         timeline?: Timeline
     } = $props()
+
+    const disabled = "pointer-events-none opacity-30"
+    const can_next = $derived(game_stage === "Notes" ? disabled : "")
+    const can_prev = $derived(game_stage === "Pre" ? disabled : "")
 </script>
 
 <header
-    class="font-heading flex flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
+    class="font-heading flex flex-none flex-row justify-between border-b-2 border-white/10 p-2 text-lg font-semibold"
 >
     <span
-        style={team_color.value === "blue"
+        style={color === "blue"
             ? "color: #2196F3 !important"
             : "color: #F44336 !important"}
     >
@@ -37,24 +38,11 @@
         <UndoButton bind:timeline />
     {/if}
     <div class="align-item-center flex gap-2">
-        <button
-            onclick={prev_page}
-            class="disabled:opacity-30"
-            disabled={prev_page == null}
-        >
+        <button onclick={prev_page} class={can_prev}>
             <ArrowLeft />
         </button>
-        <span
-            >{page_state == "None" || page_state == null
-                ? game_stage == "Prematch"
-                    ? "Prematch"
-                    : game_stage.slice(0, 4)
-                : page_state}</span
-        >
-        <button
-            onclick={next_page}
-            class={next_page == null ? "pointer-events-none opacity-30" : ""}
-        >
+        <span class="select-none">{game_stage}</span>
+        <button onclick={next_page} class={can_next}>
             <ArrowRight />
         </button>
     </div>

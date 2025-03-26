@@ -9,7 +9,8 @@
         p = "p-2",
         text = "text-white",
         max_h = "max-h-[80svh]",
-        min_h = "min-h-[40svh]",
+        // NOTE I don't like there being empty space
+        min_h = "min-h-[0svh]",
         scrollbar = false,
     }: {
         children?: Snippet<[]>

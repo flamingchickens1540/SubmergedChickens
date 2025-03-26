@@ -33,7 +33,7 @@
     }
 </script>
 
-<div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2">
+<div class="grid flex-grow grid-cols-2 grid-rows-2 gap-2 text-xl font-semibold">
     <button onclick={algae_preplaced} class="rounded {bg_color}"
         >Algae Preplaced</button
     >
@@ -46,4 +46,6 @@
     >
 </div>
 
-<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>
+<button class="rounded bg-gunmetal py-2 text-xl font-semibold" onclick={cancel}
+    >Cancel</button
+>

@@ -13,7 +13,7 @@
 
 <div class="mt-0 text-center">
     {#each categories.entries() as [category, tags]}
-        <div class="text-center text-xl font-bold">
+        <div class="mb-1 text-center text-xl font-bold">
             {category.toUpperCase()}
         </div>
         {#each tags as tag}

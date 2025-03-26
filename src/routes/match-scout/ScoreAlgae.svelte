@@ -26,8 +26,10 @@
     }
 </script>
 
-<div class="grid flex-grow gap-2">
+<div class="grid flex-grow gap-2 text-xl font-semibold">
     <button class="rounded {bg_color}" onclick={processor}> Processor </button>
     <button class="rounded {bg_color}" onclick={net}> Net </button>
 </div>
-<button class="rounded bg-gunmetal py-4" onclick={cancel}>Cancel</button>
+<button class="rounded bg-gunmetal py-2 text-xl font-semibold" onclick={cancel}
+    >Cancel</button
+>

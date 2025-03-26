@@ -29,7 +29,6 @@ export type Timeline = {
 export type UncountedTeamMatch = {
     match_key: string
     team_key: number
-    event_key: string
     auto_start_location: AutoStart
     auto_leave_start: boolean
     timeline: Timeline

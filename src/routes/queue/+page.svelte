@@ -23,9 +23,9 @@
             string,
             { team_key: string; color: "red" | "blue" },
         ]) => {
-            browser && localStorage.setItem("matchData", "")
+            browser && localStorage.setItem("match_data", "")
             goto(
-                `/match-scout/prematch?match=${match_key}&team=${team_key}&color=${color}`
+                `/match-scout?match=${match_key}&team=${team_key}&color=${color}`
             )
         }
     )
