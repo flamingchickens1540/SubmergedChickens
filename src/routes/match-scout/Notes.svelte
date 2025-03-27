@@ -33,7 +33,7 @@
         })
 
         const scout_id = match_data.value.scout_id
-        socket.emit("submit_team_match", match_data)
+        socket.emit("submit_team_match", match_data.value)
         console.log(match_data.value)
         match_data.reset()
         game_stage.reset()

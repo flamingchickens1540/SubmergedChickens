@@ -1,19 +1,14 @@
 <script lang="ts">
-    import { goto } from "$app/navigation"
     import ScoreAlgae from "./ScoreAlgae.svelte"
     import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
-    import Intake from "./Intake.svelte"
     import SucceedFail from "./SucceedFail.svelte"
     import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
-    import type { SwipeCustomEvent } from "svelte-gestures"
     import { AutoAction } from "@prisma/client"
     import Timeline from "./Timeline.svelte"
 
-    const {
-        color,
-        match_data = $bindable(),
-    }: { color: "red" | "blue"; match_data: UncountedTeamMatch } = $props()
+    const { match_data = $bindable() }: { match_data: UncountedTeamMatch } =
+        $props()
 
     let page_state: AutoPageState = $state("None")
     let action_state: AutoAction | null = $state(null)
@@ -23,7 +18,6 @@
     const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
-    const intake = () => (page_state = "Intake")
 
     const bg_color = "bg-steel_blue"
 </script>
@@ -37,12 +31,10 @@
             <button class="rounded {bg_color}" onclick={clean_algae}
                 >Clean Algae</button
             >
-            <button class="rounded {bg_color}" onclick={score_coral}
+            <button class="rounded {bg_color} col-span-2" onclick={score_coral}
                 >Score Coral</button
             >
-            <button class="rounded {bg_color}" onclick={intake}>Intake</button>
         </div>
-        <!-- border-t-2 border-white/10  -->
         <button
             class="w-full rounded bg-gunmetal p-2 text-center text-xl font-semibold"
             onclick={(e: Event) => {
@@ -60,8 +52,6 @@
         <CleanAlgae bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "ScoreCoral"}
         <ScoreCoral bind:page_state bind:action_state {bg_color} />
-    {:else if page_state == "Intake"}
-        <Intake bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "Verify"}
         <SucceedFail
             bind:page_state

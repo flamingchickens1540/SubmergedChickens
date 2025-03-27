@@ -48,3 +48,16 @@ type BugReport = {
     report_text: string
     report_title: string
 }
+
+export type CurrentTeamMatch = {
+    team_key: string
+    color: string
+    scout?: string
+    displaying_tk: boolean
+    tm_status: "Queue" | "Pending" | "Submitted" | "Removed"
+}
+
+export type SubmittedTeamMatch = UncountedTeamMatch & {
+    scout_username?: string
+    displaying_tk: boolean
+}
