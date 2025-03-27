@@ -114,10 +114,14 @@ async function seedTeams() {
 
 async function clearDB() {
     await prisma.eventState.deleteMany()
-    await prisma.event.deleteMany()
+    await prisma.comparison.deleteMany()
     await prisma.user.deleteMany()
     await prisma.tag.deleteMany()
+    await prisma.image.deleteMany()
+    await prisma.teamEvent.deleteMany()
+    await prisma.teamMatch.deleteMany()
     await prisma.team.deleteMany()
+    await prisma.event.deleteMany()
 }
 
 await main()
