@@ -15,7 +15,6 @@
     let current_robots: LocalStore<CurrentTeamMatch[]> = $state(
         localStore("current_robots", [])
     )
-
     let submitted_team_matches: LocalStore<SubmittedTeamMatch[]> = $state(
         localStore("submitted_team_matches", [])
     )
@@ -54,7 +53,7 @@
     function clear_current_robots() {
         current_robots.value.forEach(robot => {
             socket.emit("leave_robot_queue", {
-                robot: robot.team_key,
+                team_key: robot.team_key,
                 color: robot.color,
             })
         })
@@ -85,6 +84,7 @@
             bind:socket
             bind:current_robots={current_robots.value}
             bind:submitted_team_matches={submitted_team_matches.value}
+            bind:scout_queue
         />
     </div>
     <ScoutQueue bind:socket bind:scout_queue />

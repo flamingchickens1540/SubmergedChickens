@@ -101,10 +101,12 @@ const webSocketServer = {
             socket.on(
                 "leave_robot_queue",
                 (robot: { team_key: string; color: "red" | "blue" }) => {
+                    info("test")
                     const robotsEqual = (
                         robot1: { team_key: string; color: "red" | "blue" },
                         robot2: { team_key: string; color: "red" | "blue" }
                     ): boolean => {
+                        console.log(`${robot1.team_key} ${robot2.team_key}`)
                         return (
                             robot1.team_key === robot2.team_key &&
                             robot1.color === robot2.color
@@ -115,6 +117,7 @@ const webSocketServer = {
                         robotsEqual(robot_t, robot)
                     )
                     if (index === -1) return
+                    warn("test2")
 
                     robot_queue.splice(index, 1)
                 }

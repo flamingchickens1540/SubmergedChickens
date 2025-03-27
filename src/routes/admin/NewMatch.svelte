@@ -63,14 +63,21 @@
                 return { team_key, color: "blue" }
             }),
         ]
-        current_robots = robot_queue.map(({ team_key, color }) => {
-            return {
-                team_key,
-                color,
-                displaying_tk: true,
-                tm_status: "Queue",
-            }
-        })
+
+        current_robots = current_robots.filter(
+            robot => robot.tm_status === "Pending"
+        )
+
+        current_robots.unshift(
+            ...robot_queue.map(({ team_key, color }) => {
+                return {
+                    team_key,
+                    color,
+                    displaying_tk: true,
+                    tm_status: "Queue",
+                } as CurrentTeamMatch
+            })
+        )
 
         next_red_robots.value = ["", "", ""]
         next_blue_robots.value = ["", "", ""]
