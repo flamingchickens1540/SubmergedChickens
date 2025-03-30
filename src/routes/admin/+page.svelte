@@ -61,7 +61,7 @@
             })
 
         current_robots.value.forEach(robot => {
-            if (robot.tm_status != "Pending") {
+            if (robot.tm_status == "Queue") {
                 robot.tm_status = "Removed"
             }
         })
