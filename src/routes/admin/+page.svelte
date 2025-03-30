@@ -52,7 +52,7 @@
 
     function clear_robot_queue() {
         current_robots.value
-            .filter(robot => robot.tm_status != "Pending")
+            .filter(robot => robot.tm_status == "Queue")
             .forEach(robot => {
                 socket.emit("leave_robot_queue", {
                     team_key: robot.team_key,
