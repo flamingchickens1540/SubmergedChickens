@@ -110,6 +110,7 @@ const webSocketServer = {
                             robot1.color === robot2.color
                         )
                     }
+
                     const index = robot_queue.findIndex(robot_t =>
                         robotsEqual(robot_t, robot)
                     )
