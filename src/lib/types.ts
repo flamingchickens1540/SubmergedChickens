@@ -54,7 +54,7 @@ export type CurrentTeamMatch = {
     color: string
     scout?: string
     displaying_tk: boolean
-    tm_status: "Queue" | "Pending" | "Submitted" | "Removed"
+    tm_status: "Queue" | "Pending" | "Submitted"
 }
 
 export type SubmittedTeamMatch = UncountedTeamMatch & {

@@ -50,14 +50,21 @@
         }
     }
 
-    function clear_current_robots() {
-        current_robots.value.forEach(robot => {
-            socket.emit("leave_robot_queue", {
-                team_key: robot.team_key,
-                color: robot.color,
+    function clear_robot_queue() {
+        current_robots.value
+            .filter(robot => robot.tm_status != "Pending")
+            .forEach(robot => {
+                socket.emit("leave_robot_queue", {
+                    team_key: robot.team_key,
+                    color: robot.color,
+                })
             })
+
+        current_robots.value.forEach(robot => {
+            if (robot.tm_status != "Pending") {
+                robot.tm_status = "Removed"
+            }
         })
-        current_robots.value = []
     }
     let event_selection = $state("Event Key")
 
@@ -93,9 +100,8 @@
     />
     <EventManager {tba_event_keys} bind:selection={event_selection} />
     <div class="grid gap-2 rounded bg-gunmetal p-2">
-        <button
-            class="rounded bg-eerie_black p-2"
-            onclick={clear_current_robots}>Clear Current Robots</button
+        <button class="rounded bg-eerie_black p-2" onclick={clear_robot_queue}
+            >Clear Robot Queue</button
         >
         <button class="rounded bg-eerie_black p-2" onclick={update_team_matches}
             >Verify Data TBA</button
