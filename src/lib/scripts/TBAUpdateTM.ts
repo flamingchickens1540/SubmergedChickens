@@ -104,11 +104,13 @@ function determineEndgame(
         return Endgame.Deep
     }
     if (
-        scout_endgame === Endgame.Fail || // We just want to count failing as having parked
+        scout_endgame === Endgame.Fail ||
         scout_endgame === Endgame.Deep ||
-        scout_endgame === Endgame.Shallow ||
-        tba_endgame === "Parked"
+        scout_endgame === Endgame.Shallow
     ) {
+        return Endgame.Fail
+    }
+    if (tba_endgame === "Parked") {
         return Endgame.Park
     }
 
