@@ -13,6 +13,7 @@ export async function submitTeamMatch(
     auto_actions: Omit<AutoActionData, "id" | "team_match">[],
     tags: { name: string; category: string }[]
 ) {
+    info(JSON.stringify(tm,null,2))
     const { id_num: id } = await prisma.teamMatch.upsert({
         where: {
             id_key: {
