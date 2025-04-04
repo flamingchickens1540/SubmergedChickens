@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { localStore } from "@/localStore.svelte"
     import {
         type CurrentTeamMatch,
         type SubmittedTeamMatch,
@@ -18,6 +19,7 @@
         scout_queue: string[]
     } = $props()
 
+    let current_match_key = $state(localStore("current_match_key", "qm0"))
     socket.on("new_team_match", (team_match: UncountedTeamMatch) => {
         const submitted: CurrentTeamMatch | undefined = current_robots.find(
             robot => parseInt(robot.team_key) === team_match.team_key
@@ -45,7 +47,9 @@
 </script>
 
 <div class="col-span-2 flex flex-col gap-2 rounded bg-gunmetal p-2">
-    <span class="col-span-3 text-center">Current Robots</span>
+    <span class="col-span-3 text-center"
+        >Current Match: {current_match_key.value}</span
+    >
     <div class="grid max-h-28 grid-cols-3 gap-2">
         {#each current_robots as { team_key, color, scout, displaying_tk, tm_status }, i}
             {#if i < 6}

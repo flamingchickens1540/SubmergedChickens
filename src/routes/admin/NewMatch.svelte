@@ -9,7 +9,8 @@
         current_robots = $bindable(),
     }: { socket: Socket; current_robots: CurrentTeamMatch[] } = $props()
 
-    let next_match_key = $state(localStore<string>("next_match_key", ""))
+    let next_match_key = $state("")
+    let current_match_key = localStore("current_match_key", "qm0")
 
     let next_red_robots = $state(
         localStore<string[]>("next_red_robots", ["", "", ""])
@@ -19,13 +20,11 @@
     )
 
     async function auto_load_teams() {
-        const res = await fetch(`/api/getMatch/${next_match_key.value}`, {
+        const res = await fetch(`/api/getMatch/${next_match_key}`, {
             method: "GET",
         })
         if (!res.ok) {
-            error(
-                `Failed to get team matches for match ${next_match_key.value}`
-            )
+            error(`Failed to get team matches for match ${next_match_key}`)
             return
         }
 
@@ -53,7 +52,7 @@
         if (next_robots.some(({ team_key, color: _ }) => team_key === ""))
             return
 
-        socket.emit("send_match", [next_match_key.value, next_robots])
+        socket.emit("send_match", [next_match_key, next_robots])
 
         let robot_queue = [
             ...next_red_robots.value.map(team_key => {
@@ -78,7 +77,8 @@
                 } as CurrentTeamMatch
             })
         )
-
+        current_match_key.value = next_match_key
+        next_match_key = ""
         next_red_robots.value = ["", "", ""]
         next_blue_robots.value = ["", "", ""]
     }
@@ -90,12 +90,12 @@
             ? disabled
             : ""
     )
-    const can_autoload = $derived(next_match_key.value === "" ? disabled : "")
+    const can_autoload = $derived(next_match_key === "" ? disabled : "")
 </script>
 
 <div class="col-span-2 grid grid-cols-3 gap-2 rounded bg-gunmetal p-2">
     <input
-        bind:value={next_match_key.value}
+        bind:value={next_match_key}
         placeholder="Next Match"
         class="rounded bg-eerie_black p-2"
     />
