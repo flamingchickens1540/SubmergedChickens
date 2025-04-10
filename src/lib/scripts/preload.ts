@@ -80,6 +80,7 @@ export async function preload(event_key: string): Promise<boolean> {
         error(
             `Failed to get matches in event ${event_key}: ${matches_response.status}`
         )
+        return false
     }
 
     const tba_matches: {
@@ -110,7 +111,11 @@ export async function preload(event_key: string): Promise<boolean> {
             )
     })
 
-    // aaaaaaaaaaaaaaaaaaa
+    const db_matches = await prisma.teamMatch.findMany({ where: { event_key } })
+    if (db_matches.length > 0) {
+        warn(`Matches already loaded into database for event ${event_key}`)
+        return true
+    }
     await prisma.teamMatch.createMany({ data: matches })
 
     info(
