@@ -1,6 +1,5 @@
 <script lang="ts">
     import ScoreAlgae from "./ScoreAlgae.svelte"
-    import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
     import SucceedFail from "./SucceedFail.svelte"
     import type { TelePageState, UncountedTeamMatch } from "@/types"
@@ -21,7 +20,6 @@
         page_state = "Incap"
     }
     const score_algae = () => (page_state = "ScoreAlgae")
-    const remove_algae = () => (page_state = "CleanAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
 
     const bg_color = "bg-eminence"
@@ -35,16 +33,13 @@
             <button class="rounded {bg_color}" onclick={score_algae}
                 >Score Algae</button
             >
-            <button class="rounded {bg_color}" onclick={remove_algae}
-                >Clean Algae</button
-            >
-            <button class="rounded {bg_color}" onclick={score_coral}
+            <button class="rounded {bg_color}" onclick={incap}>Incap</button>
+            <button class="rounded {bg_color} col-span-2" onclick={score_coral}
                 >Score Coral</button
             >
-            <button class="rounded {bg_color}" onclick={incap}>Incap</button>
         </div>
         <button
-            class="col-span-2 w-full rounded bg-gunmetal p-2 text-center text-xl font-semibold"
+            class="w-full rounded bg-gunmetal p-2 text-center text-xl font-semibold"
             onclick={(e: Event) => {
                 e.stopPropagation()
                 displaying_timeline = true
@@ -56,8 +51,6 @@
         />
     {:else if page_state == "ScoreAlgae"}
         <ScoreAlgae bind:page_state bind:action_state {bg_color} />
-    {:else if page_state == "CleanAlgae"}
-        <CleanAlgae bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "ScoreCoral"}
         <ScoreCoral bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "Verify"}
