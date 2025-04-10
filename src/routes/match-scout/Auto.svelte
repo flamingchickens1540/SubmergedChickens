@@ -1,6 +1,5 @@
 <script lang="ts">
     import ScoreAlgae from "./ScoreAlgae.svelte"
-    import CleanAlgae from "./CleanAlgae.svelte"
     import ScoreCoral from "./ScoreCoral.svelte"
     import SucceedFail from "./SucceedFail.svelte"
     import type { AutoPageState, UncountedTeamMatch } from "$lib/types"
@@ -15,7 +14,6 @@
 
     let displaying_timeline = $state(false)
 
-    const clean_algae = () => (page_state = "CleanAlgae")
     const score_algae = () => (page_state = "ScoreAlgae")
     const score_coral = () => (page_state = "ScoreCoral")
 
@@ -24,14 +22,11 @@
 
 <div class="m-2 flex flex-1 flex-grow flex-col gap-2 bg-eerie_black">
     {#if page_state == "None"}
-        <div class="grid flex-grow grid-cols-2 gap-2 text-xl font-semibold">
+        <div class="grid flex-grow gap-2 text-xl font-semibold">
             <button class="rounded {bg_color}" onclick={score_algae}
                 >Score Algae</button
             >
-            <button class="rounded {bg_color}" onclick={clean_algae}
-                >Clean Algae</button
-            >
-            <button class="rounded {bg_color} col-span-2" onclick={score_coral}
+            <button class="rounded {bg_color}" onclick={score_coral}
                 >Score Coral</button
             >
         </div>
@@ -48,8 +43,6 @@
         />
     {:else if page_state == "ScoreAlgae"}
         <ScoreAlgae bind:page_state bind:action_state {bg_color} />
-    {:else if page_state == "CleanAlgae"}
-        <CleanAlgae bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "ScoreCoral"}
         <ScoreCoral bind:page_state bind:action_state {bg_color} />
     {:else if page_state == "Verify"}
