@@ -2,6 +2,11 @@ import { prisma } from "$lib/prisma"
 import { API_KEY } from "$env/static/private"
 import { info, warn, error } from "@/consoleUtils"
 
+// WARNING For some reason prisma doesn't allow object fields to be initialized
+// TeleActions: [] as TeleActionData[],
+// AutoActions: [] as AutoActionData[],
+//
+/// @returns if the event is now (or already was) in the database
 export async function preload(event_key: string): Promise<boolean> {
     const url = `https://www.thebluealliance.com/api/v3/event/${event_key}/`
     const event = await prisma.event.findUnique({
