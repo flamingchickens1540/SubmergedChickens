@@ -1,12 +1,71 @@
 import type { UncountedTeamMatch } from "@/types"
 import { Server } from "socket.io"
 import { type ViteDevServer } from "vite"
+import { prisma } from "@/prisma"
 
 const info = (s: string) => console.log(`\x1b[32m${s}\x1b[0m`)
 const warn = (s: string) => console.log(`\x1b[33m${s}\x1b[0m`)
+type RobotInfo = { team_key: string; color: "red" | "blue" }
+const robot_comparitor: (
+    a: RobotInfo,
+    b: RobotInfo
+) => Promise<number> = async (a, b) => {
+    const a_unscouted: number = (
+        await prisma.teamMatch.findMany({
+            where: {
+                team_key: {
+                    equals: Number.parseInt(a.team_key),
+                },
+                scoutId: null,
+            },
+        })
+    ).length
+
+    const b_unscouted: number = (
+        await prisma.teamMatch.findMany({
+            where: {
+                team_key: {
+                    equals: Number.parseInt(b.team_key),
+                },
+                scoutId: null,
+            },
+        })
+    ).length
+
+    return a_unscouted - b_unscouted
+}
+
+class RobotQueue {
+    queue: RobotInfo[]
+
+    constructor() {
+        this.queue = []
+    }
+
+    add(...items: RobotInfo[]) {
+        this.queue.push(...items)
+        this.sort()
+    }
+
+    pop(): RobotInfo | undefined {
+        return this.queue.pop()
+    }
+
+    clear() {
+        this.queue = []
+    }
+
+    length(): number {
+        return this.queue.length
+    }
+
+    async sort() {
+        this.queue = await sort(this.queue)
+    }
+}
 
 const sid_to_username: Map<string, string> = new Map()
-let robot_queue: { team_key: string; color: "red" | "blue" }[] = []
+let robot_queue = new RobotQueue()
 let curr_match_key: string = ""
 
 const webSocketServer = {
@@ -111,12 +170,12 @@ const webSocketServer = {
                         )
                     }
 
-                    const index = robot_queue.findIndex(robot_t =>
+                    const index = robot_queue.queue.findIndex(robot_t =>
                         robotsEqual(robot_t, robot)
                     )
                     if (index === -1) return
 
-                    robot_queue.splice(index, 1)
+                    robot_queue.queue.splice(index, 1)
                 }
             )
 
@@ -139,7 +198,7 @@ const webSocketServer = {
                         .join()
                     info(`New Match (${match_key}):${teams_print}`)
 
-                    robot_queue = []
+                    robot_queue.clear()
 
                     const scout_queue = (
                         await io.in("scout_queue").fetchSockets()
@@ -169,7 +228,7 @@ const webSocketServer = {
                     }
 
                     io.to("admin_room").emit("robot_joined_queue", teams)
-                    robot_queue.push(...teams)
+                    robot_queue.add(...teams)
 
                     // NOTE Update all connected sockets with new match info (for cosmetic purposes)
                     io.emit("new_match", match_key)
@@ -178,7 +237,7 @@ const webSocketServer = {
             )
 
             socket.on("clear_robot_queue", async () => {
-                robot_queue = []
+                robot_queue.clear()
             })
 
             // Event-listener sockets that were offline to sync back up with the current match key
@@ -229,6 +288,45 @@ const webSocketServer = {
             })
         })
     },
+}
+
+async function sort(items: RobotInfo[]): Promise<RobotInfo[]> {
+    if (items.length <= 1) {
+        return items
+    }
+
+    let left: RobotInfo[] = []
+    let right: RobotInfo[] = []
+
+    items.forEach((x, i) => {
+        if (i < items.length / 2) left.push(x)
+        else right.push(x)
+    })
+
+    left = await sort(left)
+    right = await sort(right)
+
+    return await merge(left, right)
+}
+
+async function merge(
+    left: RobotInfo[],
+    right: RobotInfo[]
+): Promise<RobotInfo[]> {
+    let result: RobotInfo[] = []
+
+    while (left.length != 0 && right.length != 0) {
+        // NOTE If left is less than right
+        const comparison = await robot_comparitor(left[0], right[0])
+
+        if (comparison) result.push(left.pop()!)
+        else result.push(right.pop()!)
+    }
+
+    while (left.length != 0) result.push(left.pop()!)
+    while (right.length != 0) result.push(right.pop()!)
+
+    return result
 }
 
 export default webSocketServer
