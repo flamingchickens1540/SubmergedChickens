@@ -37,7 +37,7 @@ const webSocketServer = {
         io.on("connect", socket => {
             if (socket.handshake.auth.token === "celary") {
                 socket.join("admin_room")
-                info("Admin Aquired")
+                info(`Admin Aquired: ${socket.handshake.auth.username}`)
             }
             socket.on("new_user", (user: string) => {
                 sid_to_username.set(socket.id, user)

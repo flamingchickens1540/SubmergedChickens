@@ -8,7 +8,7 @@
     let color = $state("")
 
     let disabled = $derived(
-        team_key === "" || match === "" || event.value === "" || color === ""
+        team_key === "" || match === "" || color === ""
             ? "pointer-events-none opacity-30"
             : ""
     )

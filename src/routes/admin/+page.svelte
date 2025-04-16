@@ -11,6 +11,7 @@
 
     let { data }: PageProps = $props()
     const tba_event_keys = data.tba_event_keys
+    const username = localStore("username", "")
 
     let current_robots: LocalStore<CurrentTeamMatch[]> = $state(
         localStore("current_robots", [])
@@ -28,7 +29,7 @@
         io({
             auth: {
                 token: "celary",
-                username: "Admin",
+                username: username.value,
             },
         })
     )
