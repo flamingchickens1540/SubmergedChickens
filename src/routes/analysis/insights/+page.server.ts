@@ -29,7 +29,7 @@ export const load: PageServerLoad = async ({}) => {
     )
 
     if (processed_team_events.length === 0) {
-        return redirect(307, "/analysis/insights/blank")
+        return redirect(307, "/analysis/blank")
     }
 
     return { teams, processed_team_events }
