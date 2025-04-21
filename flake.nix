@@ -23,7 +23,9 @@
             buildInputs = [
               postgresql_17
               bun
-              nodePackages_latest.prettier
+              nodejs
+              nodePackages.prettier
+              prisma
               openssl
             ];
             shellHook = ''
